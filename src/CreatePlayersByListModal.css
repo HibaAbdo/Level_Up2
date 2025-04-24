@@ -1,0 +1,86 @@
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: #3b2a70; /* purple panel like the rest */
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+}
+
+.modal-content h3 {
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+}
+
+.modal-content textarea {
+  width: 90%;
+  max-width: 500px;
+  min-height: 160px;
+  margin: 1.5rem auto; /* ✅ center horizontally + vertical spacing */
+  padding: 1rem;
+  font-size: 1rem;
+  border-radius: 12px;
+  border: 2px solid #a78bfa;
+  background-color: #f3e8ff;
+  color: #1e1b4b;
+  display: block;
+}
+
+.modal-content textarea:focus {
+  border-color: #facc15; /* gold border on focus */
+  background-color: #fff; /* subtle focus background */
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+  gap: 1rem;
+}
+
+.cancel {
+  background-color: #6b7280;
+  color: white;
+  padding: 0.6rem 1.4rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.cancel:hover {
+  background-color: #4b5563;
+}
+
+.create {
+  background-color: #facc15; /* gold */
+  color: #3b2a70;           /* deep purple text */
+  padding: 0.6rem 1.4rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.create:hover {
+  background-color: #fbbf24;
+}
