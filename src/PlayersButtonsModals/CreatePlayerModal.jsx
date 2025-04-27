@@ -91,16 +91,17 @@ function CreatePlayerModal({ isOpen, onClose, onCreate }) {
               checked={disabled}
               onChange={(e) => setDisabled(e.target.checked)}
             />
-            لاعب غير مفعل
+            لاعب غير مفعل 
           </label>
 
           <div className="modal-actions">
+          <button type="submit" className="create">
+              إنشاء
+            </button>
             <button type="button" className="cancel" onClick={onClose}>
               إلغاء
             </button>
-            <button type="submit" className="create">
-              إنشاء
-            </button>
+            
           </div>
         </form>
       </div>

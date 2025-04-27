@@ -42,8 +42,8 @@ function CreatePlayersByListModal({ isOpen, onClose, onCreateMany }) {
         />
 
         <div className="modal-actions">
+        <button className="create" onClick={handleSave}>حفظ</button>
           <button className="cancel" onClick={onClose}>إلغاء</button>
-          <button className="create" onClick={handleSave}>حفظ</button>
         </div>
       </div>
     </div>

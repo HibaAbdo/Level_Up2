@@ -44,10 +44,23 @@
   .checkbox {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    margin-top: 1rem;
-  }
-  
+    justify-content: flex-end; /* Important in RTL */
+    margin-top: 1.5rem; /* Space above the checkbox */
+}
+
+.checkbox input[type="checkbox"] {
+    width: 12px;
+    height: 12px;
+    margin-left: 0.5rem; /* Add space specifically between checkbox and label */
+}
+
+.checkbox label {
+    font-size: 1rem;
+    margin: 0; 
+    padding: 0; 
+    margin-left: 0.5rem; /* Additional space between label and checkbox */
+}
+
   .modal-actions {
     margin-top: 1.5rem;
     display: flex;
