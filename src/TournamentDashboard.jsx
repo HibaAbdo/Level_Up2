@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import './TournamentDashboard.css';
 import { useParams } from 'react-router-dom';
-import CreatePlayerModal from './CreatePlayerModal';
-import CreatePlayersByListModal from './CreatePlayersByListModal';
-import RandomizeConfirmationModal from './RandomizeConfirmationModal';
-import SortByRatingConfirmationModal from './SortByRatingConfirmationModal';
+import CreatePlayerModal from './PlayersButtonsModals/CreatePlayerModal';
+import CreatePlayersByListModal from './PlayersButtonsModals/CreatePlayersByListModal';
+import RandomizeConfirmationModal from './PlayersButtonsModals/RandomizeConfirmationModal';
+import SortByRatingConfirmationModal from './PlayersButtonsModals/SortByRatingConfirmationModal';
+import ForbiddenPairsModal from './PlayersButtonsModals/ForbiddenPairsModal';
+import PredefinedPairsModal from './PlayersButtonsModals/PredefinedPairsModal';
 
 import settingsIcon from './assets/Icons/settingsPiece.png';
 import playerIcon from './assets/Icons/player.png';
@@ -26,6 +28,8 @@ function TournamentDashboard() {
   const [isListModalOpen, setIsListModalOpen] = useState(false);
   const [isRandomizeConfirmOpen, setIsRandomizeConfirmOpen] = useState(false);
   const [isSortByRatingConfirmOpen, setIsSortByRatingConfirmOpen] = useState(false);
+  const [isForbiddenModalOpen, setIsForbiddenModalOpen] = useState(false);
+  const [isPredefinedModalOpen, setIsPredefinedModalOpen] = useState(false);
   const [players, setPlayers] = useState([]);
 
   const tournamentKey = `tournament-${id}`;
@@ -129,16 +133,17 @@ function TournamentDashboard() {
                 <img src={ratingIcon} alt="" className="btn-icon" />
                 ترتيب حسب التصنيف
               </button>
-              <button className="btn">
+              <button className="btn" onClick={() => setIsForbiddenModalOpen(true)}>
                 <img src={blockIcon} alt="" className="btn-icon" />
                 الأزواج الممنوعة
               </button>
             </div>
             <div className="row">
-              <button className="btn">
-                <img src={pairIcon} alt="" className="btn-icon" />
-                الأزواج المحددة مسبقًا
-              </button>
+            <button className="btn" onClick={() => setIsPredefinedModalOpen(true)}>
+             <img src={pairIcon} alt="" className="btn-icon" />
+             الأزواج المحددة مسبقًا
+           </button> 
+
               <button className="btn">
                 <img src={confirmIcon} alt="" className="btn-icon" />
                 بدء التأكيد
@@ -213,6 +218,23 @@ function TournamentDashboard() {
               setIsSortByRatingConfirmOpen(false);
             }}
           />
+          <ForbiddenPairsModal
+            isOpen={isForbiddenModalOpen}
+            onClose={() => setIsForbiddenModalOpen(false)}
+            players={players}
+            onAddPair={(pair) => {
+            console.log("Forbidden pair added:", pair);
+            // Optional: Save it to state/localStorage
+          }}
+          />
+          <PredefinedPairsModal
+            isOpen={isPredefinedModalOpen}
+            onClose={() => setIsPredefinedModalOpen(false)}
+            players={players}
+            tournamentId={id}
+          />
+
+
         </>
       )}
     </div>

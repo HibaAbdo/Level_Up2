@@ -20,6 +20,26 @@ function CreateTournament() {
     disableDoubleBye: false,
     lateJoinPoints: false,
   });
+  const handleCreateTournament = () => {
+    if (!formData.name) {
+      alert('يرجى إدخال اسم البطولة');
+      return;
+    }
+  
+    const newTournament = {
+      name: formData.name,
+      creationDate: new Date().toLocaleDateString('ar-EG') + ' ' + new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }),
+      lastModified: new Date().toLocaleDateString('ar-EG') + ' ' + new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }),
+      // You can add more fields later if needed (points, rounds, etc.)
+    };
+  
+    const existingTournaments = JSON.parse(localStorage.getItem('tournaments')) || [];
+    existingTournaments.push(newTournament);
+    localStorage.setItem('tournaments', JSON.stringify(existingTournaments));
+  
+    navigate('/mytournaments'); // After saving, go back to tournaments page
+  };
+  
 
   const allTieBreakOptions = [
     { value: 'direct', label: 'المواجهة المباشرة' },
@@ -53,13 +73,35 @@ function CreateTournament() {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const tournamentId = uuidv4();
-    const tournamentData = { id: tournamentId, ...formData };
-    localStorage.setItem(`tournament-${tournamentId}`, JSON.stringify(tournamentData));
-    navigate(`/tournament/${tournamentId}`);
+const handleSubmit = (e) => {
+  e.preventDefault();
+  
+  const tournamentId = uuidv4();
+  const tournamentData = { id: tournamentId, ...formData };
+
+  // Save the full tournament separately
+  localStorage.setItem(`tournament-${tournamentId}`, JSON.stringify(tournamentData));
+
+  const date = new Date();
+  const formattedDate = date.toLocaleDateString('ar-EG');
+  const formattedTime = date.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+
+  const newTournamentForList = {
+    id: tournamentId,
+    name: formData.name,
+    creationDate: formattedDate + '   ' + formattedTime,
+    lastModified: formattedDate + '   ' + formattedTime,
   };
+
+  const existingTournaments = JSON.parse(localStorage.getItem('tournaments')) || [];
+  existingTournaments.push(newTournamentForList);
+  localStorage.setItem('tournaments', JSON.stringify(existingTournaments));
+
+  // ✅ Navigate to MyTournaments page (NOT to dashboard)
+  navigate(`/tournament/${tournamentId}`);
+};
+
+  
 
   return (
     <div className="create-container" dir="rtl">

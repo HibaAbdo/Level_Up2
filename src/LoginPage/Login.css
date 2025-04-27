@@ -1,0 +1,200 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'IBM Plex Sans Arabic', sans-serif; /* Match other pages */
+    direction: rtl;
+    text-align: right;
+}
+
+
+body {
+    background: linear-gradient(135deg, #5a2e85 30%, #d1a128 100%); /* Softer Purple-Gold Gradient */
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #422969; /* Dark Purple for Text */
+}
+
+/* Login Box */
+.login-container {
+    background: #663d99; /* Lighter Purple Background */
+    border-radius: 15px;
+    padding: 30px;
+    width: 350px;
+    text-align: right;
+    backdrop-filter: blur(10px);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    color: #fff; /* White text inside the box */
+}
+
+.login-container h2 {
+    color: #FFC72C; /* Gold for the title */
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 700;
+}
+
+/* Floating Label Effect for Inputs */
+.input-group {
+    text-align: right;
+    margin-bottom: 25px; /* Increased space between fields */
+    position: relative;
+}
+
+/* Label Styling (Aligned Right, Floating Effect) */
+.input-group label {
+    position: absolute;
+    right: 12px; /* Align text to right */
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.7); /* Light White for the Label */
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+    pointer-events: none;
+    background: #FFC72C; /* Gold for Label Background */
+    padding: 0 5px;
+    border-radius: 5px;
+}
+
+/* Move label up when input is focused or has value */
+.input-group input:focus + label,
+.input-group .label-active {
+    top: -8px;
+    right: 10px;
+    font-size: 12px;
+    color: #663d99; /* Light Purple Label when Active */
+    background: #FFC72C; /* Gold Background */
+    padding: 2px 5px;
+}
+
+/* Input Fields (Styled for Purple Theme) */
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.3); /* Transparent border */
+    border-radius: 5px;
+    background: #422969; /* Dark Purple */
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+    text-align: right;
+    padding-left: 40px; /* Space for the left-side eye icon */
+    transition: border 0.3s ease-in-out, background 0.3s ease-in-out;
+}
+
+/* Hide Placeholder Text */
+.input-group input::placeholder {
+    color: transparent;
+}
+
+/* Focus Effect */
+.input-group input:focus {
+    border: 2px solid #FFC72C; /* Gold border on focus */
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Password Container */
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+/* Move Eye Icon to the Left */
+.eye-icon {
+    position: absolute;
+    top: 50%;
+    left: 10px; /* Move icon to the left */
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 22px;
+    height: 22px;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.eye-icon:hover {
+    opacity: 1;
+}
+
+/* Prevent Browser's Default Eye Icon in Password Field */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear,
+input[type="password"]::-webkit-contacts-auto-fill-button,
+input[type="password"]::-webkit-credentials-auto-fill-button {
+    display: none;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid transparent; /* No visible border normally */
+    border-radius: 8px;
+    background: #FFC72C; /* Yellow background */
+    color: #663d99; /* Purple text */
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-weight: 700;
+}
+
+.login-btn:hover {
+    background: #422969; /* Dark Purple on Hover */
+    color: #FFC72C; /* Yellow text on hover */
+}
+
+/* Focus style: when user clicks on the button */
+.login-btn:focus {
+    border: 2px dashed #FFC72C; /* Show yellow dashed border */
+    outline: none; /* Remove ugly default browser outline */
+}
+
+
+/* Success Message */
+/* Wrapper for Login Box & Success Message */
+.login-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Success Message Below Login Box */
+.success-message {
+    background:   #f0c230
+
+    ; /* Green Success Background */
+    color: #fff;
+    text-align: center;
+    padding: 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-top: 15px; /* Add space below the login box */
+    width: 350px; /* Same width as the login box */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; /* Full screen height */
+}

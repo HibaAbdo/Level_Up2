@@ -1,12 +1,12 @@
 // first page with the table 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './MyTournaments.css';
 import chessBg from './assets/chess-bg.png';
 import { useNavigate } from 'react-router-dom';
 
-
 function MyTournaments() {
   const navigate = useNavigate();
+  const [tournaments, setTournaments] = useState([]);
 
   const backgroundStyle = {
     backgroundImage: `url(${chessBg})`,
@@ -24,6 +24,12 @@ function MyTournaments() {
     pointerEvents: 'none',
   };
 
+  useEffect(() => {
+    // Load tournaments from localStorage when the page loads
+    const storedTournaments = JSON.parse(localStorage.getItem('tournaments')) || [];
+    setTournaments(storedTournaments);
+  }, []);
+
   return (
     <div className="page-wrapper">
       <div style={backgroundStyle} />
@@ -35,7 +41,7 @@ function MyTournaments() {
           <button className="btn archive">فتح الأرشيف</button>
           <button className="btn create" onClick={() => navigate('/create')}>
             إنشاء بطولة
-            </button>
+          </button>
         </div>
 
         <div className="table-container">
@@ -47,7 +53,23 @@ function MyTournaments() {
                 <th className="col-created">تاريخ الإنشاء</th>
               </tr>
             </thead>
-            
+            <tbody>
+              {tournaments.length === 0 ? (
+                <tr>
+                  <td colSpan="3" className="no-tournaments">
+                    لا توجد بطولات محفوظة
+                  </td>
+                </tr>
+              ) : (
+                tournaments.map((tournament, index) => (
+                  <tr key={index}>
+                    <td className="col-name">{tournament.name}</td>
+                    <td className="col-modified">{tournament.lastModified}</td>
+                    <td className="col-created">{tournament.creationDate}</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
           </table>
         </div>
       </div>

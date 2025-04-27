@@ -1,0 +1,173 @@
+.forbidden-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.forbidden-modal {
+  background-color: #3b2a70;
+  padding: 2rem;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 600px;
+  color: #fff;
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.forbidden-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #facc15;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.forbidden-message {
+  font-size: 1rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #cbd5e1;
+}
+
+.forbidden-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #4c3574;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.forbidden-table th,
+.forbidden-table td {
+  padding: 0.75rem;
+  text-align: center;
+  border-bottom: 1px solid #6b5ca6;
+}
+
+.forbidden-empty {
+  padding: 1.5rem;
+  color: #cbd5e1;
+}
+
+.forbidden-empty-box {
+  width: 40px;
+  height: 40px;
+  background: #9333ea;
+  border-radius: 50%;
+  margin: 0 auto 0.5rem auto;
+}
+
+.forbidden-form {
+  margin-bottom: 1.5rem;
+}
+
+.forbidden-form label {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: #e2e8f0;
+  font-size: 0.95rem;
+}
+
+.forbidden-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.forbidden-btn {
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.forbidden-btn.add {
+  background-color: #facc15;
+  color: #1e1b4b;
+}
+
+.forbidden-btn.confirm {
+  background-color: #facc15;
+  color: #1e1b4b;
+}
+
+.forbidden-btn.cancel {
+  background-color: #475569;
+  color: #ffffff;
+}
+
+.forbidden-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.forbidden-btn.confirm:hover {
+  background-color: #eab308;
+}
+
+.forbidden-btn.cancel:hover {
+  background-color: #64748b;
+}
+
+/* react-select (dropdown) customized to match theme */
+/* react-select overrides */
+.forbidden-form .select__control {
+  background-color: #3b2a70;
+  border: 1px solid #facc15;
+  border-radius: 8px;
+  min-height: 2.8rem;
+  color: white;
+  font-weight: 600;
+}
+
+.forbidden-form .select__single-value {
+  color: #facc15;
+  font-weight: bold;
+}
+
+.forbidden-form .select__menu {
+  background-color: #4c3574;
+  border-radius: 8px;
+  z-index: 9999;
+}
+
+.forbidden-form .select__option {
+  color: #e2e8f0;
+  background-color: transparent;
+  padding: 0.5rem 1rem;
+}
+
+.forbidden-form .select__option--is-focused {
+  background-color: #5b21b6;
+  color: #facc15;
+}
+
+.forbidden-form .select__option--is-selected {
+  background-color: #facc15;
+  color: #1e1b4b;
+  font-weight: bold;
+}
+
+
+/* Adjust Confirm button inside the form */
+.forbidden-form .forbidden-btn.confirm {
+  margin-top: 1rem;
+  height: 42px;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
