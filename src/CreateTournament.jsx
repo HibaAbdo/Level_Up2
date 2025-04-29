@@ -4,48 +4,115 @@ import { v4 as uuidv4 } from 'uuid';
 import Select from 'react-select';
 import './CreateTournament.css';
 
-function CreateTournament() {
+function CreateTournament({ mode = 'create', initialData = null }) {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    name: '',
-    playSystem: '',
-    points: '',
-    byeValue: '',
-    totalRounds: 5,
-    tieBreaks: [],
-    allowJoin: false,
-    allowChange: false,
-    dangerousChanges: false,
-    disableDoubleBye: false,
-    lateJoinPoints: false,
+  const [formData, setFormData] = useState(() => {
+    if (initialData) {
+      return { ...initialData };
+    }
+    return {
+      name: '',
+      playSystem: '',
+      points: '',
+      byeValue: '',
+      totalRounds: 5,
+      tieBreaks: [],
+      allowJoin: false,
+      allowChange: false,
+      dangerousChanges: false,
+      disableDoubleBye: false,
+      lateJoinPoints: false,
+    };
   });
-  const handleCreateTournament = () => {
-    if (!formData.name) {
-      alert('يرجى إدخال اسم البطولة');
+
+  const handleSaveChanges = () => {
+    if (!initialData?.id) {
+      console.error('No tournament ID found for editing.');
       return;
     }
-  
-    const newTournament = {
-      name: formData.name,
-      creationDate: new Date().toLocaleDateString('ar-EG') + ' ' + new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }),
-      lastModified: new Date().toLocaleDateString('ar-EG') + ' ' + new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }),
-      // You can add more fields later if needed (points, rounds, etc.)
-    };
-  
+
+    localStorage.setItem(`tournament-${initialData.id}`, JSON.stringify({ id: initialData.id, ...formData }));
+
     const existingTournaments = JSON.parse(localStorage.getItem('tournaments')) || [];
-    existingTournaments.push(newTournament);
-    localStorage.setItem('tournaments', JSON.stringify(existingTournaments));
-  
-    navigate('/mytournaments'); // After saving, go back to tournaments page
+    const updatedTournaments = existingTournaments.map(t => {
+      if (t.id === initialData.id) {
+        const date = new Date();
+        const formattedDate = date.toLocaleDateString('ar-EG');
+        const formattedTime = date.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+        return {
+          ...t,
+          name: formData.name,
+          lastModified: formattedDate + '   ' + formattedTime,
+        };
+      }
+      return t;
+    });
+
+    localStorage.setItem('tournaments', JSON.stringify(updatedTournaments));
+
+    alert('تم حفظ التغييرات بنجاح!');
   };
-  
+
+  const handleDeleteTournament = () => {
+    if (!initialData?.id) {
+      console.error('No tournament ID found for deletion.');
+      return;
+    }
+
+    if (!window.confirm('هل أنت متأكد أنك تريد حذف البطولة؟')) {
+      return;
+    }
+
+    localStorage.removeItem(`tournament-${initialData.id}`);
+
+    const existingTournaments = JSON.parse(localStorage.getItem('tournaments')) || [];
+    const updatedTournaments = existingTournaments.filter(t => t.id !== initialData.id);
+    localStorage.setItem('tournaments', JSON.stringify(updatedTournaments));
+
+    alert('تم حذف البطولة بنجاح!');
+    navigate('/mytournaments');
+  };
+
+  const handleCloneTournament = () => {
+    if (!initialData) {
+      console.error('No tournament data to clone.');
+      return;
+    }
+
+    const newId = uuidv4();
+    const clonedTournament = {
+      ...initialData,
+      id: newId,
+      name: initialData.name + ' (نسخة)',
+    };
+
+    localStorage.setItem(`tournament-${newId}`, JSON.stringify(clonedTournament));
+
+    const existingTournaments = JSON.parse(localStorage.getItem('tournaments')) || [];
+    const date = new Date();
+    const formattedDate = date.toLocaleDateString('ar-EG');
+    const formattedTime = date.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+
+    const newTournamentForList = {
+      id: newId,
+      name: clonedTournament.name,
+      creationDate: formattedDate + '   ' + formattedTime,
+      lastModified: formattedDate + '   ' + formattedTime,
+    };
+
+    existingTournaments.push(newTournamentForList);
+    localStorage.setItem('tournaments', JSON.stringify(existingTournaments));
+
+    alert('تم إنشاء نسخة من البطولة!');
+    navigate(`/tournament/${newId}`);
+  };
 
   const allTieBreakOptions = [
     { value: 'direct', label: 'المواجهة المباشرة' },
-    { value: 'median', label: 'Buchholz ' },
+    { value: 'median', label: 'Buchholz' },
     { value: 'buchholz1', label: 'Buchholz Cut 1' },
-    { value: 'buchholzTotal', label: 'Buchholz Cut 2 ' },
+    { value: 'buchholzTotal', label: 'Buchholz Cut 2' },
     { value: 'koya', label: 'Koya System' }
   ];
 
@@ -73,39 +140,37 @@ function CreateTournament() {
     }));
   };
 
-const handleSubmit = (e) => {
-  e.preventDefault();
-  
-  const tournamentId = uuidv4();
-  const tournamentData = { id: tournamentId, ...formData };
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  // Save the full tournament separately
-  localStorage.setItem(`tournament-${tournamentId}`, JSON.stringify(tournamentData));
+    const tournamentId = uuidv4();
+    const tournamentData = { id: tournamentId, ...formData };
 
-  const date = new Date();
-  const formattedDate = date.toLocaleDateString('ar-EG');
-  const formattedTime = date.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+    localStorage.setItem(`tournament-${tournamentId}`, JSON.stringify(tournamentData));
 
-  const newTournamentForList = {
-    id: tournamentId,
-    name: formData.name,
-    creationDate: formattedDate + '   ' + formattedTime,
-    lastModified: formattedDate + '   ' + formattedTime,
+    const date = new Date();
+    const formattedDate = date.toLocaleDateString('ar-EG');
+    const formattedTime = date.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+
+    const newTournamentForList = {
+      id: tournamentId,
+      name: formData.name,
+      creationDate: formattedDate + '   ' + formattedTime,
+      lastModified: formattedDate + '   ' + formattedTime,
+    };
+
+    const existingTournaments = JSON.parse(localStorage.getItem('tournaments')) || [];
+    existingTournaments.push(newTournamentForList);
+    localStorage.setItem('tournaments', JSON.stringify(existingTournaments));
+
+    navigate(`/tournament/${tournamentId}`);
   };
-
-  const existingTournaments = JSON.parse(localStorage.getItem('tournaments')) || [];
-  existingTournaments.push(newTournamentForList);
-  localStorage.setItem('tournaments', JSON.stringify(existingTournaments));
-
-  // ✅ Navigate to MyTournaments page (NOT to dashboard)
-  navigate(`/tournament/${tournamentId}`);
-};
-
-  
 
   return (
     <div className="create-container" dir="rtl">
-      <h2 className="form-title">إنشاء بطولة</h2>
+      <h2 className="form-title">
+        {mode === 'edit' ? 'تعديل البطولة' : 'إنشاء بطولة'}
+      </h2>
       <form className="tournament-form" onSubmit={handleSubmit}>
         <div className="floating-group">
           <input
@@ -129,7 +194,7 @@ const handleSubmit = (e) => {
             className="floating-input"
           >
             <option value="" disabled hidden>اختر نظام اللعب</option>
-            <option value="swiss">Swiss Dutch Fide (JaVaFo)</option>
+            <option value="swiss">Swiss Dutch FIDE (JaVaFo)</option>
             <option value="round-robin">Round Robin</option>
             <option value="knockout">Knock-Out</option>
           </select>
@@ -148,7 +213,6 @@ const handleSubmit = (e) => {
             <option value="standard">1-0, 0-1, 0.5-0.5</option>
             <option value="winOnly">1-0, 0-1</option>
             <option value="Arbitrary">Arbitrary</option>
-
           </select>
           <label className="floating-label">نقاط كل مباراة</label>
         </div>
@@ -183,7 +247,6 @@ const handleSubmit = (e) => {
           <label className="floating-label">عدد الجولات</label>
         </div>
 
-        {/* ✅ Tie Breaks section shown conditionally */}
         {formData.playSystem !== 'knockout' && (
           <div className="floating-group react-select-group filled">
             <label className="floating-label">كسر التعادل </label>
@@ -231,7 +294,28 @@ const handleSubmit = (e) => {
           </label>
         </div>
 
-        <button type="submit" className="form-submit">إنشاء البطولة</button>
+        {/* 🔥 Here is the correct button area: */}
+        <div className="form-actions">
+          <button
+            type={mode === 'create' ? 'submit' : 'button'}
+            className="form-submit"
+            onClick={mode === 'edit' ? handleSaveChanges : undefined}
+          >
+            {mode === 'edit' ? 'حفظ التغييرات' : 'إنشاء البطولة'}
+          </button>
+
+          {mode === 'edit' && (
+            <>
+              <button type="button" className="delete-button" onClick={handleDeleteTournament}>
+                حذف البطولة
+              </button>
+              <button type="button" className="clone-button" onClick={handleCloneTournament}>
+                نسخ البطولة
+              </button>
+            </>
+          )}
+        </div>
+
       </form>
     </div>
   );

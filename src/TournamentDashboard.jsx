@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './TournamentDashboard.css';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'; // ✅ Added useNavigate
 import CreatePlayerModal from './PlayersButtonsModals/CreatePlayerModal';
 import CreatePlayersByListModal from './PlayersButtonsModals/CreatePlayersByListModal';
 import RandomizeConfirmationModal from './PlayersButtonsModals/RandomizeConfirmationModal';
@@ -23,6 +23,7 @@ import csvIcon from './assets/Icons/csv.png';
 
 function TournamentDashboard() {
   const { id } = useParams();
+  const navigate = useNavigate(); // ✅ Added useNavigate
   const [activeTab, setActiveTab] = useState('اللاعبين');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isListModalOpen, setIsListModalOpen] = useState(false);
@@ -98,7 +99,13 @@ function TournamentDashboard() {
           <button
             key={tab.label}
             className={`tab vertical-tab ${activeTab === tab.label ? 'active' : ''}`}
-            onClick={() => setActiveTab(tab.label)}
+            onClick={() => {
+              if (tab.label === 'الإعدادات') {
+                navigate(`/tournament/${id}/settings`); // ✅ Navigate to Settings
+              } else {
+                setActiveTab(tab.label);
+              }
+            }}
           >
             {tab.icon && (
               <img
@@ -139,10 +146,10 @@ function TournamentDashboard() {
               </button>
             </div>
             <div className="row">
-            <button className="btn" onClick={() => setIsPredefinedModalOpen(true)}>
-             <img src={pairIcon} alt="" className="btn-icon" />
-             الأزواج المحددة مسبقًا
-           </button> 
+              <button className="btn" onClick={() => setIsPredefinedModalOpen(true)}>
+                <img src={pairIcon} alt="" className="btn-icon" />
+                الأزواج المحددة مسبقًا
+              </button> 
 
               <button className="btn">
                 <img src={confirmIcon} alt="" className="btn-icon" />
@@ -192,6 +199,7 @@ function TournamentDashboard() {
             </button>
           </div>
 
+          {/* Modals */}
           <CreatePlayerModal
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
@@ -223,9 +231,8 @@ function TournamentDashboard() {
             onClose={() => setIsForbiddenModalOpen(false)}
             players={players}
             onAddPair={(pair) => {
-            console.log("Forbidden pair added:", pair);
-            // Optional: Save it to state/localStorage
-          }}
+              console.log("Forbidden pair added:", pair);
+            }}
           />
           <PredefinedPairsModal
             isOpen={isPredefinedModalOpen}
@@ -233,8 +240,6 @@ function TournamentDashboard() {
             players={players}
             tournamentId={id}
           />
-
-
         </>
       )}
     </div>
