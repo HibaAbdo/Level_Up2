@@ -160,3 +160,77 @@ body, html, #root {
   width: 100%;
   overflow: hidden;
 }
+
+
+/* WebKit: Chrome, Edge, Safari */
+.my-tournaments-container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.my-tournaments-container::-webkit-scrollbar-track {
+  background: #2d1b55;
+  border-radius: 6px;
+}
+
+.my-tournaments-container::-webkit-scrollbar-thumb {
+  background-color: #facc15;
+  border-radius: 6px;
+  border: 2px solid #2d1b55;
+}
+
+.my-tournaments-container::-webkit-scrollbar-thumb:hover {
+  background-color: #eab308;
+}
+
+/* Firefox */
+.my-tournaments-container {
+  scrollbar-width: thin;
+  scrollbar-color: #facc15 #2d1b55;
+  overflow-y: auto;
+  max-height: calc(100vh - 6rem);
+  direction: ltr !important;  /* حتى يظهر الشريط على اليمين */
+  text-align: right;
+}
+
+/* لإرجاع اتجاه النص داخل المكون إلى RTL */
+.my-tournaments-container * {
+  direction: rtl;
+}
+.table-scroll {
+  overflow-x: auto;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+/* شكل السكروول داخل الجدول */
+.table-scroll::-webkit-scrollbar {
+  height: 10px;
+}
+.table-scroll::-webkit-scrollbar-track {
+  background: #2d1b55;
+}
+.table-scroll::-webkit-scrollbar-thumb {
+  background-color: #facc15;
+  border-radius: 6px;
+  border: 2px solid #2d1b55;
+}
+.table-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #eab308;
+}
+
+/* Firefox */
+.table-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #facc15 #2d1b55;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.tournaments-table {
+  min-width: 900px; /* ضروري للسكرول */
+  width: max-content;
+}

@@ -282,3 +282,34 @@ object
   margin-left: 8px;
   vertical-align: middle;
 }
+.dashboard-container {
+  max-height: 90vh;
+  overflow-y: auto;
+  background-color: rgba(59, 42, 112, 0.95);
+  padding: 2rem;
+  border-radius: 16px;
+  direction: ltr !important;
+  text-align: right;
+  scrollbar-width: thin;
+  scrollbar-color: #facc15 #2d1b55;
+}
+
+.dashboard-container::-webkit-scrollbar {
+  width: 10px;
+}
+.dashboard-container::-webkit-scrollbar-track {
+  background: #2d1b55;
+}
+.dashboard-container::-webkit-scrollbar-thumb {
+  background-color: #facc15;
+  border-radius: 6px;
+  border: 2px solid #2d1b55;
+}
+.dashboard-container::-webkit-scrollbar-thumb:hover {
+  background-color: #eab308;
+}
+
+/* يرجع النص إلى RTL */
+.dashboard-container * {
+  direction: rtl;
+}

@@ -7,6 +7,7 @@ import RandomizeConfirmationModal from './PlayersButtonsModals/RandomizeConfirma
 import SortByRatingConfirmationModal from './PlayersButtonsModals/SortByRatingConfirmationModal';
 import ForbiddenPairsModal from './PlayersButtonsModals/ForbiddenPairsModal';
 import PredefinedPairsModal from './PlayersButtonsModals/PredefinedPairsModal';
+import logo from './assets/logoshah.png';
 
 import settingsIcon from './assets/Icons/settingsPiece.png';
 import playerIcon from './assets/Icons/player.png';
@@ -89,6 +90,10 @@ function TournamentDashboard() {
   ];
 
   return (
+  <div className="shared-container">
+    <div className="form-logo-wrapper">
+      <img src={logo} alt="شطرنج القدس" className="form-logo" />
+      </div>
     <div className="dashboard-container" dir="rtl">
       <div className="dashboard-header">
         <h2 className="dashboard-title">{tournament.name || 'بطولة جديدة'}</h2>
@@ -242,6 +247,7 @@ function TournamentDashboard() {
           />
         </>
       )}
+    </div>
     </div>
   );
 }

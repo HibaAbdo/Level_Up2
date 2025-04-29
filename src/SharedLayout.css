@@ -1,0 +1,56 @@
+.shared-container {
+    max-height: 90vh;
+    overflow-y: auto;
+    overflow-x: auto; /* ✅ سكرول يمين/يسار */
+    background-color: rgba(59, 42, 112, 0.95);
+    padding: 2rem;
+    border-radius: 16px;
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+    text-align: right;
+    scrollbar-width: thin;
+    scrollbar-color: #facc15 #2d1b55;
+  }
+  
+  .shared-container::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  .shared-container::-webkit-scrollbar-track {
+    background: #2d1b55;
+    border-radius: 6px;
+  }
+  
+  .shared-container::-webkit-scrollbar-thumb {
+    background-color: #facc15;
+    border-radius: 6px;
+    border: 2px solid #2d1b55;
+  }
+  
+  .shared-container::-webkit-scrollbar-thumb:hover {
+    background-color: #eab308;
+  }
+  
+  .shared-container * {
+    direction: rtl;
+  }
+  
+  .form-logo-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .form-logo {
+    height: 60px;
+    width: auto;
+  }
+  
+  .form-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: white;
+  }
+  

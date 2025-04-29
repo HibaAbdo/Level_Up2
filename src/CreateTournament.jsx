@@ -3,14 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import Select from 'react-select';
 import './CreateTournament.css';
+import logo from './assets/logoshah.png';
 
 function CreateTournament({ mode = 'create', initialData = null }) {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState(() => {
-    if (initialData) {
-      return { ...initialData };
-    }
+    if (initialData) return { ...initialData };
     return {
       name: '',
       playSystem: '',
@@ -43,26 +42,20 @@ function CreateTournament({ mode = 'create', initialData = null }) {
         return {
           ...t,
           name: formData.name,
-          lastModified: formattedDate + '   ' + formattedTime,
+          lastModified: `${formattedDate}   ${formattedTime}`,
         };
       }
       return t;
     });
 
     localStorage.setItem('tournaments', JSON.stringify(updatedTournaments));
-
     alert('تم حفظ التغييرات بنجاح!');
   };
 
   const handleDeleteTournament = () => {
-    if (!initialData?.id) {
-      console.error('No tournament ID found for deletion.');
-      return;
-    }
+    if (!initialData?.id) return;
 
-    if (!window.confirm('هل أنت متأكد أنك تريد حذف البطولة؟')) {
-      return;
-    }
+    if (!window.confirm('هل أنت متأكد أنك تريد حذف البطولة؟')) return;
 
     localStorage.removeItem(`tournament-${initialData.id}`);
 
@@ -75,16 +68,13 @@ function CreateTournament({ mode = 'create', initialData = null }) {
   };
 
   const handleCloneTournament = () => {
-    if (!initialData) {
-      console.error('No tournament data to clone.');
-      return;
-    }
+    if (!initialData) return;
 
     const newId = uuidv4();
     const clonedTournament = {
       ...initialData,
       id: newId,
-      name: initialData.name + ' (نسخة)',
+      name: `${initialData.name} (نسخة)`,
     };
 
     localStorage.setItem(`tournament-${newId}`, JSON.stringify(clonedTournament));
@@ -97,8 +87,8 @@ function CreateTournament({ mode = 'create', initialData = null }) {
     const newTournamentForList = {
       id: newId,
       name: clonedTournament.name,
-      creationDate: formattedDate + '   ' + formattedTime,
-      lastModified: formattedDate + '   ' + formattedTime,
+      creationDate: `${formattedDate}   ${formattedTime}`,
+      lastModified: `${formattedDate}   ${formattedTime}`,
     };
 
     existingTournaments.push(newTournamentForList);
@@ -126,7 +116,7 @@ function CreateTournament({ mode = 'create', initialData = null }) {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
       ...(name === 'playSystem' && value === 'knockout' ? { tieBreaks: [] } : {})
@@ -134,9 +124,9 @@ function CreateTournament({ mode = 'create', initialData = null }) {
   };
 
   const handleMultiSelect = (selectedOptions) => {
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
-      tieBreaks: selectedOptions.map((opt) => opt.value),
+      tieBreaks: selectedOptions.map(opt => opt.value),
     }));
   };
 
@@ -155,8 +145,8 @@ function CreateTournament({ mode = 'create', initialData = null }) {
     const newTournamentForList = {
       id: tournamentId,
       name: formData.name,
-      creationDate: formattedDate + '   ' + formattedTime,
-      lastModified: formattedDate + '   ' + formattedTime,
+      creationDate: `${formattedDate}   ${formattedTime}`,
+      lastModified: `${formattedDate}   ${formattedTime}`,
     };
 
     const existingTournaments = JSON.parse(localStorage.getItem('tournaments')) || [];
@@ -168,9 +158,14 @@ function CreateTournament({ mode = 'create', initialData = null }) {
 
   return (
     <div className="create-container" dir="rtl">
+      <div className="form-logo-wrapper">
+        <img src={logo} alt="شطرنج القدس" className="form-logo" />
+      </div>
+
       <h2 className="form-title">
         {mode === 'edit' ? 'تعديل البطولة' : 'إنشاء بطولة'}
       </h2>
+
       <form className="tournament-form" onSubmit={handleSubmit}>
         <div className="floating-group">
           <input
@@ -249,7 +244,7 @@ function CreateTournament({ mode = 'create', initialData = null }) {
 
         {formData.playSystem !== 'knockout' && (
           <div className="floating-group react-select-group filled">
-            <label className="floating-label">كسر التعادل </label>
+            <label className="floating-label">كسر التعادل</label>
             <div className="tie-breaks-select">
               <Select
                 isMulti
@@ -294,7 +289,6 @@ function CreateTournament({ mode = 'create', initialData = null }) {
           </label>
         </div>
 
-        {/* 🔥 Here is the correct button area: */}
         <div className="form-actions">
           <button
             type={mode === 'create' ? 'submit' : 'button'}
@@ -315,7 +309,6 @@ function CreateTournament({ mode = 'create', initialData = null }) {
             </>
           )}
         </div>
-
       </form>
     </div>
   );

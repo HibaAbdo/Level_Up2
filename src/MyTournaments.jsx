@@ -1,7 +1,7 @@
-// first page with the table 
 import React, { useEffect, useState } from 'react';
 import './MyTournaments.css';
 import chessBg from './assets/chess-bg.png';
+import logo from './assets/logoshah.png';
 import { useNavigate } from 'react-router-dom';
 
 function MyTournaments() {
@@ -25,7 +25,6 @@ function MyTournaments() {
   };
 
   useEffect(() => {
-    // Load tournaments from localStorage when the page loads
     const storedTournaments = JSON.parse(localStorage.getItem('tournaments')) || [];
     setTournaments(storedTournaments);
   }, []);
@@ -34,9 +33,14 @@ function MyTournaments() {
     <div className="page-wrapper">
       <div style={backgroundStyle} />
 
-      <div className="page">
-        <h2>بطولاتي</h2>
+      <div className="my-tournaments-container">
+        <div className="form-logo-wrapper">
+          <img src={logo} alt="شطرنج القدس" className="form-logo" />
+        </div>
 
+        <h2 className="form-title">بطولاتي</h2>
+
+        {/* ✅ الأزرار لحالها */}
         <div className="actions">
           <button className="btn archive">فتح الأرشيف</button>
           <button className="btn create" onClick={() => navigate('/create')}>
@@ -44,7 +48,8 @@ function MyTournaments() {
           </button>
         </div>
 
-        <div className="table-container">
+        {/* ✅ الجدول لحاله */}
+        <div className="table-scroll">
           <table className="tournaments-table">
             <thead>
               <tr>

@@ -1,3 +1,4 @@
+
 .create-container {
   max-width: 700px;
   margin: 3rem auto;
@@ -344,4 +345,61 @@ input[type=number] {
   border-radius: 8px;
   cursor: pointer;
   width: 100%;
+}
+
+.form-logo-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.form-logo {
+  height: 60px;
+  width: auto;
+}
+
+/* Style scrollbar (WebKit: Chrome, Edge, Safari) */
+.create-container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.create-container::-webkit-scrollbar-track {
+  background: #2d1b55; /* dark purple background */
+  border-radius: 6px;
+}
+
+.create-container::-webkit-scrollbar-thumb {
+  background-color: #facc15; /* yellow thumb */
+  border-radius: 6px;
+  border: 2px solid #2d1b55; /* match background */
+}
+
+.create-container::-webkit-scrollbar-thumb:hover {
+  background-color: #eab308;
+}
+
+/* Firefox */
+.create-container {
+  scrollbar-width: thin;
+  scrollbar-color: #facc15 #2d1b55;
+}
+
+/* Ensure scroll appears inside .create-container, not body */
+.create-container {
+  overflow-y: auto;
+  max-height: calc(100vh - 6rem);
+  direction: rtl; /* RTL keeps it aligned right for Arabic */
+}
+
+.create-container {
+  direction: ltr !important;     /* Force scrollbar on the right */
+  text-align: right;             /* Keep Arabic text aligned right */
+  overflow-y: auto;
+  max-height: calc(100vh - 6rem);
+}
+
+/* Flip inner content back to RTL */
+.create-container form {
+  direction: rtl;
 }
