@@ -1,278 +1,251 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'IBM Plex Sans Arabic', sans-serif;
-    direction: rtl;
-    text-align: right;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  direction: rtl;
+  text-align: right;
+}
+
+body {
+  background: linear-gradient(135deg, #5a2e85 30%, #d1a128 100%);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #422969;
+  position: relative;
+}
+
+/* ✅ Wrapper for centering the login box */
+.login-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* ✅ Login Box */
+.login-container {
+  background: rgba(102, 61, 153, 0.9); /* Slight transparency */
+  border-radius: 15px;
+  padding: 30px;
+  width: 350px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
+  color: #fff;
+  position: relative;
+  z-index: 1;
+}
+
+/* ✅ Logo in top right */
+.container-logo {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+}
+.container-logo img {
+  width: 50px;
+  height: auto;
+}
+
+/* ✅ Header */
+.login-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.login-header h2 {
+  color: #FFC72C;
+  font-weight: 700;
+  font-size: 22px;
+  margin: 0;
+}
+
+/* ✅ Floating Input Groups */
+.input-group {
+  margin-bottom: 25px;
+  position: relative;
+}
+.input-group label {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+  pointer-events: none;
+  background: #FFC72C;
+  padding: 0 5px;
+  border-radius: 5px;
+}
+.input-group .label-active,
+.input-group input:focus + label {
+  top: -8px;
+  right: 10px;
+  font-size: 12px;
+  color: #663d99;
+  background: #FFC72C;
+  padding: 2px 5px;
+}
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+  background: #422969;
+  color: #fff;
+  font-size: 16px;
+  outline: none;
+  transition: border 0.3s ease-in-out, background 0.3s ease-in-out;
+}
+.input-group input::placeholder {
+  color: transparent;
+}
+.input-group input:focus {
+  border: 2px solid #FFC72C;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ✅ Password visibility toggle */
+.password-container {
+  position: relative;
+  width: 100%;
+}
+.eye-icon {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  width: 22px;
+  height: 22px;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+.eye-icon:hover {
+  opacity: 1;
+}
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear,
+input[type="password"]::-webkit-contacts-auto-fill-button,
+input[type="password"]::-webkit-credentials-auto-fill-button {
+  display: none;
+}
+
+/* ✅ Login Button */
+.login-btn {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background: #FFC72C;
+  color: #663d99;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  font-weight: 700;
+}
+.login-btn:hover {
+  background: #422969;
+  color: #FFC72C;
+}
+.login-btn:focus {
+  border: 2px dashed #FFC72C;
+  outline: none;
+}
+
+/* ✅ Error or success message */
+.login-container p {
+  background: #f0c230;
+  color: white;
+  text-align: center;
+  padding: 12px;
+  border-radius: 5px;
+  font-weight: bold;
+  margin-top: 15px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
   }
-  
-  body {
-    background: linear-gradient(135deg, #5a2e85 30%, #d1a128 100%);
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #422969;
-  }
-  
-  .login-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-  }
-  
-  /* ✅ Login Box */
-  .login-container {
-    background: #663d99;
-    border-radius: 15px;
-    padding: 30px;
-    width: 350px;
-    text-align: right;
-    backdrop-filter: blur(10px);
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    color: #fff;
-    position: relative;
-    z-index: 1;
-  }
-  
-  /* ✅ Login Header with logo on the right */
-  .login-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .login-header h2 {
-    color: #FFC72C;
-    font-weight: 700;
-    font-size: 22px;
-    margin: 0;
-  }
-  
-  .login-logo-inline {
-    height: 40px;
-  }
-  
-  /* ✅ Floating Labels */
-  .input-group {
-    text-align: right;
-    margin-bottom: 25px;
-    position: relative;
-  }
-  
-  .input-group label {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 16px;
-    font-weight: bold;
-    transition: all 0.3s ease-in-out;
-    pointer-events: none;
-    background: #FFC72C;
-    padding: 0 5px;
-    border-radius: 5px;
-  }
-  
-  .input-group input:focus + label,
-  .input-group .label-active {
-    top: -8px;
-    right: 10px;
-    font-size: 12px;
-    color: #663d99;
-    background: #FFC72C;
-    padding: 2px 5px;
-  }
-  
-  .input-group input {
-    width: 100%;
-    padding: 10px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 5px;
-    background: #422969;
-    color: #fff;
-    font-size: 16px;
-    outline: none;
-    text-align: right;
-    padding-left: 40px;
-    transition: border 0.3s ease-in-out, background 0.3s ease-in-out;
-  }
-  
-  .input-group input::placeholder {
-    color: transparent;
-  }
-  
-  .input-group input:focus {
-    border: 2px solid #FFC72C;
-    background: rgba(255, 255, 255, 0.1);
-  }
-  
-  /* ✅ Password visibility */
-  .password-container {
-    position: relative;
-    width: 100%;
-  }
-  
-  .eye-icon {
-    position: absolute;
-    top: 50%;
-    left: 10px;
-    transform: translateY(-50%);
-    cursor: pointer;
-    width: 22px;
-    height: 22px;
-    opacity: 0.7;
-    transition: opacity 0.3s;
-  }
-  
-  .eye-icon:hover {
+  to {
     opacity: 1;
+    transform: translateY(0);
   }
-  
-  input[type="password"]::-ms-reveal,
-  input[type="password"]::-ms-clear,
-  input[type="password"]::-webkit-contacts-auto-fill-button,
-  input[type="password"]::-webkit-credentials-auto-fill-button {
-    display: none;
+}
+.corner-piece {
+  position: absolute;
+  width: 32px;
+  opacity: 0.9;
+  animation: glow-move 2.8s infinite;
+}
+.top-left { top: -17px; left: -2px; transform: rotate(-45deg); }
+.top-right { top: -20px; right: -5px; transform: rotate(45deg); }
+.bottom-left { bottom: -0.5px; left: -5px; }
+.bottom-right { bottom: -1px; right: -10px; }
+
+@keyframes glow-move {
+  0%, 100% { filter: drop-shadow(0 0 5px #facc15); transform: rotate(0deg); }
+  50% { filter: drop-shadow(0 0 15px #facc15); transform: rotate(5deg) translateY(-3px); }
+}
+
+/* Perfectly aligned to login box corners */
+.top-left {
+  top: -16px;
+  left: -16px;
+}
+
+.top-right {
+  top: -16px;
+  right: -16px;
+}
+
+.bottom-left {
+  bottom: -16px;
+  left: -16px;
+}
+
+.bottom-right {
+  bottom: -16px;
+  right: -16px;
+}
+
+@keyframes glow-move {
+  0% {
+    transform: rotate(0deg) translateY(0);
+    filter: drop-shadow(0 0 5px #facc15);
   }
-  
-  /* ✅ Login Button */
-  .login-btn {
-    width: 100%;
-    padding: 10px;
-    border: 2px solid transparent;
-    border-radius: 8px;
-    background: #FFC72C;
-    color: #663d99;
+  50% {
+    transform: rotate(5deg) translateY(-3px);
+    filter: drop-shadow(0 0 15px #facc15);
+  }
+  100% {
+    transform: rotate(0deg) translateY(0);
+    filter: drop-shadow(0 0 5px #facc15);
+  }
+}
+
+/* ✅ Responsive tweaks */
+@media (max-width: 480px) {
+  .login-container {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .login-header h2 {
     font-size: 18px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
-    font-weight: 700;
   }
-  
-  .login-btn:hover {
-    background: #422969;
-    color: #FFC72C;
-  }
-  
-  .login-btn:focus {
-    border: 2px dashed #FFC72C;
-    outline: none;
-  }
-  
-  /* ✅ Success Message (if used) */
-  .success-message {
-    background: #f0c230;
-    color: #fff;
-    text-align: center;
-    padding: 12px;
-    border-radius: 5px;
-    font-weight: bold;
-    margin-top: 15px;
-    width: 350px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    animation: fadeIn 0.5s ease-in-out;
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  /* ✅ Chess Pieces on Corners */
-  .corner-piece {
-    position: absolute;
-    width: 32px;
-    opacity: 0.9;
-  }
-  .top-left {
-    top: -17px;
-    left: -2px;
-    transform: rotate(-45deg); /* زاوية موحدة */
 
+  .login-btn {
+    font-size: 16px;
   }
-  
-  .top-right {
-    top: -20px;
-    right: -5px;
-    transform: rotate(45deg); /* زاوية موحدة */
-
-  }
-  
-  .bottom-left {
-    bottom: -0.5px;
-    left: -5px;
-    transform: rotate(deg); /* زاوية موحدة */
-
-  }
-  
- 
-  .bottom-right {
-    bottom: -1px;
-    right: -10px;
-    transform: rotate(deg); /* زاوية موحدة */
-
-  }
-  
-  @keyframes glow-move {
-    0% {
-      transform: rotate(0deg) translateY(0);
-      filter: drop-shadow(0 0 5px #facc15);
-    }
-    50% {
-      transform: rotate(5deg) translateY(-3px);
-      filter: drop-shadow(0 0 15px #facc15);
-    }
-    100% {
-      transform: rotate(0deg) translateY(0);
-      filter: drop-shadow(0 0 5px #facc15);
-    }
-  }
-  
-  .corner-piece {
-    animation: glow-move 2.8s ease-in-out infinite;
-    opacity: 0.9;
-    transition: all 0.3s ease-in-out;
-  }
-  
-/* ✅ خلفية شطرنج متحركة بألوان اللوجو */
-body::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background-image:
-      linear-gradient(45deg, rgba(255, 199, 44, 0.06) 25%, transparent 25%, transparent 75%, rgba(255, 199, 44, 0.06) 75%),
-      linear-gradient(45deg, rgba(255, 199, 44, 0.06) 25%, transparent 25%, transparent 75%, rgba(255, 199, 44, 0.06) 75%);
-    background-size: 40px 40px;
-    background-position: 0 0, 20px 20px;
-    animation: movePattern 30s linear infinite;
-    z-index: 0;
-    pointer-events: none;
-  }
-  
-  @keyframes movePattern {
-    from {
-      background-position: 0 0, 20px 20px;
-    }
-    to {
-      background-position: 40px 40px, 60px 60px;
-    }
-  }
-   
-  
-  
-  
+}

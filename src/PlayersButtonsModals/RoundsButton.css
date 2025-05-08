@@ -1,0 +1,76 @@
+.rounds-wrapper {
+    padding: 2rem;
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+    direction: rtl;
+    color: white;
+    background-color: #1e1b4b;
+    min-height: 100vh;
+  }
+  
+  .rounds-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2.2rem;
+    color: #facc15;
+  }
+  
+  .round-block {
+    margin-bottom: 3rem;
+    background-color: #3b2a70;
+    padding: 1rem;
+    border-radius: 12px;
+  }
+  
+  .round-label {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #facc15;
+  }
+  
+  .round-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #26266a;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .round-table th,
+  .round-table td {
+    padding: 0.8rem;
+    border-bottom: 1px solid #555;
+    text-align: center;
+  }
+  
+  .round-table th {
+    background-color: #4b2d89;
+    color: #fff8dc;
+  }
+  
+  .rounds-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  
+  .delete-round-btn {
+    background-color: #ef4444;
+    padding: 0.8rem 1.4rem;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .export-csv-btn {
+    background-color: #facc15;
+    padding: 0.8rem 1.4rem;
+    color: #1e1b4b;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  

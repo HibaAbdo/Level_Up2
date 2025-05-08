@@ -1,0 +1,283 @@
+.rounds-page {
+  padding: 2rem;
+  background-color: #3b2a70;
+  min-height: 100vh;
+  color: white;
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-logo {
+  height: 60px;
+}
+
+.round-title {
+  color: #ffffff;
+  font-size: 2rem;
+  text-align: center;
+  margin: 1rem auto;
+  flex: 1;
+}
+
+/* 🔄 الأعلى: زر الجولة التالية + أزرار التمرير */
+.top-controls {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.generate-btn {
+  background-color: #facc15;
+  color: #3b2a70;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.generate-btn:hover {
+  background-color: #fde047;
+}
+
+.generate-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ⬅➡ أسهم التمرير + أزرار الجولات */
+.round-buttons-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 1rem;
+  gap: 0.5rem;
+  flex-direction: row;
+}
+
+.scroll-arrow {
+  font-size: 1.6rem;
+  padding: 0.3rem 0.7rem;
+  background-color: transparent;
+  color: #facc15;
+  border: 2px dashed #facc15;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.scroll-arrow:hover {
+  background-color: #facc15;
+  color: #3b2a70;
+}
+
+.round-buttons-scroll {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  max-width: 600px;
+}
+
+.round-buttons-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.round-btn {
+  background-color: transparent;
+  color: white;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 0.6rem 1.1rem;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.95rem;
+  transition: 0.3s ease;
+}
+
+.round-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.round-btn.active {
+  background-color: #26266a;
+  color: #ffffff;
+  border: 2px dashed #facc15;
+  box-shadow: 0 0 6px #facc15, 0 0 12px #facc15;
+}
+
+/* 📊 جدول الجولة */
+.rounds-table-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.round-table {
+  width: 100%;
+  max-width: 900px;
+  margin: 1rem auto;
+  border-collapse: collapse;
+  direction: rtl;
+}
+
+.round-table th,
+.round-table td {
+  border: 1px solid #3b2a70;
+  padding: 0.75rem;
+  text-align: center;
+  background-color: #4c2882;
+  color: white;
+}
+
+.round-table th {
+  background-color: #5e3ca5;
+  font-weight: bold;
+}
+
+.round-table select {
+  padding: 0.4rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  background-color: #26266a;
+  color: white;
+  border: 1px solid #facc15;
+  font-weight: bold;
+  text-align: center;
+}
+
+.round-table option {
+  background-color: #3b2a70;
+  color: white;
+}
+
+.round-table .no-data-row td {
+  background-color: transparent;
+  color: #ccc;
+  font-style: italic;
+  font-size: 1.1rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+/* ⚙️ الأزرار السفلية */
+.action-bar {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+  position: relative;
+}
+
+.csv-btn,
+.all-rounds-btn,
+.delete-btn {
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #26266a;
+  color: white;
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.csv-btn:hover,
+.all-rounds-btn:hover,
+.delete-btn:hover {
+  background-color: #facc159f;
+}
+
+.fullscreen-btn {
+  background-color: transparent;
+  color: #38bdf8;
+  font-size: 1.5rem;
+  border: none;
+  cursor: pointer;
+}
+
+/* 🪟 المودال */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #3b2a70;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 15px #facc15;
+  max-width: 90%;
+  max-height: 90%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  text-align: center;
+  scrollbar-color: #facc15 transparent;
+  scrollbar-width: thin;
+}
+
+.modal-content::-webkit-scrollbar {
+  width: 10px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background-color: #facc15;
+  border-radius: 6px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-content h2 {
+  color: #facc15;
+  margin-bottom: 1rem;
+}
+
+.close-btn.round-btn {
+  margin-top: 1rem;
+  font-size: 1rem;
+  padding: 0.6rem 1.1rem;
+  border: 2px dashed #facc15;
+  border-radius: 12px;
+  background-color: #26266a;
+  color: #ffffff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.close-btn.round-btn:hover {
+  background-color: #3b2a70;
+  box-shadow: 0 0 8px #facc15;
+}
