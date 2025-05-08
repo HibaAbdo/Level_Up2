@@ -1,0 +1,405 @@
+
+.create-container {
+  max-width: 700px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background-color: rgba(59, 42, 112, 0.95); /* purple panel */
+  border-radius: 12px;
+  color: white;
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+}
+
+.form-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #ffffff; /* bright yellow */
+  
+
+}
+
+.tournament-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-label {
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+  color: #ffffff;
+}
+
+.form-input {
+  margin-top: 0.5rem;
+  padding: 0.6rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid #a78bfa; /* soft violet */
+  font-size: 1rem;
+  background-color: #f3e8ff; /* very light purple */
+  color: #1e1b4b;
+  transition: 0.2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #facc15;
+  background-color: #fff;
+}
+
+.form-multiselect {
+  margin-top: 0.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.form-section {
+  margin-top: 2rem;
+}
+
+.form-section h3 {
+  color: #facc15;
+  margin-bottom: 0.8rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.form-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  color: white;
+}
+
+.form-checkbox input[type="checkbox"] {
+  accent-color: #facc15;
+  width: 1.2rem;
+  height: 1.2rem;
+  cursor: pointer;
+}
+
+.form-submit {
+  background-color: #facc15;
+  color: #1e293b;
+  padding: 0.8rem;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 2rem;
+  font-weight: 600;
+  transition: 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.form-submit:hover {
+  background-color: #facc159f;
+}
+
+.required {
+  color: red;
+  margin-left: 0.3rem;
+}
+
+.tie-breaks-select {
+  direction: rtl;
+  font-size: 1rem;
+}
+
+.tie-breaks-select .select__control {
+  background-color: #f3e8ff; /* match floating-input background */
+  border: 2px solid #d8b4fe; /* match other floating-input border */
+  border-radius: 8px;
+  min-height: 3.4rem;
+  box-shadow: none;
+  padding-right: 0.3rem;
+  font-size: 1rem;
+  direction: rtl;
+  transition: border-color 0.2s ease;
+}
+
+.tie-breaks-select .select__control--is-focused {
+  border-color: #facc15;
+  background-color: #fffdf0; /* like other inputs on focus */
+}
+
+
+.tie-breaks-select .select__multi-value {
+  background-color: #facc15;
+  color: #1e293b;
+  font-weight: 500;
+  border-radius: 6px;
+}
+
+.tie-breaks-select .select_multi-value_label {
+  color: #1e293b;
+}
+
+.tie-breaks-select .select_multi-value_remove {
+  color: #1e293b;
+  cursor: pointer;
+}
+
+.tie-breaks-select .select__menu {
+  background-color: #3b2a70;
+  color: white;
+  border-radius: 6px;
+}
+
+.tie-breaks-select .select__option--is-selected {
+  background-color: #facc15;
+  color: #1e293b;
+}
+
+.floating-group {
+  position: relative;
+  margin-top: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+}
+.floating-group.react-select-group .floating-label {
+  position: absolute;
+  top: -0.6rem;
+  right: 0.75rem;
+  font-size: 0.8rem;
+  background-color: #eab308;
+  color: #3b2a70;
+  padding: 0 0.4rem;
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.floating-input {
+  width: 100%;
+  padding: 1rem 0.9rem 0.5rem;
+  font-size: 1rem;
+  background-color: #ece4ff;
+  border: 2px solid #d8b4fe;
+  border-radius: 8px;
+  color: #2e1065;
+  direction: rtl;
+  height: 3.4rem; /* force consistent height */
+  line-height: 1.2;
+  transition: border-color 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+}
+
+
+.floating-input:focus {
+  border-color: #facc15; /* soft gold */
+  background-color: #fefce8; /* pale yellow on focus */
+}
+
+.floating-input::placeholder {
+  color: transparent;
+}
+
+.floating-label {
+  position: absolute;
+  top: -0.6rem;
+  right: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background-color: #eab308;
+  padding: 0.1rem 0.6rem; /* more vertical and horizontal padding */
+  border-radius: 6px;
+  color: #3b2a70;
+  pointer-events: none;
+  transition: 0.2s ease;
+  z-index: 2;
+}
+
+
+.floating-input:focus + .floating-label,
+.floating-input:not(:placeholder-shown):not([value=""]) + .floating-label,
+.floating-input:valid + .floating-label {
+  top: -0.6rem;
+  font-size: 0.8rem;
+}
+
+/* Optional: transition hover/focus for select dropdowns */
+select.floating-input:hover {
+  background-color: #f5f3ff;
+}
+
+.floating-field {
+  position: relative;
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+}
+
+.floating-control {
+  width: 100%;
+  padding: 1.2rem 0.9rem 0.6rem;
+  font-size: 1rem;
+  border: 2px solid #d8b4fe;
+  border-radius: 8px;
+  background-color: #ece4ff; /* light purple like other fields */
+  color: #2e1065;
+  direction: rtl;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.floating-control:focus {
+  outline: none;
+  border-color: #facc15;
+  background-color: #fefce8; /* pale yellow on focus like others */
+}
+
+
+.floating-control::placeholder {
+  color: transparent;
+}
+
+.floating-text {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1rem;
+  color: #facc15;
+  background-color: #3b2a70;
+  padding: 0 0.5rem;
+  border-radius: 6px;
+  transition: 0.2s ease;
+  pointer-events: none;
+}
+
+.floating-control:focus + .floating-text,
+.floating-control:not(:placeholder-shown):not([value=""]) + .floating-text,
+.floating-control:valid + .floating-text {
+  top: -0.6rem;
+  font-size: 0.8rem;
+}  
+
+/* Remove arrows in Chrome, Safari, Edge */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Remove arrows in Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Base menu background */
+.tie-breaks-select .select__menu {
+  background-color: white;
+  color: #1e293b;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+/* Each option in dropdown */
+.tie-breaks-select .select__option {
+  background-color: white;
+  color: #1e293b;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* Hover effect (mouse over) */
+.tie-breaks-select .select__option--is-focused {
+  background-color: #fef3c7; /* light yellow on hover */
+  color: #1e293b;
+}
+.settings-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.delete-button {
+  background-color: #ef4444; /* Red */
+  color: white;
+  font-size: 1.2rem;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.save-button {
+  background-color: #facc15; /* Yellow */
+  color: black;
+  font-size: 1.2rem;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.form-logo-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.form-logo {
+  height: 60px;
+  width: auto;
+}
+
+/* Style scrollbar (WebKit: Chrome, Edge, Safari) */
+.create-container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.create-container::-webkit-scrollbar-track {
+  background: #2d1b55; /* dark purple background */
+  border-radius: 6px;
+}
+
+.create-container::-webkit-scrollbar-thumb {
+  background-color: #facc15; /* yellow thumb */
+  border-radius: 6px;
+  border: 2px solid #2d1b55; /* match background */
+}
+
+.create-container::-webkit-scrollbar-thumb:hover {
+  background-color: #eab308;
+}
+
+/* Firefox */
+.create-container {
+  scrollbar-width: thin;
+  scrollbar-color: #facc15 #2d1b55;
+}
+
+/* Ensure scroll appears inside .create-container, not body */
+.create-container {
+  overflow-y: auto;
+  max-height: calc(100vh - 6rem);
+  direction: rtl; /* RTL keeps it aligned right for Arabic */
+}
+
+.create-container {
+  direction: ltr !important;     /* Force scrollbar on the right */
+  text-align: right;             /* Keep Arabic text aligned right */
+  overflow-y: auto;
+  max-height: calc(100vh - 6rem);
+}
+
+/* Flip inner content back to RTL */
+.create-container form {
+  direction: rtl;
+}

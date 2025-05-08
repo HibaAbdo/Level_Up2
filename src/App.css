@@ -1,0 +1,27 @@
+.app-wrapper {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #3b2a70;
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  direction: rtl;
+  padding: 2rem;
+}
+
+.fixed-logo {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  height: 60px;
+}
+
+.page-content {
+  width: 100%;
+  max-width: 900px;
+  background-color: rgba(59, 42, 112, 0.95);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+}

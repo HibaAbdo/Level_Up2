@@ -1,0 +1,92 @@
+/* Base scroll behavior */
+body {
+  overflow: auto;
+  margin: 0;
+  padding: 0;
+}
+
+/* Full-page flexible wrapper */
+.page-wrapper {
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, #3b2a70, #6c3fbc); /* merged colors */
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  color: white;
+  padding: 3rem 2rem;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+/* Fixed logo at top-right */
+.logo-holder {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
+}
+
+.logo-holder img {
+  width: 50px;
+  height: auto;
+}
+
+/* Scrollable container for content */
+.pages-container {
+  flex: 1;
+  overflow: auto;
+  margin: 0 auto;
+  padding: 2rem;
+  width: 95%;
+  max-width: 1200px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+}
+
+/* Optional: force scroll if content overflows horizontally */
+.pages-container > * {
+  min-width: 600px;
+}
+.page-background {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, #3b2a70, #6c3fbc);
+  z-index: -2;
+}
+
+.pages-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+  background: linear-gradient(135deg, #3b2a70, #6c3fbc); /* update here */
+}
+
+.wrapper-content {
+  margin: 5rem auto 2rem auto;
+  padding: 2rem;
+  max-width: 1200px;
+  width: 95%;
+  background-color: rgba(59, 42, 112, 0.95);
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  color: white;
+  overflow: auto;
+  max-height: calc(100vh - 7rem);
+}
+
+.wrapper-logo {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
+}
+
+
+.wrapper-logo img {
+  width: 50px;
+  height: auto;
+}
