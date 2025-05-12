@@ -1,0 +1,51 @@
+/* ✅ Disable gray outer scroll (from body/html) */
+html, body {
+  overflow: hidden;
+  height: 100%;
+}
+
+.full-page-container { 
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #3b2a70, #5c3795);
+  overflow: hidden;
+  display: block; /* ✅ stop centering, allow content to align itself */
+}
+
+/* This is the inner content wrapper */
+.scrollable-inner-container {
+  width: 100%;
+  height: 100%;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  overflow: hidden; /* ✅ prevent accidental scrollbars */
+  display: block;    /* ✅ allow child control */
+}
+
+/* Global scrollbar styling for supported areas */
+.scrollable-inner-container::-webkit-scrollbar {
+  width: 12px;
+}
+.scrollable-inner-container::-webkit-scrollbar-track {
+  background: #2e186d;
+}
+.scrollable-inner-container::-webkit-scrollbar-thumb {
+  background-color: #facc15;
+  border-radius: 10px;
+  border: 2px solid #2e186d;
+}
+
+/* Firefox support */
+.scrollable-inner-container {
+  scrollbar-width: thin;
+  scrollbar-color: #facc15 #2e186d;
+}
+
+/* Utility for full-page sections */
+.page-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  box-sizing: border-box;
+}

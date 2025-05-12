@@ -1,0 +1,67 @@
+.dashboard-wrapper {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+  }
+  
+  .dashboard-header {
+    background-color: #2a1b52;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid #facc15;
+  }
+  
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .dashboard-logo {
+    height: 50px;
+  }
+  
+  .dashboard-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #facc15;
+  }
+  
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .username {
+    font-weight: 600;
+    color: #e4e4e4;
+  }
+  
+  .signout-btn {
+    background: transparent;
+    border: 2px solid #facc15;
+    color: #facc15;
+    padding: 0.4rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .signout-btn:hover {
+    background-color: #facc15;
+    color: #3b2a70;
+  }
+  
+  .dashboard-main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
+    background: linear-gradient(160deg, #663d99 0%, #3b2670 100%);
+  }
+  
