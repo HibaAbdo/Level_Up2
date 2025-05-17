@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PageLayout from '../Components/PageLayout';
 import './Login.css';
-
+import axios from 'axios';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
@@ -25,24 +25,43 @@ function Login() {
     setPasswordVisible(!passwordVisible);
   };
 
-  const handleLogin = () => {
-    if (!username && !password) {
-      setMessage('أدخل اسم المستخدم وكلمة المرور');
-      return;
-    }
-    if (!username) {
-      setMessage('أدخل اسم المستخدم');
-      return;
-    }
-    if (!password) {
-      setMessage('أدخل كلمة المرور');
-      return;
-    }
 
+const handleLogin = async (e) => {
+  e.preventDefault();
+
+  if (!username && !password) {
+    setMessage('أدخل اسم المستخدم وكلمة المرور');
+    return;
+  }
+  if (!username) {
+    setMessage('أدخل اسم المستخدم');
+    return;
+  }
+  if (!password) {
+    setMessage('أدخل كلمة المرور');
+    return;
+  }
+
+  try {
+    const response = await axios.post('/api/auth/login', {
+      username ,     // أو username حسب ما يتوقعه الـ backend
+      password
+    });
+
+    // ✅ تسجيل دخول ناجح
     localStorage.setItem('isLoggedIn', 'true');
     localStorage.setItem('username', username);
+    // إذا كنتِ تستخدمين JWT مثلاً:
+    // localStorage.setItem('token', response.data.token);
+
+    setMessage('');
     navigate('/mytournaments');
-  };
+  } catch (error) {
+    setMessage('فشل تسجيل الدخول، تأكد من البيانات');
+    console.error('Login error:', error.response?.data || error.message);
+  }
+};
+
 
   return (
     <PageLayout>
