@@ -25,54 +25,50 @@ function Login() {
     setPasswordVisible(!passwordVisible);
   };
 
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-const handleLogin = async (e) => {
-  e.preventDefault();
+    if (!username && !password) {
+      setMessage('أدخل اسم المستخدم وكلمة المرور');
+      return;
+    }
+    if (!username) {
+      setMessage('أدخل اسم المستخدم');
+      return;
+    }
+    if (!password) {
+      setMessage('أدخل كلمة المرور');
+      return;
+    }
 
-  if (!username && !password) {
-    setMessage('أدخل اسم المستخدم وكلمة المرور');
-    return;
-  }
-  if (!username) {
-    setMessage('أدخل اسم المستخدم');
-    return;
-  }
-  if (!password) {
-    setMessage('أدخل كلمة المرور');
-    return;
-  }
+    try {
+      const response = await axios.post('/api/auth/login', {
+        username,
+        password
+      });
 
-  try {
-    const response = await axios.post('/api/auth/login', {
-      username ,     // أو username حسب ما يتوقعه الـ backend
-      password
-    });
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('username', username);
+      // localStorage.setItem('token', response.data.token); // إذا كنتِ تستخدمين JWT
 
-    // ✅ تسجيل دخول ناجح
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('username', username);
-    // إذا كنتِ تستخدمين JWT مثلاً:
-    // localStorage.setItem('token', response.data.token);
-
-    setMessage('');
-    navigate('/mytournaments');
-  } catch (error) {
-    setMessage('فشل تسجيل الدخول، تأكد من البيانات');
-    console.error('Login error:', error.response?.data || error.message);
-  }
-};
-
+      setMessage('');
+      navigate('/mytournaments');
+    } catch (error) {
+      setMessage('فشل تسجيل الدخول، تأكد من البيانات');
+      console.error('Login error:', error.response?.data || error.message);
+    }
+  };
 
   return (
     <PageLayout>
       <div className="login-wrapper">
-        {/* ✅ Floating Chess Icons */}
-        <img src={rook} className="corner-piece bottom-right" alt="قلعة" />
-        <img src={king} className="corner-piece top-right" alt="ملك" />
-        <img src={bishop} className="corner-piece bottom-left" alt="فيل" />
-        <img src={queen} className="corner-piece top-left" alt="وزير" />
-
         <div className="login-container">
+          {/* ✅ الأيقونات داخل مربع تسجيل الدخول */}
+          <img src={rook} className="corner-piece bottom-right" alt="قلعة" />
+          <img src={king} className="corner-piece top-right" alt="ملك" />
+          <img src={bishop} className="corner-piece bottom-left" alt="فيل" />
+          <img src={queen} className="corner-piece top-left" alt="وزير" />
+
           <div className="container-logo">
             <img src={logo} alt="شطرنج القدس" />
           </div>
