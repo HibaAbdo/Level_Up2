@@ -18,7 +18,13 @@ function DashboardLayout() {
       <header className="dashboard-header">
         <div className="header-right">
           <img src={logo} alt="Logo" className="dashboard-logo" />
-          <span className="dashboard-title">بطولاتي</span>
+          <span
+            className="dashboard-title"
+            onClick={() => navigate('/mytournaments')}
+            style={{ cursor: 'pointer' }}
+          >
+            بطولاتي
+          </span>
         </div>
 
         <div className="header-left">
@@ -30,7 +36,7 @@ function DashboardLayout() {
       </header>
 
       <main className="dashboard-main">
-        <Outlet /> {/* ✅ Renders the matched child route */}
+        <Outlet />
       </main>
     </div>
   );

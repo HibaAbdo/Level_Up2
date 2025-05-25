@@ -64,4 +64,16 @@
     padding: 2rem;
     background: linear-gradient(160deg, #663d99 0%, #3b2670 100%);
   }
-  
+  body {
+  overflow: hidden;
+}
+.dashboard-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #facc15;
+  transition: 0.3s;
+}
+
+.dashboard-title:hover {
+  color: #fde047; /* لون ذهبي أفتح */
+}
