@@ -64,3 +64,24 @@ html, body {
 .read-the-docs {
   color: #888;
 }
+body {
+  overflow: hidden;
+}
+/* 🟡 إخفاء السكروول الرمادي الافتراضي للصفحة */
+html, body {
+  overflow: hidden !important;
+  height: 100%;
+}
+
+/* ✅ نسمح فقط بسكرول داخل العناصر الأساسية مثل create-container و dashboard-container */
+/* 🟡 إخفاء السكرول الخاص بالـ body والبراوزر */
+body, html {
+  overflow: hidden !important;
+  height: 100%;
+}
+
+/* ✅ لمنع سكرول البراوزر في المتصفحات التي تستخدم WebKit */
+body::-webkit-scrollbar,
+html::-webkit-scrollbar {
+  display: none;
+}
