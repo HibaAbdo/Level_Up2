@@ -181,3 +181,12 @@ html, body, #root {
     padding: 0.7rem;
   }
 }
+.tournament-name-link {
+  color: #ffffff;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.tournament-name-link:hover {
+  color: #fde047;
+}
