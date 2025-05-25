@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import Select from 'react-select';
 import './CreateTournament.css';
-import logo from '../assets/logoshah.png';
 
 function CreateTournament({ mode = 'create', initialData = null }) {
   const navigate = useNavigate();
@@ -57,33 +56,32 @@ function CreateTournament({ mode = 'create', initialData = null }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     const tournamentId = uuidv4();
     const now = new Date();
     const timestamp = `${now.toLocaleDateString('ar-EG')}   ${now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })}`;
-  
+
     const newTournament = {
       id: tournamentId,
       ...formData,
     };
-  
+
     const listEntry = {
       id: tournamentId,
       name: formData.name,
       creationDate: timestamp,
       lastModified: timestamp,
     };
-  
+
     localStorage.setItem(`tournament-${tournamentId}`, JSON.stringify(newTournament));
-  
+
     const allTournaments = JSON.parse(localStorage.getItem('tournaments')) || [];
     allTournaments.push(listEntry);
     localStorage.setItem('tournaments', JSON.stringify(allTournaments));
-  
-    // ✅ Navigate to the tournament dashboard
+
     navigate(`/tournament/${tournamentId}`);
   };
-  
+
   const handleSaveChanges = () => {
     if (!initialData?.id) return;
 
@@ -140,14 +138,9 @@ function CreateTournament({ mode = 'create', initialData = null }) {
 
   return (
     <div className="create-container" dir="rtl">
-      <div className="form-logo-wrapper">
-        <img src={logo} alt="شطرنج القدس" className="form-logo" />
-      </div>
-
       <h2 className="form-title">{mode === 'edit' ? 'تعديل البطولة' : 'إنشاء بطولة'}</h2>
 
       <form className="tournament-form" onSubmit={handleSubmit}>
-        {/* Floating Inputs */}
         <div className="floating-group">
           <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder=" " required className="floating-input" />
           <label className="floating-label">اسم البطولة</label>
@@ -206,42 +199,26 @@ function CreateTournament({ mode = 'create', initialData = null }) {
         )}
 
         <div className="form-section">
-          <h3>تعديلات</h3>
-          <label className="form-checkbox">
-            <input type="checkbox" name="allowJoin" checked={formData.allowJoin} onChange={handleChange} />
-            السماح للاعبين بالانضمام
-          </label>
-          <label className="form-checkbox">
-            <input type="checkbox" name="allowChange" checked={formData.allowChange} onChange={handleChange} />
-            السماح بتغيير النتائج
-          </label>
-          <label className="form-checkbox">
-            <input type="checkbox" name="dangerousChanges" checked={formData.dangerousChanges} onChange={handleChange} />
-            السماح بتغييرات خطيرة
-          </label>
-        </div>
-
-        <div className="form-section">
           <h3>احتساب النقاط</h3>
           <label className="form-checkbox">
             <input type="checkbox" name="disableDoubleBye" checked={formData.disableDoubleBye} onChange={handleChange} />
             تعطيل Byes المكررة
           </label>
-          <label className="form-checkbox">
-            <input type="checkbox" name="lateJoinPoints" checked={formData.lateJoinPoints} onChange={handleChange} />
-            احتساب نقاط للمنضمين المتأخرين
-          </label>
         </div>
 
         <div className="form-actions">
-          <button type={mode === 'create' ? 'submit' : 'button'} className="form-submit" onClick={mode === 'edit' ? handleSaveChanges : undefined}>
-            {mode === 'edit' ? 'حفظ التغييرات' : 'إنشاء البطولة'}
+          <button
+            type={mode === 'create' ? 'submit' : 'button'}
+            className="golden-btn"
+            onClick={mode === 'edit' ? handleSaveChanges : undefined}
+          >
+            💾 {mode === 'edit' ? 'حفظ التغييرات' : 'إنشاء البطولة'}
           </button>
 
           {mode === 'edit' && (
             <>
-              <button type="button" className="delete-button" onClick={handleDeleteTournament}>حذف البطولة</button>
-              <button type="button" className="clone-button" onClick={handleCloneTournament}>نسخ البطولة</button>
+              <button type="button" className="golden-btn" onClick={handleDeleteTournament}>🗑 حذف البطولة</button>
+              <button type="button" className="golden-btn" onClick={handleCloneTournament}>📋 نسخ البطولة</button>
             </>
           )}
         </div>
