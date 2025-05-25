@@ -281,3 +281,65 @@
     background-color: #3b2a70;
     box-shadow: 0 0 8px #facc15;
   }
+  .rounds-page .modal-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.rounds-page .modal-content {
+  background-color: #3b2a70;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 15px #facc15;
+  max-width: 90%;
+  max-height: 90%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  text-align: center;
+  scrollbar-color: #facc15 transparent;
+  scrollbar-width: thin;
+}
+
+.rounds-page .modal-content::-webkit-scrollbar {
+  width: 10px;
+}
+
+.rounds-page .modal-content::-webkit-scrollbar-thumb {
+  background-color: #facc15;
+  border-radius: 6px;
+}
+
+.rounds-page .modal-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.rounds-page .modal-content h2 {
+  color: #facc15;
+  margin-bottom: 1rem;
+}
+
+.rounds-page .close-btn.round-btn {
+  margin-top: 1rem;
+  font-size: 1rem;
+  padding: 0.6rem 1.1rem;
+  border: 2px dashed #facc15;
+  border-radius: 12px;
+  background-color: #26266a;
+  color: #ffffff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.rounds-page .close-btn.round-btn:hover {
+  background-color: #3b2a70;
+  box-shadow: 0 0 8px #facc15;
+}

@@ -1,25 +1,46 @@
-// src/DashBoardPage/DashBoardButtons/RoundsButton/RoundsButton.jsx
+// src/DashBoardPage/DashBoardButtons/RoundsPage/RoundsButton.jsx
 import React, { useRef, useState } from "react";
 import "../../TournamentDashboard.css";
-import logo from "../../../assets/logoshah.png";
 import './RoundsButton.css';
 
-function RoundsButton() {
+function RoundsButton({ players }) {
   const [rounds, setRounds] = useState([]);
   const [currentRound, setCurrentRound] = useState(null);
   const [showZoom, setShowZoom] = useState(false);
   const [showAllRoundsModal, setShowAllRoundsModal] = useState(false);
   const scrollRef = useRef(null);
 
+  // ✅ إنشاء مباريات الجولة
+  const generateMatches = () => {
+    const shuffled = [...players].sort(() => Math.random() - 0.5);
+    const matches = [];
+    for (let i = 0; i < shuffled.length - 1; i += 2) {
+      matches.push({
+        white: shuffled[i]?.name || `لاعب ${i + 1}`,
+        black: shuffled[i + 1]?.name || `لاعب ${i + 2}`,
+        whitePts: 0,
+        blackPts: 0,
+        result: ""
+      });
+    }
+    // إضافة Bye إذا كان العدد فردي
+    if (shuffled.length % 2 !== 0) {
+      matches.push({
+        white: shuffled[shuffled.length - 1]?.name || `لاعب أخير`,
+        black: "Bye",
+        whitePts: 0.5,
+        blackPts: "",
+        result: "Bye"
+      });
+    }
+    return matches;
+  };
+
   const handleGenerateRound = () => {
     const nextRoundNum = rounds.length + 1;
     const newRound = {
       number: nextRoundNum,
-      matches: [
-        { white: "اللاعب 1", black: "اللاعب 3", whitePts: 0, blackPts: 0, result: "" },
-        { white: "اللاعب 4", black: "اللاعب 2", whitePts: 0, blackPts: 0, result: "" },
-        { white: "اللاعب 5", black: "Bye", whitePts: 0.5, blackPts: "", result: "Bye" }
-      ]
+      matches: generateMatches()
     };
     setRounds([...rounds, newRound]);
     setCurrentRound(nextRoundNum);
@@ -37,12 +58,12 @@ function RoundsButton() {
     const updatedRounds = [...rounds];
     const match = updatedRounds[roundIdx].matches[matchIdx];
     switch (value) {
-      case "1-0": match.whitePts = 0; match.blackPts = 1; break;
+      case "1-0": match.whitePts = 1; match.blackPts = 0; break;
       case "0.5-0.5": match.whitePts = 0.5; match.blackPts = 0.5; break;
-      case "0-1": match.whitePts = 1; match.blackPts = 0; break;
+      case "0-1": match.whitePts = 0; match.blackPts = 1; break;
       case "0F-0F": match.whitePts = 0; match.blackPts = 0; break;
-      case "1F-0": match.whitePts = 0; match.blackPts = 1; break;
-      case "0-1F": match.whitePts = 1; match.blackPts = 0; break;
+      case "1F-0": match.whitePts = 1; match.blackPts = 0; break;
+      case "0-1F": match.whitePts = 0; match.blackPts = 1; break;
       case "": match.whitePts = 0; match.blackPts = 0; match.result = ""; setRounds(updatedRounds); return;
       default: return;
     }
@@ -126,7 +147,6 @@ function RoundsButton() {
   return (
     <div className="rounds-page">
       <div className="header">
-        <img src={logo} alt="شطرنج القدس" className="form-logo" />
         <h1 className="round-title">الجولات</h1>
         <div />
       </div>
