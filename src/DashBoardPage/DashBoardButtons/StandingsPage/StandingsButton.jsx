@@ -1,11 +1,43 @@
-import React, { useState } from "react";
-import "../../TournamentDashboard.css"; // 🟢 corrected path to shared styles
-import logo from "../../../assets/logoshah.png"; // 🟢 correct relative path
-import "./StandingsButton.css"; // ✅ local styles
+import React, { useEffect, useState } from "react";
+import "../../TournamentDashboard.css";
+import logo from "../../../assets/logoshah.png";
+import "./StandingsButton.css";
 
-function StandingsButton() {
+function StandingsButton({ players, rounds }) {
   const [rankingData, setRankingData] = useState([]);
   const [showZoom, setShowZoom] = useState(false);
+
+  useEffect(() => {
+    const playerScores = {};
+
+    players.forEach(p => {
+      playerScores[p.name] = {
+        name: p.name,
+        points: 0,
+        rating: p.rating,
+        newRating: p.rating,
+        pos: 0,
+        de: '',
+        buc1: '',
+        bucT: ''
+      };
+    });
+
+    rounds.forEach(round => {
+      round.matches.forEach(match => {
+        if (match.result === "Bye") {
+          playerScores[match.white].points += 0.5;
+        } else {
+          playerScores[match.white].points += match.whitePts;
+          playerScores[match.black].points += match.blackPts;
+        }
+      });
+    });
+
+    const sorted = Object.values(playerScores).sort((a, b) => b.points - a.points);
+    sorted.forEach((p, index) => (p.pos = index + 1));
+    setRankingData(sorted);
+  }, [players, rounds]);
 
   const handleDownloadCSV = () => {
     if (rankingData.length === 0) return;
@@ -20,9 +52,8 @@ function StandingsButton() {
   };
 
   return (
-    <div className="ranking-page">
+    <div className="standings-page">
       <div className="header">
-        <img src={logo} alt="شطرنج القدس" className="form-logo" />
         <h1 className="ranking-title">الترتيب</h1>
       </div>
 
