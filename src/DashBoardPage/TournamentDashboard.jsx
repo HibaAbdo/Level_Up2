@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import './TournamentDashboard.css';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
+
+import RoundsPage from "./DashBoardButtons/RoundsPage/RoundsButton";
+import StandingsPage from "./DashBoardButtons/StandingsPage/StandingsButton";
+import SettingsButton from "./DashBoardButtons/TournamentSettingsButton/SettingsButton";
+
+import DashboardTabs from '../Components/DashboardTabs';
 
 import CreatePlayerModal from './DashBoardButtons/PlayersButtonsModals/CreatePlayerModal';
 import CreatePlayersByListModal from './DashBoardButtons/PlayersButtonsModals/CreatePlayersByListModal';
@@ -9,13 +15,6 @@ import SortByRatingConfirmationModal from './DashBoardButtons/PlayersButtonsModa
 import ForbiddenPairsModal from './DashBoardButtons/PlayersButtonsModals/ForbiddenPairsModal';
 import PredefinedPairsModal from './DashBoardButtons/PlayersButtonsModals/PredefinedPairsModal';
 
-
-// ✅ Assets are stored under Components/assets
-import logo from '../assets/logoshah.png';
-import settingsIcon from '../assets/Icons/settingsPiece.png';
-import playerIcon from '../assets/Icons/player.png';
-import RoundIcon from '../assets/Icons/game.png';
-import standingsIcon from '../assets/Icons/chess-board.png';
 import addIcon from '../assets/Icons/add-player.png';
 import listIcon from '../assets/Icons/add-players.png';
 import shuffleIcon from '../assets/Icons/shuffle.png';
@@ -25,18 +24,21 @@ import pairIcon from '../assets/Icons/pairs.png';
 import confirmIcon from '../assets/Icons/confirm.png';
 import csvIcon from '../assets/Icons/csv.png';
 
-
 function TournamentDashboard() {
   const { id } = useParams();
-  const navigate = useNavigate(); // ✅ Added useNavigate
-  const [activeTab, setActiveTab] = useState('اللاعبين');
+  const [searchParams] = useSearchParams();
+  const defaultTab = searchParams.get('tab') || 'اللاعبين';
+  const [activeTab, setActiveTab] = useState(defaultTab);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isListModalOpen, setIsListModalOpen] = useState(false);
   const [isRandomizeConfirmOpen, setIsRandomizeConfirmOpen] = useState(false);
   const [isSortByRatingConfirmOpen, setIsSortByRatingConfirmOpen] = useState(false);
   const [isForbiddenModalOpen, setIsForbiddenModalOpen] = useState(false);
   const [isPredefinedModalOpen, setIsPredefinedModalOpen] = useState(false);
+
   const [players, setPlayers] = useState([]);
+  const [rounds, setRounds] = useState([]);
 
   const tournamentKey = `tournament-${id}`;
   let tournament = {};
@@ -86,183 +88,108 @@ function TournamentDashboard() {
     savePlayersToStorage(sorted);
   };
 
-  const tabs = [
-    { label: 'الإعدادات', icon: settingsIcon },
-    { label: 'اللاعبين', icon: playerIcon },
-    { label: 'الجولات', icon: RoundIcon },
-    { label: 'الترتيب', icon: standingsIcon }
-  ];
-
   return (
-  <div className="shared-container">
-    <div className="form-logo-wrapper">
-      <img src={logo} alt="شطرنج القدس" className="form-logo" />
-      </div>
-    <div className="dashboard-container" dir="rtl">
-      <div className="dashboard-header">
-        <h2 className="dashboard-title">{tournament.name || 'بطولة جديدة'}</h2>
-      </div>
+    <div className="shared-container">
+      <div className="dashboard-container" dir="rtl">
+        <DashboardTabs active={activeTab} setActive={setActiveTab} />
 
-      <div className="dashboard-tabs">
-        {tabs.map((tab) => (
-          <button
-            key={tab.label}
-            className={`tab vertical-tab ${activeTab === tab.label ? 'active' : ''}`}
-            onClick={() => {
-              switch (tab.label) {
-                case 'الإعدادات':
-                  navigate(`/tournament/${id}/settings`);
-                  break;
-                case 'الجولات':
-                  navigate(`/tournament/${id}/rounds`);
-                  break;
-                case 'الترتيب':
-                  navigate(`/tournament/${id}/standings`);
-                  break;
-                case 'اللاعبين':
-                  setActiveTab(tab.label); // stays on TournamentDashboard
-                  break;
-                default:
-                  break;
-              }
-            }}
-          >
-            {tab.icon && (
-              <img
-                src={tab.icon}
-                alt=""
-                className="tab-icon"
-                style={{ width: '36px', height: '36px', marginBottom: '6px' }}
-              />
-            )}
-            <span className="tab-label">{tab.label}</span>
-          </button>
-        ))}
-      </div>
-
-      {activeTab === 'اللاعبين' && (
-        <>
-          <div className="controls">
-            <div className="row">
-              <button className="btn primary" onClick={() => setIsModalOpen(true)}>
-                <img src={addIcon} alt="" className="btn-icon" />
-                إنشاء لاعب جديد
-              </button>
-              <button className="btn" onClick={() => setIsListModalOpen(true)}>
-                <img src={listIcon} alt="" className="btn-icon" />
-                إنشاء لاعبين من القائمة
-              </button>
-              <button className="btn" onClick={() => setIsRandomizeConfirmOpen(true)}>
-                <img src={shuffleIcon} alt="" className="btn-icon" />
-                ترتيب عشوائي
-              </button>
-              <button className="btn" onClick={() => setIsSortByRatingConfirmOpen(true)}>
-                <img src={ratingIcon} alt="" className="btn-icon" />
-                ترتيب حسب التصنيف
-              </button>
-              <button className="btn" onClick={() => setIsForbiddenModalOpen(true)}>
-                <img src={blockIcon} alt="" className="btn-icon" />
-                الأزواج الممنوعة
-              </button>
+        {activeTab === 'اللاعبين' && (
+          <>
+            <div className="controls">
+              <div className="row">
+                <button className="btn primary" onClick={() => setIsModalOpen(true)}>
+                  <img src={addIcon} alt="" className="btn-icon" />
+                  إنشاء لاعب جديد
+                </button>
+                <button className="btn" onClick={() => setIsListModalOpen(true)}>
+                  <img src={listIcon} alt="" className="btn-icon" />
+                  إنشاء لاعبين من القائمة
+                </button>
+                <button className="btn" onClick={() => setIsRandomizeConfirmOpen(true)}>
+                  <img src={shuffleIcon} alt="" className="btn-icon" />
+                  ترتيب عشوائي
+                </button>
+                <button className="btn" onClick={() => setIsSortByRatingConfirmOpen(true)}>
+                  <img src={ratingIcon} alt="" className="btn-icon" />
+                  ترتيب حسب التصنيف
+                </button>
+                <button className="btn" onClick={() => setIsForbiddenModalOpen(true)}>
+                  <img src={blockIcon} alt="" className="btn-icon" />
+                  الأزواج الممنوعة
+                </button>
+              </div>
+              <div className="row">
+                <button className="btn" onClick={() => setIsPredefinedModalOpen(true)}>
+                  <img src={pairIcon} alt="" className="btn-icon" />
+                  الأزواج المحددة مسبقًا
+                </button>
+                <button className="btn">
+                  <img src={confirmIcon} alt="" className="btn-icon" />
+                  بدء التأكيد
+                </button>
+              </div>
             </div>
-            <div className="row">
-              <button className="btn" onClick={() => setIsPredefinedModalOpen(true)}>
-                <img src={pairIcon} alt="" className="btn-icon" />
-                الأزواج المحددة مسبقًا
-              </button> 
 
-              <button className="btn">
-                <img src={confirmIcon} alt="" className="btn-icon" />
-                بدء التأكيد
-              </button>
-            </div>
-          </div>
-
-          <table className="players-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>المعرف</th>
-                <th>الاسم</th>
-                <th>البريد الإلكتروني</th>
-                <th>التصنيف</th>
-                <th>معامل K</th>
-                <th>نقاط إضافية</th>
-              </tr>
-            </thead>
-            <tbody>
-              {players.length === 0 ? (
-                <tr className="no-data">
-                  <td colSpan="7" style={{ textAlign: 'center', padding: '2rem', color: '#ccc' }}>
-                    لا توجد بيانات
-                  </td>
+            <table className="players-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>المعرف</th>
+                  <th>الاسم</th>
+                  <th>البريد الإلكتروني</th>
+                  <th>التصنيف</th>
+                  <th>معامل K</th>
+                  <th>نقاط إضافية</th>
                 </tr>
-              ) : (
-                players.map((player, index) => (
-                  <tr key={player.id}>
-                    <td>{index + 1}</td>
-                    <td>{player.id}</td>
-                    <td>{player.name}</td>
-                    <td>{player.email || '—'}</td>
-                    <td>{player.rating}</td>
-                    <td>{player.kFactor}</td>
-                    <td>{player.extraPoints}</td>
+              </thead>
+              <tbody>
+                {players.length === 0 ? (
+                  <tr className="no-data">
+                    <td colSpan="7" style={{ textAlign: 'center', padding: '2rem', color: '#ccc' }}>
+                      لا توجد بيانات
+                    </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : (
+                  players.map((player, index) => (
+                    <tr key={player.id}>
+                      <td>{index + 1}</td>
+                      <td>{player.id}</td>
+                      <td>{player.name}</td>
+                      <td>{player.email || '—'}</td>
+                      <td>{player.rating}</td>
+                      <td>{player.kFactor}</td>
+                      <td>{player.extraPoints}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
 
-          <div className="save-section">
-            <button className="btn export">
-              <img src={csvIcon} alt="csv" className="btn-icon" />
-            </button>
-          </div>
+            <div className="save-section">
+              <button className="btn export">
+                <img src={csvIcon} alt="csv" className="btn-icon" />
+              </button>
+            </div>
+          </>
+        )}
 
-          {/* Modals */}
-          <CreatePlayerModal
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            onCreate={handleCreatePlayer}
-          />
-          <CreatePlayersByListModal
-            isOpen={isListModalOpen}
-            onClose={() => setIsListModalOpen(false)}
-            onCreateMany={handleCreateManyPlayers}
-          />
-          <RandomizeConfirmationModal
-            isOpen={isRandomizeConfirmOpen}
-            onClose={() => setIsRandomizeConfirmOpen(false)}
-            onConfirm={() => {
-              handleRandomizePlayers();
-              setIsRandomizeConfirmOpen(false);
-            }}
-          />
-          <SortByRatingConfirmationModal
-            isOpen={isSortByRatingConfirmOpen}
-            onClose={() => setIsSortByRatingConfirmOpen(false)}
-            onConfirm={() => {
-              sortByRating();
-              setIsSortByRatingConfirmOpen(false);
-            }}
-          />
-          <ForbiddenPairsModal
-            isOpen={isForbiddenModalOpen}
-            onClose={() => setIsForbiddenModalOpen(false)}
-            players={players}
-            onAddPair={(pair) => {
-              console.log("Forbidden pair added:", pair);
-            }}
-          />
-          <PredefinedPairsModal
-            isOpen={isPredefinedModalOpen}
-            onClose={() => setIsPredefinedModalOpen(false)}
-            players={players}
-            tournamentId={id}
-          />
-        </>
-      )}
-    </div>
+        {activeTab === 'الإعدادات' && <SettingsButton />}
+        {activeTab === 'الجولات' && <RoundsPage players={players} rounds={rounds} setRounds={setRounds} />}
+        {activeTab === 'الترتيب' && <StandingsPage players={players} rounds={rounds} />}
+
+        <CreatePlayerModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onCreate={handleCreatePlayer} />
+        <CreatePlayersByListModal isOpen={isListModalOpen} onClose={() => setIsListModalOpen(false)} onCreateMany={handleCreateManyPlayers} />
+        <RandomizeConfirmationModal isOpen={isRandomizeConfirmOpen} onClose={() => setIsRandomizeConfirmOpen(false)} onConfirm={() => {
+          handleRandomizePlayers();
+          setIsRandomizeConfirmOpen(false);
+        }} />
+        <SortByRatingConfirmationModal isOpen={isSortByRatingConfirmOpen} onClose={() => setIsSortByRatingConfirmOpen(false)} onConfirm={() => {
+          sortByRating();
+          setIsSortByRatingConfirmOpen(false);
+        }} />
+        <ForbiddenPairsModal isOpen={isForbiddenModalOpen} onClose={() => setIsForbiddenModalOpen(false)} players={players} />
+        <PredefinedPairsModal isOpen={isPredefinedModalOpen} onClose={() => setIsPredefinedModalOpen(false)} players={players} tournamentId={id} />
+      </div>
     </div>
   );
 }
