@@ -1,0 +1,49 @@
+.rounds-container {
+  direction: rtl;
+  padding: 2rem;
+  color: white;
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  background: linear-gradient(to bottom right, #3b2a70, #6a4dad);
+  min-height: 100vh;
+}
+
+.round-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Reuse from your existing GuestsHomePage.css if available: */
+.pairing-results-table {
+  width: 100%;
+  max-width: 850px;
+  border-collapse: collapse;
+  background-color: #321e65;
+  border-radius: 12px;
+  overflow: hidden;
+  color: white;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pairing-results-table th,
+.pairing-results-table td {
+  padding: 1rem;
+  text-align: center;
+  border-bottom: 1px solid #4a328c;
+}
+
+.pairing-results-table thead {
+  background-color: #5d2ca0;
+}
+
+.pairing-results-table tr:last-child td {
+  border-bottom: none;
+}
+
+.table-wrapper {
+  width: 100%;
+  margin-top: 1rem;
+}
