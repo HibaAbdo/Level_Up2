@@ -23,7 +23,6 @@
   min-height: 80px;
 }
 
-/* === Group: logo + nav buttons === */
 .header-right-group {
   display: flex;
   align-items: center;
@@ -143,18 +142,20 @@
   min-height: calc(100vh - 100px);
   width: 100%;
 }
+
 .main-buttons {
   display: flex;
-  flex-direction: row; /* side by side */
-  gap: 2rem; /* space between buttons */
+  flex-direction: row;
   justify-content: center;
   align-items: center;
+  gap: 2rem;
   margin-top: 4rem;
+  flex-wrap: wrap;
 }
 
 .big-action-button {
-  background-color: #2b1e5b; /* same as your dashboard-header background */
-  border: 2px dashed #f4c430;
+  background-color: #2b1e5b;
+  border: none;
   color: #f4c430;
   padding: 2rem;
   border-radius: 24px;
@@ -165,40 +166,85 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem;
-  width: 260px;
-  height: 260px;
-  box-shadow: 0 0 18px rgba(244, 196, 48, 0.4);
+
+  width: 200px;
+  height: 200px;
+  box-shadow: 0 0 20px rgba(244, 196, 48, 0.3);
 }
 
 .big-action-button:hover {
   box-shadow: 0 0 30px rgba(244, 196, 48, 0.6);
+  transform: scale(1.05);
 }
 
-
 .action-icon {
-  width: 125px;
-  height: 125px;
+  width: 80px;
+  height: 80px;
 }
 
 .button-label {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
+  margin-top: 1rem;
 }
 
-.rounds-button {
-  width: 260px;   /* wider */
-  height: 260px;  /* taller */
-}
-
+/* === Rounds icon adjustment */
 .rounds-button .action-icon {
-  width: 120px;   /* larger icon */
-  height: 120px;
+  width: 85px;
+  height: 85px;
 }
 
 .rounds-button .button-label {
-  font-size: 1.8rem; /* larger label */
+  font-size: 1.5rem;
 }
 
+/* === Responsive design for mobile === */
+@media (max-width: 768px) {
+  .main-buttons {
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
 
+  .big-action-button {
+    width: 80vw;
+    height: auto;
+    padding: 1.5rem;
+  }
 
+  .action-icon {
+    width: 70px;
+    height: 70px;
+  }
+
+  .button-label {
+    font-size: 1.3rem;
+  }
+
+  .dashboard-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0;
+  }
+
+  .login-button {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .login-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .logo-with-text {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .logo-text-link {
+    font-size: 1.2rem;
+  }
+}

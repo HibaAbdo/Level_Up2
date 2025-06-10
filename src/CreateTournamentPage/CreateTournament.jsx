@@ -7,21 +7,22 @@ import './CreateTournament.css';
 function CreateTournament({ mode = 'create', initialData = null }) {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState(() =>
-    initialData ? { ...initialData } : {
-      name: '',
-      playSystem: '',
-      points: '',
-      byeValue: '',
-      totalRounds: 5,
-      tieBreaks: [],
-      allowJoin: false,
-      allowChange: false,
-      dangerousChanges: false,
-      disableDoubleBye: false,
-      lateJoinPoints: false,
-    }
-  );
+ const [formData, setFormData] = useState(() =>
+  initialData ? { ...initialData } : {
+    name: '',
+    playSystem: 'swiss',
+    points: 'standard',
+    byeValue: 'win',
+    totalRounds: 5,
+    tieBreaks: ['direct', 'buchholz1'],
+    allowJoin: false,
+    allowChange: false,
+    dangerousChanges: false,
+    disableDoubleBye: false,
+    lateJoinPoints: false,
+  }
+);
+
 
   const allTieBreakOptions = [
     { value: 'direct', label: 'المواجهة المباشرة' },
@@ -212,7 +213,7 @@ function CreateTournament({ mode = 'create', initialData = null }) {
             className="golden-btn"
             onClick={mode === 'edit' ? handleSaveChanges : undefined}
           >
-            💾 {mode === 'edit' ? 'حفظ التغييرات' : 'إنشاء البطولة'}
+             {mode === 'edit' ? 'حفظ التغييرات' : 'إنشاء البطولة'}
           </button>
 
           {mode === 'edit' && (

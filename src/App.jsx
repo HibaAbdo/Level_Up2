@@ -10,13 +10,21 @@ import TournamentSettingsButton from "./DashBoardPage/DashBoardButtons/Tournamen
 import RoundsButton from "./DashBoardPage/DashBoardButtons/RoundsPage/RoundsButton";
 import StandingsButton from "./DashBoardPage/DashBoardButtons/StandingsPage/StandingsButton";
 
+// Guests home and rounds pages
+import GuestsHomePage from "./HomePage/GuestsHomePage";
+import RoundsHomePage from "./HomePage/RoundsHomePage";
+import StandingsHomePage from "./HomePage/StandingsHomePage"; // ✅ New Import
+
 function App() {
   return (
     <Routes>
-      {/* Standalone login page */}
-      <Route path="/" element={<Login />} />
+      {/* Guests section */}
+      <Route path="/" element={<GuestsHomePage />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/rounds" element={<RoundsHomePage />} />
+      <Route path="/standings" element={<StandingsHomePage />} /> {/* ✅ New Route */}
 
-      {/* Dashboard layout with nested pages */}
+      {/* Dashboard pages */}
       <Route element={<DashboardLayout />}>
         <Route path="/mytournaments" element={<MyTournaments />} />
         <Route path="/create" element={<CreateTournament />} />

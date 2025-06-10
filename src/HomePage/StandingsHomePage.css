@@ -1,0 +1,115 @@
+.standings-home-container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #4b2a91, #1e0f3d);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 3rem;
+  color: white;
+  direction: rtl;
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+}
+
+/* 🔍 Search bar */
+.standings-search-wrapper {
+  width: 100%;
+  max-width: 600px;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.standings-search-input {
+  width: 100%;
+  padding: 0.9rem 1.5rem;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 30px;
+  outline: none;
+  background: #fff;
+  color: #3b2a70;
+  text-align: right;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.standings-search-input:focus {
+  box-shadow: 0 0 10px #f4c430, 0 0 20px #f4c430;
+}
+
+/* 📊 Scrollable table container with custom scrollbar */
+.standings-table-wrapper {
+  width: 90%;
+  max-height: 500px;
+  overflow-y: auto;
+  overflow-x: auto;
+  margin-top: 2rem;
+  background-color: #1e0f3d;
+  border-radius: 14px;
+  padding: 0;
+  box-shadow: 0 0 10px rgba(250, 204, 21, 0.2);
+  position: relative;
+}
+
+/* 🟨 Scrollbar */
+.standings-table-wrapper::-webkit-scrollbar {
+  width: 10px;
+}
+.standings-table-wrapper::-webkit-scrollbar-track {
+  background: #2d1b55;
+}
+.standings-table-wrapper::-webkit-scrollbar-thumb {
+  background-color: #facc15;
+  border-radius: 6px;
+  border: 2px solid #2d1b55;
+}
+.standings-table-wrapper::-webkit-scrollbar-thumb:hover {
+  background-color: #eab308;
+}
+
+/* 🧾 Table */
+.standings-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  color: white;
+}
+
+/* 📌 Sticky header row */
+.standings-table thead tr {
+  background-color: #291b52;
+}
+
+.standings-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #291b52;
+  padding: 1rem 1rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  font-weight: bold;
+  color: #f4c430;
+  border-bottom: 3px solid #f4c430;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* ♟️ Row colors */
+.standings-table tr:nth-child(even) {
+  background-color: #2f1e5d;
+}
+.standings-table tr:nth-child(odd) {
+  background-color: #3b2a70;
+}
+
+.standings-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #ffffff22;
+}
+
+/* ❌ No player found */
+.no-results-message {
+  color: #f4c430;
+  font-size: 1.3rem;
+  margin-top: 3rem;
+  text-align: center;
+}
