@@ -7,7 +7,7 @@ html, body {
 .full-page-container { 
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(135deg, #3b2a70, #5c3795);
+  background: #f0f5f7;
   overflow: hidden;
   display: block; /* ✅ stop centering, allow content to align itself */
 }

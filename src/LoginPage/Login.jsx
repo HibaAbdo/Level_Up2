@@ -6,7 +6,6 @@ import axios from 'axios';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
-import logo from '../assets/logoshah.png';
 import rook from '../assets/LoginIcons/Rook.png';
 import king from '../assets/LoginIcons/King.png';
 import bishop from '../assets/LoginIcons/Bishop.png';
@@ -69,9 +68,7 @@ function Login() {
           <img src={bishop} className="corner-piece bottom-left" alt="فيل" />
           <img src={queen} className="corner-piece top-left" alt="وزير" />
 
-          <div className="container-logo">
-            <img src={logo} alt="شطرنج القدس" />
-          </div>
+      
 
           <div className="login-header">
             <h2>تسجيل الدخول</h2>
@@ -103,7 +100,7 @@ function Login() {
                 onBlur={() => setIsPassFocused(password.length > 0)}
               />
               <label htmlFor="password" className={isPassFocused || password ? "label-active" : ""}>
-                كلمة المرور
+                كلمة شطرنج المرور
               </label>
               <FontAwesomeIcon
                 icon={passwordVisible ? faEye : faEyeSlash}

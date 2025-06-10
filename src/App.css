@@ -4,7 +4,7 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  font-family: 'Cairo', sans-serif;
 }
 
 /* Root element fills full screen and hides overflow */

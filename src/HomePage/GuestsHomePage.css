@@ -1,6 +1,6 @@
 /* === Base container === */
 .guests-home-container {
-  background: linear-gradient(to bottom right, #3b2a70, #6a4dad);
+  background:#f0f5f7;
   color: white;
   min-height: 100vh;
   font-family: 'IBM Plex Sans Arabic', sans-serif;
