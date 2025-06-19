@@ -1,0 +1,39 @@
+/* 📦 المحتوى العام */
+.rounds-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 1rem 3rem;
+  box-sizing: border-box;
+}
+
+/* 📋 حاوية الجدول */
+.rounds-table-wrapper {
+ width: 100%;
+  overflow-x: auto;
+  max-width: 100%;
+  border-radius: 16px;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+
+/* 📱 استجابة الهواتف */
+@media (max-width: 768px) {
+  .rounds-content {
+    padding: 1.5rem 0.5rem;
+  }
+
+  .form-title {
+    font-size: 6vw;
+    color: #663d99;
+  }
+ .rounds-table{
+      width: 100%;
+    table-layout: fixed;
+  }
+
+  .table-theme {
+    font-size: 0.85rem;
+  }
+}

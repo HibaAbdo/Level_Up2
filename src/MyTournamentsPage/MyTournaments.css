@@ -1,0 +1,113 @@
+/* src/pages/MyTournaments.css */
+
+.my-tournaments-content {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   padding: 2.5rem 1rem 3rem;
+   box-sizing: border-box;
+}
+
+/* 🟣 غلاف العنوان مع الأزرار */
+.header-actions-wrapper {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   margin-bottom: 1.2rem;
+   flex-wrap: wrap;
+   direction: rtl;
+}
+
+/* 🟡 تنسيق أزرار "فتح الأرشيف" و"إنشاء بطولة" */
+.actions {
+   display: flex;
+   gap: 1rem;
+   flex-wrap: wrap;
+}
+
+/* Table Styles - فقط ما هو خاص بـ MyTournamentsPage ولا يكرر أنماط Table العامة */
+/* 📋 حاوية الجدول - هذه أنماط خاصة بتخطيط الجدول في هذه الصفحة */
+.my-tournaments-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  max-width: 100%;
+  border-radius: 16px;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+/* 🚀 أنماط اسم البطولة القابل للنقر مع تأثير الوميض (بدون خط سفلي أو خلفية مستطيلة) */
+.tournament-name-link {
+  color: var(--clr-purple); /* اللون الافتراضي للنص */
+  text-decoration: none; /* لا يوجد خط تحت النص بشكل افتراضي */
+  cursor: pointer; /* تغيير شكل المؤشر إلى يد عند التحويم */
+  /*
+    الانتقال السلس للون لجعل التأثير "وامض".
+    تمت إزالة background-color, padding, border-radius.
+  */
+  transition: color 0.2s ease, text-shadow 0.2s ease; /* إضافة text-shadow للانتقال */
+  font-weight: 600; /* جعل الخط أثقل قليلاً لإبرازه */
+}
+
+.tournament-name-link:hover {
+  color: var(--clr-gold); /* تغيير اللون إلى الذهبي عند التحويم */
+  /*
+    تأثير توهج (glow) باستخدام text-shadow.
+    يمكنك تعديل قيم التوهج والانتشار واللون حسب الرغبة.
+  */
+  text-shadow: 0 0 8px rgba(240, 194, 48, 0.7), /* توهج بلون ذهبي معتم */
+               0 0 15px rgba(240, 194, 48, 0.3); /* توهج أوسع وأقل كثافة */
+}
+
+/* 🚀 الأنماط الجديدة لـ table-date - لضبط التاريخ والوقت في خلايا الجدول */
+/* الأنماط الافتراضية للشاشات الكبيرة: التاريخ على اليمين والساعة على اليسار */
+.table-date {
+  display: flex; /* استخدم Flexbox لجعل العناصر في سطر واحد */
+  justify-content: center; /* توسيط التاريخ والساعة أفقياً */
+  align-items: center; /* توسيطهما عمودياً */
+  gap: 0.5rem; /* مسافة بين التاريخ والساعة */
+  flex-wrap: nowrap; /* منع التفاف العناصر على الشاشات الكبيرة */
+  white-space: nowrap; /* منع انقسام التاريخ أو الوقت في سطرين */
+  font-size: 0.95rem; /* حجم الخط داخل الخلية */
+  direction: rtl; /* هذا يقلب ترتيب العناصر داخل flex container. */
+}
+
+/* يمكن تعديل خصائص font-size أو margin للـ date و time إذا لزم الأمر */
+.table-date .date {
+    /* أنماط خاصة بالتاريخ إذا لزم الأمر */
+}
+
+.table-date .time {
+    /* أنماط خاصة بالوقت إذا لزم الأمر */
+}
+
+/* 📱 استجابة الجوال - Media Queries */
+@media (max-width: 768px) { /* يمكن تعديل هذه النقطة حسب الحاجة */
+  .header-actions-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: right;
+  }
+
+  .actions {
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  /* 🚀 أنماط table-date للشاشات الصغيرة */
+  .table-date {
+    flex-direction: column; /* اجعل التاريخ والساعة تحت بعضهما البعض. */
+    align-items: center; /* توسيطهما في الوضع العمودي */
+    gap: 0.1rem; /* تقليل المسافة الرأسية بينهما */
+  }
+
+  /* إذا كنت تريد تصغير الخط أكثر على الجوال */
+  .table-date .date,
+  .table-date .time {
+      font-size: 0.9rem;
+  }
+
+  .tournament-name-link {
+    font-size: 0.95rem; /* يمكن تعديل حجم الخط للجوال إذا لزم الأمر */
+  }
+}

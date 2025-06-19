@@ -1,0 +1,90 @@
+/* 📦 المحتوى العام */
+.standings-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 1rem 3rem;
+  box-sizing: border-box;
+}
+
+/* 🔍 حقل البحث */
+.standings-search-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto 2rem;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .standings-search-wrapper {
+    max-width: 460px;
+  }
+}
+
+.standings-search-input {
+  width: 100%;
+  padding: 12px 44px 12px 16px;
+  border-radius: 14px;
+  border: 2px solid #ccc;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  font-family: 'IBM Plex Sans Arabic', 'Cairo', 'Tajawal', sans-serif;
+  box-shadow: 0 2px 5px rgba(102, 61, 153, 0.15);
+  box-sizing: border-box;
+}
+
+.standings-search-input:focus {
+  outline: none;
+  border-color: var(--clr-purple);
+}
+
+.standings-search-icon {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--clr-deep-purple);
+  font-size: 1.2rem;
+}
+
+/* ⚠️ رسالة لا توجد نتائج */
+.no-results-message {
+  font-size: 1.2rem;
+  color: var(--clr-deep-purple);
+  margin-top: 1rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* 📋 حاوية الجدول */
+.standings-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  max-width: 100%;
+  border-radius: 16px;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+
+/* 📱 استجابة الهواتف */
+@media (max-width: 768px) {
+  .standings-content {
+    padding: 1.5rem 0.5rem;
+  }
+
+  .standings-search-input {
+    font-size: 0.95rem;
+    padding: 10px 42px 10px 14px;
+  }
+
+  .no-results-message {
+    font-size: 1rem;
+  }
+
+  .table-theme {
+    font-size: 0.85rem;
+  }
+}

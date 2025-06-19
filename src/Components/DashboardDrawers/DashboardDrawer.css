@@ -1,0 +1,180 @@
+/* src/Components/DashboardDrawer/DashboardDrawer.css */
+
+/* أنماط حاوية الدرج */
+.drawer {
+  position: fixed;
+  top: 90px; /* Make sure this matches your Header's fixed height (e.g., from Header.css) */
+  right: -300px; /* Initially hidden off-screen to the right */
+  width: 300px;
+  height: auto;
+  max-height: calc(100vh - 90px); /* Adjust max-height based on header height */
+  background-color: #f0f5f7;
+  /* ⭐ CORRECTED: Lighter box-shadow for a less heavy look */
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1); /* Softer, less opaque shadow */
+  /* ⭐ CORRECTED: Increased transition duration for smoothness */
+  transition: right 0.3s ease-in-out;
+  z-index: 990; /* Lower z-index than the header (Header is 1000) */
+  padding-top: 20px;
+  padding-bottom: 20px;
+  direction: rtl; /* Crucial for overall RTL layout of the drawer */
+  overflow-y: auto;
+  border-radius: 10px; /* Added rounded corners to the drawer */
+  overflow: hidden; /* To prevent inner rounded corners from sticking out */
+}
+
+/* حالة عندما يكون الدرج مفتوحًا */
+.drawer.open {
+  right: 0; /* Slides into view */
+}
+
+
+
+/* ⭐ NEW: Styles for the small black 'X' close button inside the drawer */
+.drawer-close-x-btn {
+  all: unset; /* ⭐ CRITICAL: Reset all properties to ensure no global inheritance */
+  
+  /* Now define all properties explicitly for custom theme */
+  position: absolute;
+  top: 15px; /* Adjust vertical position as needed */
+  left: 15px; /* Position it on the left for RTL layout */
+  background-color: #f0f5f7; /* ⭐ Set background to menu color (matching drawer) */
+  border: none; /* No border */
+  color: black; /* Black color for the 'X' */
+  font-size: 28px; /* Size of the 'X' */
+  cursor: pointer; /* Ensure cursor is a pointer */
+  z-index: 1002; /* Ensure it's above other drawer content */
+  width: 32px; /* ⭐ Square size, slightly larger than font for clickable area */
+  height: 32px; /* ⭐ Square size */
+  display: flex; /* ⭐ Use flexbox to center the 'X' precisely */
+  align-items: center;
+  justify-content: center;
+  line-height: 1; /* Helps vertically center the 'X' */
+  opacity: 1; /* Keep it fully opaque, no transparency */
+  /* No transition on basic properties as requested for no change on hover */
+}
+
+.drawer-close-x-btn:hover {
+  background-color: #f0f5f7; /* Maintain same background color on hover */
+  color: black; /* Maintain same text color on hover */
+  cursor: pointer; /* Keep cursor pointer */
+}
+
+/* ⭐ NEW: Styles for the faint white overlay/backdrop */
+.drawer-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw; /* Full viewport width */
+  height: 100vh; /* Full viewport height */
+  background-color: rgba(255, 255, 255, 0.5); /* Very faint white translucent overlay */
+  z-index: 980; /* Needs to be between the main content and the drawer (drawer is 990, header is 1000) */
+  transition: background-color 0.7s ease-in-out; /* Smooth transition for the overlay */
+}
+
+/* أنماط قائمة التبويبات */
+.drawer-tabs {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-main, sans-serif);
+}
+
+/* أنماط عناصر القائمة الفردية (التبويبات) */
+.drawer-tabs li {
+  cursor: pointer;
+  padding: 12px 20px;
+  margin: 4px 0;
+  border-radius: 8px; /* Rounded corners for the tabs */
+  transition: background-color 0.2s ease, color 0.2s ease;
+  font-size: 1.1em;
+  color: #333;
+  font-family: var(--font-main);
+  position: relative;
+  display: flex; /* Makes it a flex container */
+  align-items: center; /* Vertically centers content */
+  justify-content: flex-start; /* In RTL, flex-start aligns items to the right */
+  gap: 10px; /* Space between text and dot/icon */
+}
+
+/* تأثير التمرير (hover) للتبويبات */
+.drawer-tabs li:hover {
+  background-color: var(--light-purple, #f3e8ff);
+  color: var(--primary-purple, #663d99);
+}
+
+/* أنماط التبويب النشط حاليًا */
+.drawer-tabs li.active-tab {
+  background-color: var(--primary-purple, #663d99);
+  color: white;
+  font-weight: bold;
+}
+
+/* The dot that appears next to the active item for RTL */
+.drawer-tabs li.active-tab::before {
+  content: '';
+  display: block;
+  width: 8px;
+  height: 8px;
+  background-color: white;
+  border-radius: 50%;
+  margin-right: 10px; /* This pushes the text away from the dot in RTL */
+  order: -1; /* Place the dot BEFORE the text in flex order (for visual left in RTL) */
+  flex-shrink: 0;
+}
+
+/* Styles for the semi-circular toggle button */
+.dashboard-drawer-toggle-arrow-btn {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: #e0e0e0;
+  border: none;
+  outline: none;
+  /* ⭐ CORRECTED: Lighter box-shadow for the toggle button */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Softer, less opaque shadow */
+  width: 60px;
+  height: 80px;
+  border-radius: 40px 0 0 40px;
+  position: fixed;
+  right: 0;
+  top: 90px; /* Ensure this matches your Header's fixed height */
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.dashboard-drawer-toggle-arrow-btn:hover {
+  background: #d0d0d0;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2); /* Slightly more prominent on hover */
+}
+
+.dashboard-drawer-toggle-arrow-btn .toggle-icon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  transition: transform 0.3s ease-in-out;
+}
+
+.dashboard-drawer-toggle-arrow-btn .toggle-icon.rotate {
+  transform: rotateY(180deg);
+}
+
+/* 📱 Mobile responsiveness */
+@media (max-width: 768px) {
+  .drawer {
+    top: 120px;
+    max-height: calc(100vh - 120px);
+  }
+  .dashboard-drawer-toggle-arrow-btn {
+    width: 50px;
+    height: 70px;
+    top: 120px;
+  }
+  .dashboard-drawer-toggle-arrow-btn .toggle-icon {
+    width: 25px;
+    height: 25px;
+  }
+}

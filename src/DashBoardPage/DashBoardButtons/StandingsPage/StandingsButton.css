@@ -1,0 +1,216 @@
+.ranking-page {
+    padding: 2rem;
+    background-color: #3b2a70;
+    min-height: 100vh;
+    color: white;
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .form-logo {
+    height: 60px;
+  }
+  
+  .ranking-title {
+    color: #ffffff;
+    font-size: 2rem;
+    text-align: center;
+    margin: 1rem auto;
+    flex: 1;
+  }
+  
+  .ranking-table-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .ranking-table {
+    width: 100%;
+    max-width: 1000px;
+    margin: 1rem auto;
+    border-collapse: collapse;
+    direction: rtl;
+  }
+  
+  .ranking-table th,
+  .ranking-table td {
+    border: 1px solid #3b2a70;
+    padding: 0.75rem;
+    text-align: center;
+    background-color: #4c2882;
+    color: white;
+  }
+  
+  .ranking-table th {
+    background-color: #5e3ca5;
+    font-weight: bold;
+  }
+  
+  .no-data-row td {
+    background-color: transparent;
+    color: #ccc;
+    font-style: italic;
+    font-size: 1.1rem;
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  .ranking-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+    position: relative;
+  }
+  
+  .csv-btn,
+  .fullscreen-btn {
+    padding: 0.5rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    background-color: #26266a;
+    color: white;
+    font-size: 0.95rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .csv-btn:hover,
+  .fullscreen-btn:hover {
+    background-color: #facc159f;
+  }
+  
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.65);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background-color: #3b2a70;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 0 15px #facc15;
+    max-width: 90%;
+    max-height: 90%;
+    overflow-y: auto;
+    text-align: center;
+    scrollbar-color: #facc15 transparent;
+    scrollbar-width: thin;
+  }
+  
+  .modal-content::-webkit-scrollbar {
+    width: 10px;
+  }
+  .modal-content::-webkit-scrollbar-thumb {
+    background-color: #facc15;
+    border-radius: 6px;
+  }
+  .modal-content::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .modal-content h2.zoom-title {
+    color: #facc15;
+    margin-bottom: 1rem;
+  }
+  
+  .close-btn.round-btn {
+    margin-top: 1rem;
+    font-size: 1rem;
+    padding: 0.6rem 1.1rem;
+    border: 2px dashed #facc15;
+    border-radius: 12px;
+    background-color: #26266a;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .close-btn.round-btn:hover {
+    background-color: #3b2a70;
+    box-shadow: 0 0 8px #facc15;
+  }
+  .standings-page .modal-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.standings-page .modal-content {
+  background-color: #3b2a70;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 15px #facc15;
+  max-width: 90%;
+  max-height: 90%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  text-align: center;
+  scrollbar-color: #facc15 transparent;
+  scrollbar-width: thin;
+}
+
+.standings-page .modal-content::-webkit-scrollbar {
+  width: 10px;
+}
+
+.standings-page .modal-content::-webkit-scrollbar-thumb {
+  background-color: #facc15;
+  border-radius: 6px;
+}
+
+.standings-page .modal-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.standings-page .modal-content h2 {
+  color: #facc15;
+  margin-bottom: 1rem;
+}
+
+.standings-page .close-btn.round-btn {
+  margin-top: 1rem;
+  font-size: 1rem;
+  padding: 0.6rem 1.1rem;
+  border: 2px dashed #facc15;
+  border-radius: 12px;
+  background-color: #26266a;
+  color: #ffffff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.standings-page .close-btn.round-btn:hover {
+  background-color: #3b2a70;
+  box-shadow: 0 0 8px #facc15;
+}
