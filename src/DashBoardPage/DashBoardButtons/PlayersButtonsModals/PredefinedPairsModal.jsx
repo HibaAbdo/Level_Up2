@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
-import './PredefinedPairsModal.css';
 
 function PredefinedPairsModal({ isOpen, onClose, players, tournamentId }) {
   const [player1, setPlayer1] = useState(null);
@@ -15,7 +14,7 @@ function PredefinedPairsModal({ isOpen, onClose, players, tournamentId }) {
       if (storedData && storedData.predefinedPairs) {
         setPredefinedPairs(storedData.predefinedPairs);
       }
-      setShowAddForm(false); // Reset form hidden every time modal opens
+      setShowAddForm(false);
     }
   }, [isOpen, tournamentId]);
 
@@ -63,17 +62,13 @@ function PredefinedPairsModal({ isOpen, onClose, players, tournamentId }) {
   }));
 
   return (
-    <div className="predefined-overlay">
-      <div className="predefined-modal">
-        <h2 className="predefined-title">
-          ⚠️ الأزواج المحددة مسبقاً
-        </h2>
-        <p className="predefined-message">
-          هنا يمكنك تحديد اللاعبين الذين تريد إجبارهم على المواجهة.
-        </p>
+    <div className="modal-overlay">
+      <div className="modal-wrapper" dir="rtl">
+        <h2 className="modal-title">⚠️ الأزواج المحددة مسبقاً</h2>
+        <p className="modal-description">هنا يمكنك تحديد اللاعبين الذين تريد إجبارهم على المواجهة.</p>
 
-        <div className="predefined-table">
-          <table>
+<div className="table-wrapper" style={{ marginBottom: '1.5rem' }}>
+          <table className="table-theme">
             <thead>
               <tr>
                 <th>اللاعب ١</th>
@@ -83,9 +78,9 @@ function PredefinedPairsModal({ isOpen, onClose, players, tournamentId }) {
             </thead>
             <tbody>
               {predefinedPairs.length === 0 ? (
-                <tr className="predefined-empty">
-                  <td colSpan="3" style={{ textAlign: 'center', padding: '2rem', color: '#cbd5e1' }}>
-                    <div className="predefined-empty-box"></div>
+                <tr>
+                  <td colSpan="3" className="empty-row">
+                    <div className="forbidden-empty-box" />
                     لا توجد بيانات
                   </td>
                 </tr>
@@ -95,12 +90,7 @@ function PredefinedPairsModal({ isOpen, onClose, players, tournamentId }) {
                     <td>{pair.player1}</td>
                     <td>{pair.player2}</td>
                     <td>
-                      <button
-                        className="predefined-btn cancel"
-                        onClick={() => handleDeletePair(index)}
-                      >
-                        حذف
-                      </button>
+                      <button className="btn btn-outline" onClick={() => handleDeletePair(index)}>❌</button>
                     </td>
                   </tr>
                 ))
@@ -110,8 +100,7 @@ function PredefinedPairsModal({ isOpen, onClose, players, tournamentId }) {
         </div>
 
         {showAddForm && (
-          <div className="predefined-form">
-            <label>اللاعب ١</label>
+          <div className="modal-body">
             <Select
               key={selectKey + "-1"}
               classNamePrefix="select"
@@ -119,9 +108,8 @@ function PredefinedPairsModal({ isOpen, onClose, players, tournamentId }) {
               value={player1}
               onChange={setPlayer1}
               placeholder="اختر اللاعب الأول"
+              isClearable
             />
-
-            <label>اللاعب ٢</label>
             <Select
               key={selectKey + "-2"}
               classNamePrefix="select"
@@ -129,35 +117,24 @@ function PredefinedPairsModal({ isOpen, onClose, players, tournamentId }) {
               value={player2}
               onChange={setPlayer2}
               placeholder="اختر اللاعب الثاني"
+              isClearable
+              isDisabled={!player1}
             />
-
-            <button
-              className="predefined-btn confirm"
-              onClick={handleAddPair}
-              disabled={!player1 || !player2 || player1.value === player2.value}
-            >
-              تأكيد
-            </button>
+            <div className="modal-actions" style={{ marginTop: '1rem' }}>
+              <button className="btn btn-gold" onClick={handleAddPair} disabled={!player1 || !player2}>
+                تأكيد
+              </button>
+              <button className="btn btn-outline" onClick={onClose}>إغلاق</button>
+            </div>
           </div>
         )}
 
-        <div className="predefined-buttons">
-          {showAddForm ? null : (
-            <>
-              <button className="predefined-btn add" onClick={() => setShowAddForm(true)}>
-                إضافة زوج
-              </button>
-              <button className="predefined-btn cancel" onClick={onClose}>
-                إغلاق
-              </button>
-            </>
-          )}
-          {showAddForm && (
-            <button className="predefined-btn cancel" onClick={onClose}>
-              إغلاق
-            </button>
-          )}
-        </div>
+        {!showAddForm && (
+          <div className="modal-actions">
+            <button className="btn btn-gold" onClick={() => setShowAddForm(true)}>➕ إضافة زوج</button>
+            <button className="btn btn-outline" onClick={onClose}>إغلاق</button>
+          </div>
+        )}
       </div>
     </div>
   );

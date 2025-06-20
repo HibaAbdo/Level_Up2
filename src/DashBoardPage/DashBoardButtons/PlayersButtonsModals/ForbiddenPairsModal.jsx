@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Select from 'react-select';
-import './ForbiddenPairsModal.css';
 
 function ForbiddenPairsModal({ isOpen, onClose, players, onAddPair }) {
   const [player1, setPlayer1] = useState(null);
@@ -11,16 +10,14 @@ function ForbiddenPairsModal({ isOpen, onClose, players, onAddPair }) {
   if (!isOpen) return null;
 
   const playerOptions = players.map((p) => ({ value: p.id, label: p.name }));
-
   const filteredPlayer2Options = playerOptions.filter(opt => opt.value !== player1?.value);
 
   const handleAddPair = () => {
     if (!player1 || !player2) return;
-
     const newPair = { player1, player2 };
     const updated = [...forbiddenPairs, newPair];
     setForbiddenPairs(updated);
-    onAddPair(newPair); // Optional callback
+    onAddPair(newPair);
     setPlayer1(null);
     setPlayer2(null);
     setShowForm(false);
@@ -33,52 +30,53 @@ function ForbiddenPairsModal({ isOpen, onClose, players, onAddPair }) {
   };
 
   return (
-    <div className="forbidden-overlay">
-      <div className="forbidden-modal" dir="rtl">
-        <h2 className="forbidden-title">⚠️ الأزواج الممنوعة</h2>
-        <p className="forbidden-message">هنا يمكنك تحديد اللاعبين الذين لا يُسمح لهم بالمواجهة.</p>
+    <div className="modal-overlay">
+      <div className="modal-wrapper" dir="rtl">
+        <h2 className="modal-title">⚠️ الأزواج الممنوعة</h2>
+        <p className="modal-description">هنا يمكنك تحديد اللاعبين الذين لا يُسمح لهم بالمواجهة.</p>
 
-        <table className="forbidden-table">
-          <thead>
-            <tr>
-              <th>اللاعب ١</th>
-              <th>اللاعب ٢</th>
-              <th>حذف</th>
-            </tr>
-          </thead>
-          <tbody>
-            {forbiddenPairs.length === 0 ? (
+        <div className="table-wrapper">
+          <table className="table-theme">
+            <thead>
               <tr>
-                <td colSpan="3" className="forbidden-empty">
-                  <div className="forbidden-empty-box" />
-                  لا توجد بيانات
-                </td>
+                <th>اللاعب ١</th>
+                <th>اللاعب ٢</th>
+                <th>حذف</th>
               </tr>
-            ) : (
-              forbiddenPairs.map((pair, idx) => (
-                <tr key={idx}>
-                  <td>{pair.player1.label}</td>
-                  <td>{pair.player2.label}</td>
-                  <td>
-                    <button onClick={() => handleRemove(idx)}>❌</button>
+            </thead>
+            <tbody>
+              {forbiddenPairs.length === 0 ? (
+                <tr>
+                  <td colSpan="3" className="empty-row">
+                    <div className="forbidden-empty-box" />
+                    لا توجد بيانات
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                forbiddenPairs.map((pair, idx) => (
+                  <tr key={idx}>
+                    <td>{pair.player1.label}</td>
+                    <td>{pair.player2.label}</td>
+                    <td>
+                      <button className="btn btn-outline" onClick={() => handleRemove(idx)}>❌</button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
 
         {showForm && (
-          <div className="forbidden-form">
-            <label>اللاعب الأول:</label>
+          <div className="modal-body" style={{ marginTop: '1rem' }}>
             <Select
               options={playerOptions}
               value={player1}
               onChange={setPlayer1}
               placeholder="اختر لاعباً"
               isClearable
+              classNamePrefix="select"
             />
-            <label style={{ marginTop: '1rem' }}>اللاعب الثاني:</label>
             <Select
               options={filteredPlayer2Options}
               value={player2}
@@ -86,22 +84,35 @@ function ForbiddenPairsModal({ isOpen, onClose, players, onAddPair }) {
               placeholder="اختر لاعباً آخر"
               isDisabled={!player1}
               isClearable
+              classNamePrefix="select"
             />
-            <button className="forbidden-btn confirm" onClick={handleAddPair} disabled={!player1 || !player2}>
-              تأكيد
-            </button>
           </div>
         )}
 
-        <div className="forbidden-buttons">
-          {!showForm && (
-            <button className="forbidden-btn add" onClick={() => setShowForm(true)}>
-              إضافة زوج
-            </button>
+<div className="modal-actions" style={{ marginTop: '2rem' }}>
+          {showForm ? (
+            <>
+              <button
+                className="btn btn-gold"
+                onClick={handleAddPair}
+                disabled={!player1 || !player2}
+              >
+                تأكيد
+              </button>
+              <button className="btn btn-outline" onClick={onClose}>
+                إغلاق
+              </button>
+            </>
+          ) : (
+            <>
+              <button className="btn btn-gold" onClick={() => setShowForm(true)}>
+                ➕ إضافة زوج
+              </button>
+              <button className="btn btn-outline" onClick={onClose}>
+                إغلاق
+              </button>
+            </>
           )}
-          <button className="forbidden-btn cancel" onClick={onClose}>
-            إغلاق
-          </button>
         </div>
       </div>
     </div>

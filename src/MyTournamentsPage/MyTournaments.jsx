@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PageContainer from '../components/PageContainers/PageContainer';
-import Header from '../components/Headers/Header';
+import PageContainer from '../Components/ThePageContainers/PageContainer';
+import Header from '../Components/TheHeaders/Header';
 import './MyTournaments.css';
 
 function MyTournaments() {
   const navigate = useNavigate();
   const [tournaments, setTournaments] = useState([]);
 
-  // ✅ جلب اسم المستخدم من localStorage
   const username = localStorage.getItem('username') || 'المستخدم';
 
   useEffect(() => {
@@ -24,6 +23,19 @@ function MyTournaments() {
     };
   };
 
+  const archiveTournament = (id) => {
+    const updated = tournaments.filter(t => t.id !== id);
+    const archived = JSON.parse(localStorage.getItem('archivedTournaments')) || [];
+    const toArchive = tournaments.find(t => t.id === id);
+
+    if (toArchive) {
+      archived.push(toArchive);
+      localStorage.setItem('archivedTournaments', JSON.stringify(archived));
+      localStorage.setItem('tournaments', JSON.stringify(updated));
+      setTournaments(updated);
+    }
+  };
+
   return (
     <>
       <Header username={username} />
@@ -36,7 +48,9 @@ function MyTournaments() {
               <button className="btn btn-gold" onClick={() => navigate('/create')}>
                 إنشاء بطولة
               </button>
-              <button className="btn btn-outline">فتح الأرشيف</button>
+              <button className="btn btn-outline" onClick={() => navigate('/archive')}>
+                فتح الأرشيف
+              </button>
             </div>
           </div>
 
@@ -47,12 +61,13 @@ function MyTournaments() {
                   <th>الاسم</th>
                   <th>آخر تعديل</th>
                   <th>تاريخ الإنشاء</th>
+                  <th>أرشفة</th>
                 </tr>
               </thead>
               <tbody>
                 {tournaments.length === 0 ? (
                   <tr>
-                    <td colSpan="3" className="no-results-message">لا توجد بطولات محفوظة</td>
+                    <td colSpan="4" className="no-results-message">لا توجد بطولات محفوظة</td>
                   </tr>
                 ) : (
                   tournaments.map((t, index) => {
@@ -81,6 +96,16 @@ function MyTournaments() {
                             <div className="time">{created.time}</div>
                           </div>
                         </td>
+                        <td>
+  <button
+    className="archive-icon-btn"
+    onClick={() => archiveTournament(t.id)}
+    title="أرشفة"
+  >
+    📦
+  </button>
+</td>
+
                       </tr>
                     );
                   })

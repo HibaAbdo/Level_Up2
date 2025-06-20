@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import Select from 'react-select';
-import PageContainer from '../components/PageContainers/PageContainer';
-import Header from '../components/Headers/Header';
+import PageContainer from '../Components/ThePageContainers/PageContainer';
+import Header from '../Components/TheHeaders/Header';
 import './CreateTournament.css';
 
 function CreateTournament({ mode = 'create', initialData = null, embedded = false }) {

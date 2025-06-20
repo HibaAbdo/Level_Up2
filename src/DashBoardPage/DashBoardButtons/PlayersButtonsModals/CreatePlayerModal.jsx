@@ -1,6 +1,5 @@
-//4 add player+player details 
 import React, { useState } from 'react';
-import './CreatePlayerModal.css';
+import ModalWrapper from '../../../Components/TheModals/ModalWrapper';
 
 function CreatePlayerModal({ isOpen, onClose, onCreate }) {
   const [name, setName] = useState('');
@@ -19,7 +18,7 @@ function CreatePlayerModal({ isOpen, onClose, onCreate }) {
     }
 
     const player = {
-      id: Date.now(), // Simple unique ID
+      id: Date.now(),
       name,
       email,
       rating: Number(rating),
@@ -29,83 +28,89 @@ function CreatePlayerModal({ isOpen, onClose, onCreate }) {
     };
 
     onCreate(player);
-    onClose(); // Close the modal
+    onClose();
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="modal-backdrop">
-      <div className="modal-content" dir="rtl">
-        <h3>إنشاء لاعب جديد</h3>
-        <form onSubmit={handleSubmit}>
-          <label>
-            الاسم<span className="required">*</span>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </label>
+    <ModalWrapper isOpen={isOpen} onClose={onClose} title="إنشاء لاعب جديد">
+      <form onSubmit={handleSubmit} className="player-form">
 
-          <label>
-            البريد الإلكتروني (اختياري)
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </label>
+        <div className="floating-group">
+          <input
+            type="text"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            className="floating-input"
+            placeholder="الاسم"
+          />
+          <label htmlFor="name" className="floating-label">الاسم*</label>
+        </div>
 
-          <label>
-            التصنيف
-            <input
-              type="number"
-              value={rating}
-              onChange={(e) => setRating(e.target.value)}
-            />
-          </label>
+        <div className="floating-group">
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="floating-input"
+            placeholder="البريد الإلكتروني"
+          />
+          <label htmlFor="email" className="floating-label">البريد الإلكتروني (اختياري)</label>
+        </div>
 
-          <label>
-            نقاط إضافية
-            <input
-              type="number"
-              value={extraPoints}
-              onChange={(e) => setExtraPoints(e.target.value)}
-            />
-          </label>
+        <div className="floating-group">
+          <input
+            type="number"
+            id="rating"
+            value={rating}
+            onChange={(e) => setRating(e.target.value)}
+            className="floating-input"
+            placeholder="التصنيف"
+          />
+          <label htmlFor="rating" className="floating-label">التصنيف</label>
+        </div>
 
-          <label>
-            معامل K
-            <input
-              type="number"
-              value={kFactor}
-              onChange={(e) => setKFactor(e.target.value)}
-            />
-          </label>
+        <div className="floating-group">
+          <input
+            type="number"
+            id="extraPoints"
+            value={extraPoints}
+            onChange={(e) => setExtraPoints(e.target.value)}
+            className="floating-input"
+            placeholder="نقاط إضافية"
+          />
+          <label htmlFor="extraPoints" className="floating-label">نقاط إضافية</label>
+        </div>
 
-          <label className="checkbox">
-            <input
-              type="checkbox"
-              checked={disabled}
-              onChange={(e) => setDisabled(e.target.checked)}
-            />
-            لاعب غير مفعل 
-          </label>
+        <div className="floating-group">
+          <input
+            type="number"
+            id="kFactor"
+            value={kFactor}
+            onChange={(e) => setKFactor(e.target.value)}
+            className="floating-input"
+            placeholder="معامل K"
+          />
+          <label htmlFor="kFactor" className="floating-label">معامل K</label>
+        </div>
 
-          <div className="modal-actions">
-          <button type="submit" className="create">
-              إنشاء
-            </button>
-            <button type="button" className="cancel" onClick={onClose}>
-              إلغاء
-            </button>
-            
-          </div>
-        </form>
-      </div>
-    </div>
+        <label className="form-checkbox">
+          <input
+            type="checkbox"
+            checked={disabled}
+            onChange={(e) => setDisabled(e.target.checked)}
+          />
+          لاعب غير مفعل
+        </label>
+
+        <div className="modal-actions">
+          <button type="submit" className="btn btn-gold">إنشاء</button>
+          <button type="button" className="btn btn-outline" onClick={onClose}>إلغاء</button>
+        </div>
+      </form>
+    </ModalWrapper>
   );
 }
 

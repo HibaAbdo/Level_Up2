@@ -1,6 +1,6 @@
 import React from 'react';
-import PageContainer from '../components/PageContainers/PageContainer';
-import Header from '../components/Headers/Header';
+import PageContainer from '../Components/ThePageContainers/PageContainer';
+import Header from '../Components/TheHeaders/Header';
 import './RoundsHomePage.css';
 
 const pairings = [

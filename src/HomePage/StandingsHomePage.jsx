@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
-import PageContainer from '../components/PageContainers/PageContainer';
-import Header from '../components/Headers/Header';
+import PageContainer from '../Components/ThePageContainers/PageContainer';
+import Header from '../Components/TheHeaders/Header';
 import './StandingsHomePage.css';
 
 const players = [

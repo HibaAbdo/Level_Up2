@@ -1,6 +1,6 @@
-//5 
 import React, { useState } from 'react';
-import './CreatePlayersByListModal.css';
+import ModalWrapper from '../../../Components/TheModals/ModalWrapper';
+import './CreatePlayersByListModal.css'; // إذا بدك تعدلي ستايل إضافي
 
 function CreatePlayersByListModal({ isOpen, onClose, onCreateMany }) {
   const [input, setInput] = useState('');
@@ -12,9 +12,9 @@ function CreatePlayersByListModal({ isOpen, onClose, onCreateMany }) {
       .filter(line => line.length > 0);
 
     const newPlayers = lines.map(line => {
-      const [name, rating] = line.split(',').map(part => part.trim());
+      const [name, rating] = line.split('،').map(part => part.trim());
       return {
-        id: Date.now() + Math.random(), // unique-ish
+        id: Date.now() + Math.random(),
         name,
         rating: Number(rating) || 0,
         email: '',
@@ -29,24 +29,23 @@ function CreatePlayersByListModal({ isOpen, onClose, onCreateMany }) {
     setInput('');
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="modal-backdrop">
-      <div className="modal-content" dir="rtl">
-        <h3>إنشاء لاعبين من القائمة</h3>
+    <ModalWrapper isOpen={isOpen} onClose={onClose} title="إنشاء لاعبين من قائمة">
+      <div className="players-list-modal">
         <textarea
+          id="players-input"
           rows={6}
+          className="floating-textarea"
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          placeholder="ضحى، 1600"
         />
-
         <div className="modal-actions">
-        <button className="create" onClick={handleSave}>حفظ</button>
-          <button className="cancel" onClick={onClose}>إلغاء</button>
+          <button className="btn btn-gold" onClick={handleSave}>إنشاء</button>
+          <button className="btn btn-outline" onClick={onClose}>إلغاء</button>
         </div>
       </div>
-    </div>
+    </ModalWrapper>
   );
 }
 

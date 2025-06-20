@@ -9,6 +9,9 @@ import MyTournaments from './MyTournamentsPage/MyTournaments';
 import CreateTournament from './CreateTournamentPage/CreateTournament';
 import TournamentDashboard from './DashBoardPage/TournamentDashboard';
 
+// ✅ أضفنا هذا السطر لإستيراد صفحة الأرشيف
+import ArchivedTournaments from './ArchivedTournamentsPage/ArchivedTournaments';
+
 const App = () => {
   const location = useLocation();
 
@@ -24,6 +27,9 @@ const App = () => {
       <Route path="/mytournaments" element={<MyTournaments />} />
       <Route path="/create" element={<CreateTournament />} />
       <Route path="/tournament/:id" element={<TournamentDashboard />} />
+
+      {/* ✅ صفحة البطولات المؤرشفة */}
+      <Route path="/archive" element={<ArchivedTournaments />} />
     </Routes>
   );
 };

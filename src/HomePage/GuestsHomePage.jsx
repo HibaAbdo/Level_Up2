@@ -2,8 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import posterIcon from '../assets/Icons/poster.png';
 import gameIcon from '../assets/Icons/game (1).png';
-import PageContainer from '../components/PageContainers/PageContainer';
-import Header from '../components/Headers/Header';
+import PageContainer from '../Components/ThePageContainers/PageContainer';
+import Header from '../Components/TheHeaders/Header';
 import './GuestsHomePage.css';
 
 const GuestsHomePage = () => {

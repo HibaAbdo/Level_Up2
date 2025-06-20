@@ -1,6 +1,6 @@
 // src/DashBoardButtons/RoundsPage/RoundsButton.jsx
 import React, { useRef, useState, useEffect } from "react";
-import PageContainer from '../../../Components/PageContainers/PageContainer';
+import PageContainer from '../../../Components/ThePageContainers/PageContainer';
 import './RoundsButton.css';
 
 function RoundsButton({ players }) {
