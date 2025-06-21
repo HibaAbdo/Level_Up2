@@ -1,3 +1,4 @@
+// src/DashBoardButtons/RoundsPage/RoundsButton.jsx
 import React, { useRef, useState, useEffect } from "react";
 import PageContainer from '../../../Components/ThePageContainers/PageContainer';
 import './RoundsButton.css';
@@ -12,8 +13,8 @@ function RoundsButton({ players }) {
     { value: "0-1", label: "٠ - ١" },
     { value: "0F-0F", label: "٠F - ٠F" },
     { value: "1F-0", label: "١F - ٠" },
-    { value: "0-1F", label: "٠ - ١F" },
-    { value: "حذف", label: "❌ حذف النتيجة" },
+    { value: "0-1F", label: "0-1F" },
+    { value: "حذف", label: " حذف النتيجة" },
   ];
 
   const initialRounds = [
@@ -42,6 +43,18 @@ function RoundsButton({ players }) {
       setCurrentRound(1);
     }
   }, [rounds.length, currentRound]);
+
+  const handleRightArrow = () => {
+    if (currentRound < rounds.length) {
+      setCurrentRound(currentRound + 1);
+    }
+  };
+
+  const handleLeftArrow = () => {
+    if (currentRound > 1) {
+      setCurrentRound(currentRound - 1);
+    }
+  };
 
   const allResultsFilled = (round) => {
     return round.matches.every((m) => m.result !== "" || m.black === "Bye");
@@ -144,6 +157,33 @@ function RoundsButton({ players }) {
     setIsViolationModalOpen(false);
   };
 
+  const handleDownloadCSV = () => {
+    const rows = [["Round", "#", "White", "WhitePts", "Result", "BlackPts", "Black"]];
+    rounds.forEach((r) => {
+      r.matches.forEach((m, i) => {
+        rows.push([
+          r.number, i + 1, m.white, m.whitePts, m.result, m.blackPts, m.black
+        ]);
+      });
+    });
+    const csvContent = "data:text/csv;charset=utf-8," + rows.map(e => e.join(",")).join("\n");
+    const link = document.createElement("a");
+    link.setAttribute("href", csvContent);
+    link.setAttribute("download", "tournament_results.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleDeleteLastRound = () => {
+    if (rounds.length > 1) {
+      const updated = [...rounds];
+      updated.pop();
+      setRounds(updated);
+      setCurrentRound(updated.length);
+    }
+  };
+
   const RoundTable = ({ round, roundIdx }) => (
     <table className="round-table">
       <thead>
@@ -219,34 +259,64 @@ function RoundsButton({ players }) {
   return (
     <PageContainer>
       <div className="rounds-page">
-        <h1 className="round-title">الجولات</h1>
+        <h1 className="round-title">الجولات</h1>  
 
-        <button className="generate-btn" onClick={handleGenerateRound}>
-          الجولة التالية
+        <button
+           className="generate-btn"
+           onClick={handleGenerateRound}
+           disabled={!allResultsFilled(rounds[rounds.length - 1])}
+           title={!allResultsFilled(rounds[rounds.length - 1]) ? "يجب تعبئة نتائج جميع المباريات أولاً" : ""}
+        >
+            الجولة التالية
         </button>
 
         <div className="round-buttons-wrapper">
-          <button onClick={() => setCurrentRound((p) => Math.max(1, p - 1))}>
-            <LuChevronRight size={24} />
+          <button className="scroll-arrow" onClick={handleRightArrow}>
+            <LuChevronRight size={32} color="#663d99" />
           </button>
+
           <div className="round-buttons-scroll" ref={scrollRef}>
-            {rounds.map(r => (
+            {rounds.map((r) => (
               <button
                 key={r.number}
-                className={currentRound === r.number ? "round-btn active" : "round-btn"}
+                className={r.number === currentRound ? "round-btn active" : "round-btn"}
                 onClick={() => setCurrentRound(r.number)}
               >
                 {r.number}
               </button>
             ))}
           </div>
-          <button onClick={() => setCurrentRound((p) => Math.min(rounds.length, p + 1))}>
-            <LuChevronLeft size={24} />
+
+          <button className="scroll-arrow" onClick={handleLeftArrow}>
+            <LuChevronLeft size={32} color="#663d99" />
           </button>
         </div>
 
         <div className="rounds-table-wrapper">
           <RoundTable round={rounds[currentRound - 1]} roundIdx={currentRound - 1} />
+        </div>
+
+        <div className="action-bar">
+          {currentRound && rounds.length > 0 && (
+            <button className="fullscreen-btn" onClick={() => setShowZoom(true)}>
+              🔍
+            </button>
+          )}
+          {rounds.length > 0 && (
+            <button className="all-rounds-btn" onClick={() => setShowAllRoundsModal(true)}>
+              كل الجولات
+            </button>
+          )}
+          {currentRound && rounds.length > 0 && (
+            <button className="csv-btn" onClick={handleDownloadCSV}>
+              💾 حفظ كـ CSV
+            </button>
+          )}
+          {rounds.length > 0 && (
+            <button className="delete-btn" onClick={handleDeleteLastRound}>
+              حذف الجولة الأخيرة
+            </button>
+          )}
         </div>
 
         <ViolationDetailsModal

@@ -139,3 +139,24 @@
     padding: 9px 18px;
   }
 }
+
+/* ✅ نسق إضافي لزر بطولاتي */
+.mytournaments-button {
+.mytournaments-button {
+  background-color: transparent; /* نفس لون الهيدر */
+  border: none;
+  padding: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #663d99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.mytournaments-button:hover {
+  color: #f0c230;
+}
+}

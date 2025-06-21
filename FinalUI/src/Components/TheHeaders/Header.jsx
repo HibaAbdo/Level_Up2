@@ -5,7 +5,7 @@ import logo from '../../assets/logoshah.png';
 import shahIcon from '../../assets/Icons/shah2rangeIcon.png';
 import homeIcon from '../../assets/Icons/home.png';
 import logoutIcon from '../../assets/LogoutIcon/logout (2).png';
-import loginIcon from '../../assets/LoginIcons/loginIcon.png'
+import loginIcon from '../../assets/LoginIcons/loginIcon.png';
 import './Header.css';
 
 const Header = ({
@@ -25,21 +25,31 @@ const Header = ({
 
   return (
     <header className="header-container">
-      <div className="logo-with-text">
-        <img src={logo} alt="Logo" className="dashboard-logo" />
+     <div className="logo-with-text">
+  <img src={logo} alt="Logo" className="dashboard-logo" />
 
-        {isGuestHomePage && (
-          <a
-            className="logo-text-link"
-            href="https://www.shah2range.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img src={shahIcon} alt="شطرنج القدس" className="logo-small-icon" />
-            <span className="logo-text">شطرنج القدس</span>
-          </a>
-        )}
-      </div>
+  {isGuestHomePage ? (
+    <a
+      className="logo-text-link"
+      href="https://www.shah2range.com/"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <img src={shahIcon} alt="شطرنج القدس" className="logo-small-icon" />
+      <span className="logo-text">شطرنج القدس</span>
+    </a>
+  ) : (
+    <div
+      className="logo-text-link"
+      onClick={() => navigate('/mytournaments')}
+      style={{ cursor: 'pointer' }}
+    >
+      
+      <span className="logo-text">بطولاتي</span>
+    </div>
+  )}
+</div>
+
 
       <div className="header-left">
         {username && (
