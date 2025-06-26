@@ -4,9 +4,8 @@ import { useParams, useLocation } from 'react-router-dom';
 import './TournamentDashboard.css';
 
 import Header from '../components/TheHeaders/Header';
-// Corrected DashboardDrawer import path (singular 'DashboardDrawer')
-import DashboardDrawer from '../Components/TheDashboardDrawers/DashboardDrawer'; 
-import PageContainer from '../Components/ThePageContainers/PageContainer'; // Added PageContainer
+import DashboardDrawer from '../Components/TheDashboardDrawers/DashboardDrawer';
+import PageContainer from '../Components/ThePageContainers/PageContainer';
 
 import RoundsPage from "./DashBoardButtons/RoundsPage/RoundsButton";
 import StandingsPage from "./DashBoardButtons/StandingsPage/StandingsButton";
@@ -31,9 +30,10 @@ import csvIcon from '../assets/Icons/csv.png';
 function TournamentDashboard() {
   const { id } = useParams();
   const username = localStorage.getItem('username') || 'المستخدم';
+  const location = useLocation();
+
   const [activeTab, setActiveTab] = useState('اللاعبين');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const location = useLocation();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isListModalOpen, setIsListModalOpen] = useState(false);
@@ -46,25 +46,26 @@ function TournamentDashboard() {
   const [rounds, setRounds] = useState([]);
 
   const tournamentKey = `tournament-${id}`;
-  let tournament = {};
-
-  try {
-    const raw = localStorage.getItem(tournamentKey);
-    tournament = raw ? JSON.parse(raw) : {};
-  } catch (err) {
-    console.error('⚠️ Failed to parse tournament:', err);
-  }
 
   useEffect(() => {
-    const storedPlayers = Array.isArray(tournament.players) ? tournament.players : [];
-    setPlayers(storedPlayers);
-  }, [id, tournament.players]);
+    try {
+      const raw = localStorage.getItem(tournamentKey);
+      const tournament = raw ? JSON.parse(raw) : {};
+      const storedPlayers = Array.isArray(tournament.players) ? tournament.players : [];
+      setPlayers(storedPlayers);
+    } catch (err) {
+      console.error('⚠️ Failed to parse tournament:', err);
+      setPlayers([]);
+    }
+  }, [id]);
 
   const toggleDrawer = () => {
     setIsDrawerOpen(prev => !prev);
   };
 
   const savePlayersToStorage = (updatedPlayers) => {
+    const raw = localStorage.getItem(tournamentKey);
+    const tournament = raw ? JSON.parse(raw) : {};
     const updatedTournament = { ...tournament, players: updatedPlayers };
     localStorage.setItem(tournamentKey, JSON.stringify(updatedTournament));
     setPlayers(updatedPlayers);
@@ -202,7 +203,7 @@ function TournamentDashboard() {
 
         {activeTab === 'الإعدادات' && <SettingsButton />}
         {activeTab === 'الجولات' && (
-          <RoundsPage players={players} rounds={rounds} setRounds={setRounds} />
+          <RoundsPage players={players} rounds={rounds} setRounds={setRounds} formData={formData} />
         )}
         {activeTab === 'الترتيب' && (
           <StandingsPage players={players} rounds={rounds} />
@@ -210,18 +211,43 @@ function TournamentDashboard() {
       </PageContainer>
 
       {/* Modals */}
-      <CreatePlayerModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onCreate={handleCreatePlayer} />
-      <CreatePlayersByListModal isOpen={isListModalOpen} onClose={() => setIsListModalOpen(false)} onCreateMany={handleCreateManyPlayers} />
-      <RandomizeConfirmationModal isOpen={isRandomizeConfirmOpen} onClose={() => setIsRandomizeConfirmOpen(false)} onConfirm={() => {
-        handleRandomizePlayers();
-        setIsRandomizeConfirmOpen(false);
-      }} />
-      <SortByRatingConfirmationModal isOpen={isSortByRatingConfirmOpen} onClose={() => setIsSortByRatingConfirmOpen(false)} onConfirm={() => {
-        sortByRating();
-        setIsSortByRatingConfirmOpen(false);
-      }} />
-      <ForbiddenPairsModal isOpen={isForbiddenModalOpen} onClose={() => setIsForbiddenModalOpen(false)} players={players} />
-      <PredefinedPairsModal isOpen={isPredefinedModalOpen} onClose={() => setIsPredefinedModalOpen(false)} players={players} tournamentId={id} />
+      <CreatePlayerModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onCreate={handleCreatePlayer}
+      />
+      <CreatePlayersByListModal
+        isOpen={isListModalOpen}
+        onClose={() => setIsListModalOpen(false)}
+        onCreateMany={handleCreateManyPlayers}
+      />
+      <RandomizeConfirmationModal
+        isOpen={isRandomizeConfirmOpen}
+        onClose={() => setIsRandomizeConfirmOpen(false)}
+        onConfirm={() => {
+          handleRandomizePlayers();
+          setIsRandomizeConfirmOpen(false);
+        }}
+      />
+      <SortByRatingConfirmationModal
+        isOpen={isSortByRatingConfirmOpen}
+        onClose={() => setIsSortByRatingConfirmOpen(false)}
+        onConfirm={() => {
+          sortByRating();
+          setIsSortByRatingConfirmOpen(false);
+        }}
+      />
+      <ForbiddenPairsModal
+        isOpen={isForbiddenModalOpen}
+        onClose={() => setIsForbiddenModalOpen(false)}
+        players={players}
+      />
+      <PredefinedPairsModal
+        isOpen={isPredefinedModalOpen}
+        onClose={() => setIsPredefinedModalOpen(false)}
+        players={players}
+        tournamentId={id}
+      />
     </>
   );
 }

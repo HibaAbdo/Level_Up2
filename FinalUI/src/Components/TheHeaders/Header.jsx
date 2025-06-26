@@ -16,7 +16,9 @@ const Header = ({
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isGuestHomePage = location.pathname === '/';
+  // ✅ تحديد إذا كنت في صفحة زائر (ضيف)
+  const guestPaths = ['/', '/standings', '/rounds'];
+  const isGuestPage = guestPaths.includes(location.pathname);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -25,31 +27,29 @@ const Header = ({
 
   return (
     <header className="header-container">
-     <div className="logo-with-text">
-  <img src={logo} alt="Logo" className="dashboard-logo" />
+      <div className="logo-with-text">
+        <img src={logo} alt="Logo" className="dashboard-logo" />
 
-  {isGuestHomePage ? (
-    <a
-      className="logo-text-link"
-      href="https://www.shah2range.com/"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      <img src={shahIcon} alt="شطرنج القدس" className="logo-small-icon" />
-      <span className="logo-text">شطرنج القدس</span>
-    </a>
-  ) : (
-    <div
-      className="logo-text-link"
-      onClick={() => navigate('/mytournaments')}
-      style={{ cursor: 'pointer' }}
-    >
-      
-      <span className="logo-text">بطولاتي</span>
-    </div>
-  )}
-</div>
-
+        {isGuestPage ? (
+          <a
+            className="logo-text-link"
+            href="https://www.shah2range.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img src={shahIcon} alt="شطرنج القدس" className="logo-small-icon" />
+            <span className="logo-text">شطرنج القدس</span>
+          </a>
+        ) : (
+          <div
+            className="logo-text-link"
+            onClick={() => navigate('/mytournaments')}
+            style={{ cursor: 'pointer' }}
+          >
+            <span className="logo-text">بطولاتي</span>
+          </div>
+        )}
+      </div>
 
       <div className="header-left">
         {username && (

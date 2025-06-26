@@ -5,29 +5,42 @@ import './CreatePlayersByListModal.css'; // إذا بدك تعدلي ستايل 
 function CreatePlayersByListModal({ isOpen, onClose, onCreateMany }) {
   const [input, setInput] = useState('');
 
-  const handleSave = () => {
-    const lines = input
-      .split('\n')
-      .map(line => line.trim())
-      .filter(line => line.length > 0);
+const handleSave = async () => {
+  const lines = input
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line => line.length > 0);
 
-    const newPlayers = lines.map(line => {
-      const [name, rating] = line.split('،').map(part => part.trim());
-      return {
-        id: Date.now() + Math.random(),
-        name,
-        rating: Number(rating) || 0,
-        email: '',
-        kFactor: 20,
-        extraPoints: 0,
-        disabled: false,
-      };
+  const newPlayers = lines.map(line => {
+    const [name, rating] = line.split('،').map(part => part.trim());
+    return {
+      name,
+      rating: Number(rating) || 0,
+      email: '',
+      kFactor: 20,
+      extraPoints: 0,
+      disabled: false,
+    };
+  });
+
+  try {
+    const response = await fetch('/api/players/batch', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newPlayers),
     });
 
-    onCreateMany(newPlayers);
+    if (!response.ok) throw new Error('فشل في إضافة اللاعبين');
+
+    alert('✅ تمت إضافة جميع اللاعبين بنجاح');
+
     onClose();
     setInput('');
-  };
+  } catch (error) {
+    console.error(error);
+    alert('❌ حدث خطأ أثناء إرسال اللاعبين');
+  }
+};
 
   return (
     <ModalWrapper isOpen={isOpen} onClose={onClose} title="إنشاء لاعبين من قائمة">
@@ -47,6 +60,8 @@ function CreatePlayersByListModal({ isOpen, onClose, onCreateMany }) {
       </div>
     </ModalWrapper>
   );
+  
 }
+
 
 export default CreatePlayersByListModal;

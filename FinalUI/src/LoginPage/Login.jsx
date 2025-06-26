@@ -43,10 +43,10 @@ function Login() {
     }
 
     try {
-      // await axios.post('/api/auth/login', {
-      //   username,
-      //   password
-      // });
+      await axios.post('/api/auth/login', {
+        username,
+        password
+      });
 
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('username', username);
@@ -117,7 +117,6 @@ function Login() {
           {message && <p>{message}</p>}
         </div>
       </div>
- 
   );
 }
 

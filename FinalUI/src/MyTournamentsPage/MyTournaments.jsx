@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PageContainer from '../Components/ThePageContainers/PageContainer';
-import Header from '../Components/TheHeaders/Header';
+import Header from 'src/components/Headers/Header.jsx';
 import './MyTournaments.css';
 
 function MyTournaments() {
@@ -11,8 +11,19 @@ function MyTournaments() {
   const username = localStorage.getItem('username') || 'المستخدم';
 
   useEffect(() => {
-    const storedTournaments = JSON.parse(localStorage.getItem('tournaments')) || [];
-    setTournaments(storedTournaments);
+    const fetchTournaments = async () => {
+      try {
+        const response = await fetch('/api/tournaments/my');
+        if (!response.ok) throw new Error('فشل في تحميل البطولات');
+        const data = await response.json();
+        setTournaments(data);
+      } catch (error) {
+        console.error(error);
+        alert('❌ خطأ أثناء تحميل البطولات من السيرفر');
+      }
+    };
+
+    fetchTournaments();
   }, []);
 
   const splitDateTime = (str) => {
@@ -24,16 +35,8 @@ function MyTournaments() {
   };
 
   const archiveTournament = (id) => {
-    const updated = tournaments.filter(t => t.id !== id);
-    const archived = JSON.parse(localStorage.getItem('archivedTournaments')) || [];
-    const toArchive = tournaments.find(t => t.id === id);
-
-    if (toArchive) {
-      archived.push(toArchive);
-      localStorage.setItem('archivedTournaments', JSON.stringify(archived));
-      localStorage.setItem('tournaments', JSON.stringify(updated));
-      setTournaments(updated);
-    }
+    // لو عندك أرشفة في الباكند ممكن تعمل طلب DELETE أو PUT هنا
+    alert(`📦 تم أرشفة البطولة ذات المعرف ${id} (تعديل حسب منطق الباكند)`);
   };
 
   return (
@@ -97,15 +100,14 @@ function MyTournaments() {
                           </div>
                         </td>
                         <td>
-  <button
-    className="archive-icon-btn"
-    onClick={() => archiveTournament(t.id)}
-    title="أرشفة"
-  >
-    📦
-  </button>
-</td>
-
+                          <button
+                            className="archive-icon-btn"
+                            onClick={() => archiveTournament(t.id)}
+                            title="أرشفة"
+                          >
+                            📦
+                          </button>
+                        </td>
                       </tr>
                     );
                   })

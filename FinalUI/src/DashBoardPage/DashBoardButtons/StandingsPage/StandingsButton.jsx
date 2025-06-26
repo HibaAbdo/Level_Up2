@@ -1,43 +1,32 @@
 import React, { useEffect, useState } from "react";
 import "../../TournamentDashboard.css";
-import logo from "../../../assets/logoshah.png";
 import "./StandingsButton.css";
+import { FaSearch } from "react-icons/fa";
 
-function StandingsButton({ players, rounds }) {
+function StandingsButton({ tournamentId }) {
   const [rankingData, setRankingData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [showZoom, setShowZoom] = useState(false);
 
   useEffect(() => {
-    const playerScores = {};
+    const fetchStandings = async () => {
+      try {
+        const response = await fetch(`/api/standings?tournamentId=${tournamentId}`);
+        if (!response.ok) throw new Error('فشل في تحميل الترتيب');
+        const data = await response.json();
+        setRankingData(data);
+      } catch (error) {
+        console.error(error);
+        alert('❌ خطأ أثناء تحميل الترتيب من السيرفر');
+      }
+    };
 
-    players.forEach(p => {
-      playerScores[p.name] = {
-        name: p.name,
-        points: 0,
-        rating: p.rating,
-        newRating: p.rating,
-        pos: 0,
-        de: '',
-        buc1: '',
-        bucT: ''
-      };
-    });
+    fetchStandings();
+  }, [tournamentId]);
 
-    rounds.forEach(round => {
-      round.matches.forEach(match => {
-        if (match.result === "Bye") {
-          playerScores[match.white].points += 0.5;
-        } else {
-          playerScores[match.white].points += match.whitePts;
-          playerScores[match.black].points += match.blackPts;
-        }
-      });
-    });
-
-    const sorted = Object.values(playerScores).sort((a, b) => b.points - a.points);
-    sorted.forEach((p, index) => (p.pos = index + 1));
-    setRankingData(sorted);
-  }, [players, rounds]);
+  const filteredData = rankingData.filter((row) =>
+    row.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleDownloadCSV = () => {
     if (rankingData.length === 0) return;
@@ -53,12 +42,20 @@ function StandingsButton({ players, rounds }) {
 
   return (
     <div className="standings-page">
-      <div className="header">
-        <h1 className="ranking-title">الترتيب</h1>
+      <div className="standings-title">الترتيب</div>
+      <div className="standings-search-wrapper">
+        <input
+          type="text"
+          className="standings-search-input"
+          placeholder="ابحث عن لاعب..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <FaSearch className="standings-search-icon" />
       </div>
 
-      <div className="ranking-table-wrapper">
-        <table className="ranking-table">
+      <div className="standings-table-wrapper">
+        <table className="table-theme">
           <thead>
             <tr>
               <th>الترتيب</th>
@@ -68,16 +65,18 @@ function StandingsButton({ players, rounds }) {
               <th>التصنيف الجديد</th>
               <th>DE</th>
               <th>Buc1</th>
-              <th>المجموع BucT</th>
+              <th>BucT</th>
             </tr>
           </thead>
           <tbody>
-            {rankingData.length === 0 ? (
-              <tr className="no-data-row">
-                <td colSpan="8">لا توجد بيانات</td>
+            {filteredData.length === 0 ? (
+              <tr>
+                <td colSpan="8" className="no-results-message">
+                  لا توجد نتائج مطابقة
+                </td>
               </tr>
             ) : (
-              rankingData.map((row, idx) => (
+              filteredData.map((row, idx) => (
                 <tr key={idx}>
                   <td>{row.pos}</td>
                   <td>{row.name}</td>
@@ -103,7 +102,7 @@ function StandingsButton({ players, rounds }) {
         <div className="modal-overlay" onClick={() => setShowZoom(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h2 className="zoom-title">الترتيب الكامل</h2>
-            <table className="ranking-table">
+            <table className="table-theme">
               <thead>
                 <tr>
                   <th>الترتيب</th>
@@ -113,7 +112,7 @@ function StandingsButton({ players, rounds }) {
                   <th>التصنيف الجديد</th>
                   <th>DE</th>
                   <th>Buc1</th>
-                  <th>المجموع BucT</th>
+                  <th>BucT</th>
                 </tr>
               </thead>
               <tbody>
@@ -131,7 +130,9 @@ function StandingsButton({ players, rounds }) {
                 ))}
               </tbody>
             </table>
-            <button className="close-btn round-btn" onClick={() => setShowZoom(false)}>✖ إغلاق</button>
+            <div className="centered-close-btn">
+              <button className="close-btn" onClick={() => setShowZoom(false)}>✖ إغلاق</button>
+            </div>
           </div>
         </div>
       )}

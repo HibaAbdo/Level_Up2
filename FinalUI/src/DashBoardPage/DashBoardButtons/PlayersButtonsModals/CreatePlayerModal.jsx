@@ -9,27 +9,42 @@ function CreatePlayerModal({ isOpen, onClose, onCreate }) {
   const [extraPoints, setExtraPoints] = useState(0);
   const [disabled, setDisabled] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!name.trim()) {
-      alert('الاسم مطلوب');
-      return;
-    }
+  if (!name.trim()) {
+    alert('الاسم مطلوب');
+    return;
+  }
 
-    const player = {
-      id: Date.now(),
-      name,
-      email,
-      rating: Number(rating),
-      kFactor: Number(kFactor),
-      extraPoints: Number(extraPoints),
-      disabled,
-    };
-
-    onCreate(player);
-    onClose();
+  const player = {
+    name,
+    email,
+    rating: Number(rating),
+    kFactor: Number(kFactor),
+    extraPoints: Number(extraPoints),
+    disabled,
   };
+
+  try {
+    const response = await fetch('/api/players', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(player),
+    });
+
+    if (!response.ok) throw new Error('فشل في إضافة اللاعب');
+
+    alert('✅ تم إضافة اللاعب بنجاح');
+
+    onCreate(player);  // ممكن تزيلها لو صرت تعتمد على API Response
+    onClose();
+  } catch (error) {
+    console.error(error);
+    alert('❌ خطأ أثناء إضافة اللاعب');
+  }
+};
+
 
   return (
     <ModalWrapper isOpen={isOpen} onClose={onClose} title="إنشاء لاعب جديد">

@@ -1,11 +1,11 @@
 // src/DashBoardButtons/RoundsPage/RoundsButton.jsx
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import PageContainer from '../../../Components/ThePageContainers/PageContainer';
 import './RoundsButton.css';
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import ViolationDetailsModal from '../../../Components/Violations/ViolationDetailsModal';
 
-function RoundsButton({ players }) {
+function RoundsButton({ players, formData }) {
   const resultOptions = [
     { value: "", label: "تعيين النتيجة" },
     { value: "1-0", label: "١ - ٠" },
@@ -21,11 +21,10 @@ function RoundsButton({ players }) {
     {
       number: 1,
       matches: [
-        { id: 'match-1-1', white: 'لينا', black: 'شهد', whitePts: 0, blackPts: 0, result: '', whiteViolations: [], blackViolations: [] },
-        { id: 'match-1-2', white: 'ديما', black: 'غادة', whitePts: 0, blackPts: 0, result: '', whiteViolations: [], blackViolations: [] },
-        { id: 'match-1-3', white: 'جنان', black: 'بتول', whitePts: 0, blackPts: 0, result: '', whiteViolations: [], blackViolations: [] },
-        { id: 'match-1-4', white: 'هبه', black: 'براءة', whitePts: 0, blackPts: 0, result: '', whiteViolations: [], blackViolations: [] },
-        { id: 'match-1-5-bye', white: 'ايمان', black: 'Bye', whitePts: 0.5, blackPts: '', result: 'Bye', whiteViolations: [], blackViolations: [] },
+        { id: 'match-1-1', white: 'player1', black: 'player5', whitePts: 0, blackPts: 0, result: '', whiteViolations: [], blackViolations: [] },
+        { id: 'match-1-2', white: 'player3', black: 'player2', whitePts: 0, blackPts: 0, result: '', whiteViolations: [], blackViolations: [] },
+        { id: 'match-1-3', white: 'player6', black: 'player9', whitePts: 0, blackPts: 0, result: '', whiteViolations: [], blackViolations: [] },
+        { id: 'match-1-4', white: 'player8', black: 'player7', whitePts: 0, blackPts: 0, result: '', whiteViolations: [], blackViolations: [] },
       ]
     }
   ];
@@ -37,12 +36,6 @@ function RoundsButton({ players }) {
   const scrollRef = useRef(null);
   const [isViolationModalOpen, setIsViolationModalOpen] = useState(false);
   const [currentViolationData, setCurrentViolationData] = useState(null);
-
-  useEffect(() => {
-    if (rounds.length > 0 && currentRound === null) {
-      setCurrentRound(1);
-    }
-  }, [rounds.length, currentRound]);
 
   const handleRightArrow = () => {
     if (currentRound < rounds.length) {
@@ -94,16 +87,44 @@ function RoundsButton({ players }) {
     return matches;
   };
 
-  const handleGenerateRound = () => {
-    if (!allResultsFilled(rounds[rounds.length - 1])) return;
+const handleGenerateRound = async () => {
+  if (!allResultsFilled(rounds[rounds.length - 1])) return;
+
+  const payload = {
+    tournament: formData,
+    players: players
+  };
+
+  try {
+    const response = await fetch('/api/tournaments/full', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) throw new Error('فشل في إرسال إعدادات البطولة واللاعبين');
+
+    alert('✅ تم إرسال إعدادات البطولة واللاعبين بنجاح');
+
+    // الآن: أنشئ الجولة التالية
     const newRound = {
       number: rounds.length + 1,
       matches: generateMatches()
     };
+
     setRounds([...rounds, newRound]);
     setCurrentRound(rounds.length + 1);
-    setTimeout(() => scrollRef.current?.scrollTo({ left: scrollRef.current.scrollWidth, behavior: 'smooth' }), 100);
-  };
+    setTimeout(() => scrollRef.current?.scrollTo({
+      left: scrollRef.current.scrollWidth,
+      behavior: 'smooth'
+    }), 100);
+
+  } catch (error) {
+    console.error(error);
+    alert('❌ خطأ أثناء إرسال البطولة واللاعبين');
+  }
+};
+
 
   const handleSetResult = (roundIdx, matchId, value) => {
     const updated = [...rounds];
@@ -224,7 +245,6 @@ function RoundsButton({ players }) {
                   value={m.result}
                   onChange={(e) => handleSetResult(roundIdx, m.id, e.target.value)}
                   disabled={roundIdx !== rounds.length - 1}
-                  className="native-select"
                 >
                   {resultOptions.map((opt) => (
                     <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -259,15 +279,15 @@ function RoundsButton({ players }) {
   return (
     <PageContainer>
       <div className="rounds-page">
-        <h1 className="round-title">الجولات</h1>  
+        <h1 className="round-title">الجولات</h1>
 
         <button
-           className="generate-btn"
-           onClick={handleGenerateRound}
-           disabled={!allResultsFilled(rounds[rounds.length - 1])}
-           title={!allResultsFilled(rounds[rounds.length - 1]) ? "يجب تعبئة نتائج جميع المباريات أولاً" : ""}
+          className="generate-btn"
+          onClick={handleGenerateRound}
+          disabled={!allResultsFilled(rounds[rounds.length - 1])}
+          title={!allResultsFilled(rounds[rounds.length - 1]) ? "يجب تعبئة نتائج جميع المباريات أولاً" : ""}
         >
-            الجولة التالية
+          الجولة التالية
         </button>
 
         <div className="round-buttons-wrapper">
