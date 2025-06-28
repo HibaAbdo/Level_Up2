@@ -9,7 +9,7 @@ import './GuestsHomePage.css';
 const GuestsHomePage = () => {
   const navigate = useNavigate();
 
-  const handleLogin = () => navigate('/login');
+  const handleLogin = () => navigate('/');
   const handleRounds = () => navigate('/rounds');
   const handleStandings = () => navigate('/standings');
 

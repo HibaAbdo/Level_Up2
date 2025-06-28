@@ -122,9 +122,9 @@ function Login() {
           <button
             type="button"
             className="mini-link-button"
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/guests-home')}
           >
-            الصفحة الرئيسية
+           الدخول كضيف
           </button>
         </form>
 
