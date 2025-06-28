@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Select from 'react-select';
+import ModalWrapper from '../../../Components/TheModals/ModalWrapper';
 
 function ForbiddenPairsModal({ isOpen, onClose, players, onAddPair }) {
   const [player1, setPlayer1] = useState(null);
@@ -30,9 +31,8 @@ function ForbiddenPairsModal({ isOpen, onClose, players, onAddPair }) {
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-wrapper" dir="rtl">
-        <h2 className="modal-title">⚠️ الأزواج الممنوعة</h2>
+     <ModalWrapper isOpen={isOpen} onClose={onClose} title="⚠️ الأزواج الممنوعة">
+      <div dir="rtl">
         <p className="modal-description">هنا يمكنك تحديد اللاعبين الذين لا يُسمح لهم بالمواجهة.</p>
 
         <div className="table-wrapper">
@@ -89,7 +89,7 @@ function ForbiddenPairsModal({ isOpen, onClose, players, onAddPair }) {
           </div>
         )}
 
-<div className="modal-actions" style={{ marginTop: '2rem' }}>
+     <div className="modal-actions" style={{ marginTop: '2rem' }}>
           {showForm ? (
             <>
               <button
@@ -115,7 +115,8 @@ function ForbiddenPairsModal({ isOpen, onClose, players, onAddPair }) {
           )}
         </div>
       </div>
-    </div>
+          </ModalWrapper>
+
   );
 }
 

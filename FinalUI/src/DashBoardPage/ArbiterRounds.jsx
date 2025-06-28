@@ -324,7 +324,7 @@ const [rounds, setRounds] = useState(storedRounds);
             (rounds.length === maxRounds && (!allResultsFilled(rounds[rounds.length - 1]) || resultsSubmitted))
           }
         >
-          {rounds.length === maxRounds ? "إنهاء" : "الجولة التالية"}
+          {rounds.length === maxRounds ? "إنهاء" : "إرسال النتائج"}
         </button>
 
         <div className="round-buttons-wrapper">
@@ -376,31 +376,6 @@ const [rounds, setRounds] = useState(storedRounds);
         <div className="rounds-actions">
           <button className="rounds-action-btn" onClick={() => setIsZoomModalOpen(true)}>🔍</button>
           <button className="rounds-action-btn" onClick={() => setIsAllRoundsModalOpen(true)}>كل الجولات</button>
-          <button className="rounds-action-btn" onClick={() => {
-            const csvRows = ["الجولة,الأبيض,الأسود,النتيجة"];
-            rounds.forEach(round => {
-              round.matches.forEach(match => {
-                csvRows.push(`${round.number},${match.white},${match.black},${match.result}`);
-              });
-            });
-            const blob = new Blob([csvRows.join("\n")], { type: "text/csv" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "rounds.csv";
-            a.click();
-            URL.revokeObjectURL(url);
-          }}>حفظ كـ CSV 💾</button>
-          <button className="rounds-action-btn" onClick={() => {
-            if (rounds.length > 1) {
-              const updated = [...rounds];
-              updated.pop();
-              setRounds(updated);
-              setCurrentRound(updated.length);
-            } else {
-              alert("❌ لا يمكن حذف الجولة الأولى");
-            }
-          }}>حذف الجولة الأخيرة</button>
         </div>
       </div>
     </PageContainer>

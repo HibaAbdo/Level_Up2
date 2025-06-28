@@ -1,13 +1,11 @@
 import React from "react";
-import "./ModalStyle.css";
+import ModalWrapper from "../TheModals/ModalWrapper";
 
 function ZoomModal({ isOpen, onClose, round }) {
   if (!isOpen || !round) return null;
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <h2>تفاصيل الجولة {round.number}</h2>
+      <ModalWrapper isOpen={isOpen} onClose={onClose} title={`تفاصيل الجولة ${round.number}`}>
         <div className="table-wrapper">
           <table className="table-theme">
             <thead>
@@ -30,9 +28,10 @@ function ZoomModal({ isOpen, onClose, round }) {
             </tbody>
           </table>
         </div>
-        <button className="close-btn" onClick={onClose}>إغلاق</button>
-      </div>
-    </div>
+         <div className="modal-actions" style={{ marginTop: '1rem' }}>
+          <button className="btn btn-outline" onClick={onClose}>إغلاق</button>
+        </div>
+    </ModalWrapper>
   );
 }
 

@@ -117,7 +117,7 @@ function Login() {
             />
           </div>
 
-          <button type="submit" className="login-btn">الدخول</button>
+          <button type="submit" className="login-btn">تسجيل الدخول</button>
 
           <button
             type="button"

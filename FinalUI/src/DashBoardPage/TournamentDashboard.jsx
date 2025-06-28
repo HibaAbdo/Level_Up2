@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import './TournamentDashboard.css';
 
-import Header from '../components/TheHeaders/Header';
+import Header from '../Components/TheHeaders/Header';
 import DashboardDrawer from '../Components/TheDashboardDrawers/DashboardDrawer';
 import PageContainer from '../Components/ThePageContainers/PageContainer';
 
@@ -18,6 +18,7 @@ import SortByRatingConfirmationModal from './DashBoardButtons/PlayersButtonsModa
 import ForbiddenPairsModal from './DashBoardButtons/PlayersButtonsModals/ForbiddenPairsModal';
 import PredefinedPairsModal from './DashBoardButtons/PlayersButtonsModals/PredefinedPairsModal';
 import CheckinConfirmationModal from './DashBoardButtons/PlayersButtonsModals/CheckinConfirmationModal';
+import { FaSearch } from "react-icons/fa";
 
 import addIcon from '../assets/Icons/add-player.png';
 import listIcon from '../assets/Icons/add-players.png';
@@ -26,7 +27,6 @@ import ratingIcon from '../assets/Icons/sortByrating.png';
 import blockIcon from '../assets/Icons/forbidden.png';
 import pairIcon from '../assets/Icons/pairs.png';
 import confirmIcon from '../assets/Icons/confirm.png';
-import csvIcon from '../assets/Icons/csv.png';
 
 function TournamentDashboard() {
   const { id } = useParams();
@@ -35,6 +35,7 @@ function TournamentDashboard() {
 
   const [activeTab, setActiveTab] = useState('اللاعبين');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingPlayer, setEditingPlayer] = useState(null);
@@ -48,40 +49,46 @@ function TournamentDashboard() {
 
   const [players, setPlayers] = useState([]);
   const [rounds, setRounds] = useState([]);
+  const [currentRoundIndex, setCurrentRoundIndex] = useState(0);
+  
 
   const tournamentKey = `tournament-${id}`;
 
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(tournamentKey);
-      const tournament = raw ? JSON.parse(raw) : {};
-      const storedPlayers = Array.isArray(tournament.players) ? tournament.players : [];
-      setPlayers(storedPlayers);
-    } catch (err) {
-      console.error('⚠ Failed to parse tournament:', err);
-      setPlayers([]);
-    }
-  }, [id]);
-
+ 
   const toggleDrawer = () => {
     setIsDrawerOpen(prev => !prev);
   };
 
-  const savePlayersToStorage = (updatedPlayers) => {
-    const raw = localStorage.getItem(tournamentKey);
-    const tournament = raw ? JSON.parse(raw) : {};
-    const updatedTournament = { ...tournament, players: updatedPlayers };
-    localStorage.setItem(tournamentKey, JSON.stringify(updatedTournament));
-    setPlayers(updatedPlayers);
+ const savePlayersToStorage = (updatedPlayers) => {
+  const raw = localStorage.getItem(tournamentKey);
+  const tournament = raw ? JSON.parse(raw) : {};
+  const updatedTournament = { 
+    ...tournament, 
+    players: updatedPlayers,
+    rounds: rounds    // نحتفظ بالجولات كما هي
   };
+  localStorage.setItem(tournamentKey, JSON.stringify(updatedTournament));
+  setPlayers(updatedPlayers);
+};
+
+const saveRoundsToStorage = (updatedRounds) => {
+  const raw = localStorage.getItem(tournamentKey);
+  const tournament = raw ? JSON.parse(raw) : {};
+  const updatedTournament = { 
+    ...tournament, 
+    players: players,
+    rounds: updatedRounds
+  };
+  localStorage.setItem(tournamentKey, JSON.stringify(updatedTournament));
+  setRounds(updatedRounds);
+};
+
 
   const handleCreatePlayer = (player) => {
     if (editingPlayer) {
-      // تعديل لاعب
       const updated = players.map(p => (p.id === editingPlayer.id ? { ...player, id: editingPlayer.id } : p));
       savePlayersToStorage(updated);
     } else {
-      // إنشاء لاعب جديد بمعرف ثابت
       const newPlayer = { ...player, id: getNextPlayerId() };
       savePlayersToStorage([...players, newPlayer]);
     }
@@ -105,15 +112,77 @@ function TournamentDashboard() {
     savePlayersToStorage(updated);
   };
 
-  const handleToggleCheckin = () => {
-    if (!isCheckinMode) {
-      const confirm = window.confirm("هل أنت متأكد من بدء التأكيد؟ سيتم إلغاء تأكيد كل اللاعبين.");
-      if (!confirm) return;
-      const updated = players.map(p => ({ ...p, checkedIn: false }));
-      savePlayersToStorage(updated);
-    }
-    setIsCheckinMode(!isCheckinMode);
+  const beginCheckin = () => {
+    const updated = players.map((p) => ({
+      ...p,
+      checkedIn: p.checkedIn || false, // keep previous confirmed
+    }));
+    savePlayersToStorage(updated);
+    setIsCheckinMode(true);
+    setIsCheckinModalOpen(false);
   };
+
+ const finalizeCheckin = () => {
+  setIsCheckinMode(false);
+  setIsCheckinModalOpen(false);
+
+  const confirmed = players.filter(p => p.checkedIn !== false);
+
+  // توليد أول جولة
+  const firstRound = {
+    number: 1,
+    matches: generateMatches(confirmed),
+  };
+  const initialRounds = [firstRound];
+
+  const raw = localStorage.getItem(tournamentKey);
+  const tournament = raw ? JSON.parse(raw) : {};
+  const updatedTournament = {
+    ...tournament,
+    rounds: initialRounds,
+  };
+  localStorage.setItem(tournamentKey, JSON.stringify(updatedTournament));
+
+  setRounds(initialRounds);
+
+  setCurrentRoundIndex(0);
+  setActiveTab("الجولات");
+};
+// 👇 بعد finalizeCheckin
+const generateMatches = (activePlayers) => {
+  const shuffled = [...activePlayers].sort(() => Math.random() - 0.5);
+  const matches = [];
+
+  for (let i = 0; i < shuffled.length; i += 2) {
+    if (i + 1 < shuffled.length) {
+      matches.push({
+        id: `match-1-${i / 2 + 1}`,
+        white: shuffled[i].name,
+        black: shuffled[i + 1].name,
+        result: "",
+        whiteViolations: [],
+        blackViolations: []
+      });
+    } else {
+      matches.push({
+        id: `match-1-${i / 2 + 1}-bye`,
+        white: shuffled[i].name,
+        black: "Bye",
+        result: "Bye",
+        whiteViolations: [],
+        blackViolations: []
+      });
+    }
+  }
+
+  return matches;
+};
+
+
+
+  const filteredPlayers = players.filter((player) =>
+  player.name.toLowerCase().includes(searchTerm.toLowerCase())
+);
 
   const handleRandomizePlayers = () => {
     const shuffled = [...players]
@@ -183,25 +252,43 @@ function TournamentDashboard() {
               </div>
 
               <div className="row">
-                <button className="btn btn-outline" onClick={() => setIsCheckinModalOpen(true)}>
+                <button
+                  className="btn btn-outline"
+                  onClick={() => setIsCheckinModalOpen(true)}
+                >
                   <img src={confirmIcon} alt="" className="btn-icon" />
-                  {isCheckinMode ? 'إيقاف التأكيد' : 'بدء التأكيد'}
+                  {isCheckinMode ? "تأكيد اللاعبين" : "بدء التأكيد"}
                 </button>
               </div>
             </div>
+             <div className="search-wrapper">
+  <input
+    type="text"
+    className="search-input"
+    placeholder="ابحث عن لاعب..."
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+  />
+    <FaSearch className="search-icon" />
+
+</div>
+
 
             <div className="table-wrapper">
               <table className="table-theme">
                 <thead>
                   <tr>
                     {isCheckinMode && (
-                      <th>
+                      <th className="checkin-col">
+                        <span>تأكيد الحضور</span>
                         <input
                           type="checkbox"
                           checked={confirmedPlayers.length === players.length}
                           onChange={(e) => {
-                            const value = e.target.checked;
-                            const updated = players.map(p => ({ ...p, checkedIn: value }));
+                            const updated = players.map((p) => ({
+                              ...p,
+                              checkedIn: e.target.checked,
+                            }));
                             savePlayersToStorage(updated);
                           }}
                         />
@@ -214,7 +301,7 @@ function TournamentDashboard() {
                     <th>التصنيف</th>
                     <th>معامل K</th>
                     <th>نقاط إضافية</th>
-                    {!rounds.length && <th>حذف</th>}
+                    <th>حذف</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -225,8 +312,7 @@ function TournamentDashboard() {
                       </td>
                     </tr>
                   ) : (
-                    players.map((player, index) => (
-                      <tr key={player.id}>
+filteredPlayers.map((player, index) => (                      <tr key={player.id}>
                         {isCheckinMode && (
                           <td>
                             <input
@@ -253,11 +339,14 @@ function TournamentDashboard() {
                         <td>{player.rating}</td>
                         <td>{player.kFactor}</td>
                         <td>{player.extraPoints}</td>
-                        {!rounds.length && (
-                          <td>
-                            <button className="btn-remove" onClick={() => handleDeletePlayer(player.id)}>🗑</button>
-                          </td>
-                        )}
+                       <td>
+  {(!rounds.length && !player.checkedIn) ? (
+    <button className="btn-remove" onClick={() => handleDeletePlayer(player.id)}>🗑</button>
+  ) : (
+    " "
+  )}
+</td>
+
                       </tr>
                     ))
                   )}
@@ -266,10 +355,7 @@ function TournamentDashboard() {
             </div>
 
             <div className="save-section">
-              <button className="btn btn-outline">
-                <img src={csvIcon} alt="csv" className="btn-icon" />
-                تصدير CSV
-              </button>
+              
               {isCheckinMode && (
                 <span className="checkin-count">
                   ✅ تم تأكيد {confirmedPlayers.length} / {players.length}
@@ -281,7 +367,12 @@ function TournamentDashboard() {
 
         {activeTab === 'الإعدادات' && <SettingsButton />}
         {activeTab === 'الجولات' && (
-          <RoundsPage players={confirmedPlayers} rounds={rounds} setRounds={setRounds} />
+<RoundsPage
+  players={confirmedPlayers}
+  rounds={rounds}
+  setRounds={setRounds}
+  initialRound={currentRoundIndex}
+/>
         )}
         {activeTab === 'الترتيب' && (
           <StandingsPage players={players} rounds={rounds} />
@@ -330,7 +421,7 @@ function TournamentDashboard() {
       <CheckinConfirmationModal
         isOpen={isCheckinModalOpen}
         onClose={() => setIsCheckinModalOpen(false)}
-        onConfirm={handleToggleCheckin}
+        onConfirm={isCheckinMode ? finalizeCheckin : beginCheckin}
         isActive={isCheckinMode}
       />
     </>

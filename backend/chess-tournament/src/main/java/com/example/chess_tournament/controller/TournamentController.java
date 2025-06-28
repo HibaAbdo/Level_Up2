@@ -1,3 +1,4 @@
+// src/main/java/com/example/chess-tournament/controller/TournamentController.java
 package com.example.chess_tournament.controller;
 
 import com.example.chess_tournament.dto.TournamentDTO;
@@ -19,29 +20,53 @@ public class TournamentController {
     private ArbiterRepository arbiterRepository;
 
     @PostMapping
-    public Long createTournament(@RequestBody TournamentDTO request) {
-        // save arbiter
-        Arbiter arbiter = new Arbiter();
-        arbiter.setName(request.arbiterName);
-        arbiter.setFideId(request.arbiterFideId);
-        Arbiter savedArbiter = arbiterRepository.save(arbiter);
-
-        // save tournament
-        Tournament tournament = Tournament.builder()
-                .name(request.name)
-                .city(request.city)
-                .country(request.country)
-                .startDate(request.startDate)
-                .endDate(request.endDate)
-                .rounds(request.rounds)
-                .numPlayers(request.numPlayers)
-                .type(request.type)
-                .ByeValue(request.byeValue)
-                .tieBreakers(request.tieBreakers.toArray(new String[0]))
-                .arbiter(savedArbiter)
+    public Tournament createTournament(@RequestBody TournamentDTO req) {
+        Arbiter arb = Arbiter.builder()
+                .name(req.arbiterName)
+                .fideId(req.arbiterFideId)
                 .build();
+        Arbiter savedArb = arbiterRepository.save(arb);
 
-        Tournament savedTournament = tournamentRepository.save(tournament);
-        return savedTournament.getId();
+        Tournament t = Tournament.builder()
+                .name(req.name)
+                .city(req.city)
+                .country(req.country)
+                .startDate(req.startDate)
+                .endDate(req.endDate)
+                .rounds(req.rounds)
+                .numPlayers(req.numPlayers)
+                .type(req.type)
+                .ByeValue(req.byeValue)
+                .tieBreakers(req.tieBreakers.toArray(new String[0]))
+                .arbiter(savedArb)
+                .build();
+        return tournamentRepository.save(t);
+    }
+
+    @PutMapping("/{id}")
+    public Tournament updateTournament(
+            @PathVariable Long id,
+            @RequestBody TournamentDTO req
+    ) {
+        Tournament t = tournamentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Tournament not found"));
+
+        Arbiter arb = t.getArbiter();
+        arb.setName(req.arbiterName);
+        arb.setFideId(req.arbiterFideId);
+        arbiterRepository.save(arb);
+
+        t.setName(req.name);
+        t.setCity(req.city);
+        t.setCountry(req.country);
+        t.setStartDate(req.startDate);
+        t.setEndDate(req.endDate);
+        t.setRounds(req.rounds);
+        t.setNumPlayers(req.numPlayers);
+        t.setType(req.type);
+        t.setByeValue(req.byeValue);
+        t.setTieBreakers(req.tieBreakers.toArray(new String[0]));
+
+        return tournamentRepository.save(t);
     }
 }

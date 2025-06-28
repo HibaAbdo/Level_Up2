@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
+import ModalWrapper from '../../../Components/TheModals/ModalWrapper';
 
 function PredefinedPairsModal({ isOpen, onClose, players, tournamentId }) {
   const [player1, setPlayer1] = useState(null);
@@ -62,13 +63,11 @@ function PredefinedPairsModal({ isOpen, onClose, players, tournamentId }) {
   }));
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-wrapper" dir="rtl">
-        <h2 className="modal-title">⚠️ الأزواج المحددة مسبقاً</h2>
+   <ModalWrapper isOpen={isOpen} onClose={onClose} title="⚠️ الأزواج المحددة مسبقاً">
+      <div dir="rtl">
         <p className="modal-description">هنا يمكنك تحديد اللاعبين الذين تريد إجبارهم على المواجهة.</p>
 
-<div className="table-wrapper" style={{ marginBottom: '1.5rem' }}>
-          <table className="table-theme">
+<div className="table-wrapper" style={{ marginBottom: '1.5rem' }}>          <table className="table-theme">
             <thead>
               <tr>
                 <th>اللاعب ١</th>
@@ -136,7 +135,7 @@ function PredefinedPairsModal({ isOpen, onClose, players, tournamentId }) {
           </div>
         )}
       </div>
-    </div>
+    </ModalWrapper>
   );
 }
 

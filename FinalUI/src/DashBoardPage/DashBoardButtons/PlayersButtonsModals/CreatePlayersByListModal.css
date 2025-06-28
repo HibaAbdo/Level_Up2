@@ -1,8 +1,4 @@
-.players-list-modal {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-}
+
 
 .floating-textarea {
   width: 100%;

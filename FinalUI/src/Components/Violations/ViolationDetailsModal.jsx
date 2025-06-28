@@ -1,6 +1,7 @@
 // src/Components/Violations/ViolationDetailsModal.jsx
 import React, { useState, useEffect } from 'react';
 import './ViolationDetailsModal.css';
+import ModalWrapper from '../TheModals/ModalWrapper';
 
 const violationChoices = [
   'لا يوجد',
@@ -24,10 +25,7 @@ function ViolationDetailsModal({ isOpen, onClose, violationData, onSave, onDelet
   if (!isOpen || !violationData) return null;
 
   return (
-    <div className="violation-modal-backdrop">
-      <div className="violation-modal-box">
-        <h3 className="violation-title">تفاصيل المخالفة</h3>
-
+    <ModalWrapper isOpen={isOpen} onClose={onClose} title="تفاصيل المخالفة">
         <label className="violation-label">اختر المخالفة:</label>
         <select
           className="violation-select"
@@ -47,13 +45,12 @@ function ViolationDetailsModal({ isOpen, onClose, violationData, onSave, onDelet
           onChange={(e) => setNote(e.target.value)}
         />
 
-        <div className="violation-buttons">
-          <button className="btn violet" onClick={() => onSave({ choice, note })}> حفظ</button>
-          <button className="btn violet" onClick={onDelete}> حذف</button>
-          <button className="btn violet" onClick={onClose}> إلغاء</button>
-        </div>
-      </div>
-    </div>
+        <div className="violation-buttons modal-actions">
+           <button className="btn btn-violet" onClick={() => onSave({ choice, note })}> حفظ</button>
+          <button className="btn btn-violet" onClick={onDelete}> حذف</button>
+          <button className="btn btn-violet" onClick={onClose}> إلغاء</button></div>
+          </ModalWrapper>
+
   );
 }
 

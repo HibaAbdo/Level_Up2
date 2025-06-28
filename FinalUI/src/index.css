@@ -142,10 +142,13 @@ input[type="button"]:hover {
 /* تنسيق الجدول الموحد */
 .table-wrapper {
   width: 100%;
-  display: flex;
   justify-content: center;
   padding: 0 1rem;
   box-sizing: border-box;
+  overflow-x: auto;
+  max-width: 100%;
+  border-radius: 16px;
+
 }
 
 .table-theme {
@@ -195,6 +198,38 @@ input[type="button"]:hover {
   border-bottom: none;
 }
 
+/* 🔍 شريط البحث */
+.search-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  margin: 0 auto 2rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 44px 12px 16px;
+  border-radius: 14px;
+  border: 2px solid #ccc;
+  font-size: 1rem;
+  box-shadow: 0 2px 5px rgba(102, 61, 153, 0.15);
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--clr-purple);
+}
+
+.search-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--clr-deep-purple);
+  font-size: 1.2rem;
+}
 /* Responsive Table */
 @media (max-width: 950px) {
   .table-theme {

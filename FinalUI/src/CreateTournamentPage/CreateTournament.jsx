@@ -1,4 +1,4 @@
-// CreateTournament.jsx (بعد التعديل الكامل)
+// src/pages/CreateTournament.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
@@ -11,52 +11,93 @@ function CreateTournament({ mode = 'create', initialData = null, embedded = fals
   const navigate = useNavigate();
   const username = localStorage.getItem('username') || 'المستخدم';
 
-  const [formData, setFormData] = useState(() =>
-    initialData ? { ...initialData } : {
-      name: '',
-      city: 'Jerusalem',
-      country: 'Israel',
-      Date: '',
-      arbiterName: '',
-      arbiterFideId: 0.0,
-      playType: 'Individual Swiss Dutch',
-      points: 'standard',
-      byeValue: 'win',
-      totalRounds: 5, 
-      numOfPlayers: null,
-      tieBreaks: ['direct', 'buchholz1', 'median'], // DirectEncounter, BuchholzCut1, Buchholz
-      allowJoin: false,
-      allowChange: false,
-      dangerousChanges: false,
-      disableDoubleBye: false,
-      lateJoinPoints: false,
-    }
-  );
+  // ----------------------------------
+  // State: موحدين الأسماء مع الـ API
+  // ----------------------------------
+  const [formData, setFormData] = useState(() => ({
+    name: '',
+    city: 'Jerusalem',
+    country: 'Israel',
+    Date: '',
+    arbiterName: '',
+    arbiterFideId: '',
+    playSystem: 'swiss',
+    points: 'standard',
+    byeValue: 'win',
+    totalRounds: 5,
+    numOfPlayers: '',
+    tieBreaks: ['direct', 'Buchholz Cut 1', 'Buchholz'],
+    allowJoin: false,
+    allowChange: false,
+    dangerousChanges: false,
+    disableDoubleBye: false,
+    lateJoinPoints: false,
+    ...(initialData || {})
+  }));
 
   const allTieBreakOptions = [
     { value: 'direct', label: 'المواجهة المباشرة' },
-    { value: 'Buchholz', label: 'Buchholz' },
     { value: 'Buchholz Cut 1', label: 'Buchholz Cut 1' },
-    { value: 'Buchholz Cut 2', label: 'Buchholz Cut 2' },
-    { value: 'Berger', label: 'Berger' },
-    { value: 'Cumulative', label: 'Cumulative'},
-    { value: 'Cumulative Opponent', label: 'Cumulative Opponent'},
-
+    { value: 'Buchholz', label: 'Buchholz' }
   ];
 
-  // const getFilteredTieBreaks = () => {
-  //   if (formData.playSystem === 'swiss') return allTieBreakOptions;
-  //   if (formData.playSystem === 'round-robin')
-  //     return allTieBreakOptions.filter(opt => ['direct', 'koya'].includes(opt.value));
-  //   return [];
-  // };
+  const getFilteredTieBreaks = () => {
+    if (formData.playSystem === 'swiss') return allTieBreakOptions;
+    if (formData.playSystem === 'round-robin')
+      return allTieBreakOptions.filter(opt => ['direct', 'Buchholz'].includes(opt.value));
+    return [];
+  };
 
+  // ----------------------------------
+  // Handle field changes + validations
+  // ----------------------------------
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+
+    // Validation: تاريخ لا يقل عن اليوم
+    if (name === 'Date') {
+      const today = new Date().toISOString().split('T')[0];
+      if (value < today) {
+        alert('خطأ في إدخال التاريخ');
+        return;
+      }
+    }
+
+    // Validation: عدد اللاعبين
+    if (name === 'numOfPlayers') {
+      if (value !== '' && !/^[1-9][0-9]*$/.test(value)) {
+        alert('عدد اللاعبين يجب أن يكون رقم صحيح أكبر من صفر.');
+        return;
+      }
+    }
+
+    // Validation: عدد الجولات
+    if (name === 'totalRounds') {
+      if (!/^[1-9][0-9]*$/.test(value)) {
+        alert('عدد الجولات يجب أن يكون رقم صحيح أكبر من صفر.');
+        return;
+      }
+    }
+
+    // Validation: نصوص (عربي أو إنجليزي)
+    if (['city', 'country', 'arbiterName'].includes(name)) {
+      if (!/^[\u0600-\u06FFa-zA-Z ]+$/.test(value)) {
+        alert('هذا الحقل يجب أن يحتوي على أحرف عربية أو إنجليزية فقط.');
+        return;
+      }
+    }
+
+    // Validation: FIDE ID من 8 أرقام
+    if (name === 'arbiterFideId') {
+      if (!/^[0-9]{8}$/.test(value)) {
+        alert('الرقم الدولي للمنظم يجب أن يكون 8 أرقام.');
+        return;
+      }
+    }
+
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-      ...(name === 'playType' && value === 'knockout' ? { tieBreaks: [] } : {})////
+      [name]: type === 'checkbox' ? checked : value
     }));
   };
 
@@ -67,111 +108,184 @@ function CreateTournament({ mode = 'create', initialData = null, embedded = fals
     }));
   };
 
-  const handleSubmit = async  (e) => {
+  // ----------------------------------
+  // Create new tournament
+  // ----------------------------------
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-    const response = await fetch('http://localhost:8081/api/tournaments', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: formData.name,
-        city: formData.city,
-        country: formData.country,
-        startDate: formData.Date,
-        endDate: formData.Date,
-        rounds: formData.totalRounds,
-        numPlayers: formData.numOfPlayers, 
-        type: 'Individual Swiss Dutch',
-        byeValue: formData.byeValue === 'win' ? 1 : formData.byeValue === 'draw' ? 0.5 : 0,
-        tieBreakers: formData.tieBreaks,
-        arbiterName: formData.arbiterName, 
-        arbiterFideId: formData.arbiterFideId
+      const response = await fetch('http://localhost:8081/api/tournaments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          city: formData.city,
+          country: formData.country,
+          startDate: formData.Date,
+          endDate: formData.Date,
+          rounds: formData.totalRounds,
+          numPlayers: formData.numOfPlayers,
+          type: 'Individual Swiss Dutch',
+          byeValue:
+            formData.byeValue === 'win'
+              ? 1
+              : formData.byeValue === 'draw'
+              ? 0.5
+              : 0,
+          tieBreakers: formData.tieBreaks,
+          arbiterName: formData.arbiterName,
+          arbiterFideId: formData.arbiterFideId
         })
-    });
+      });
 
-    if (!response.ok) throw new Error('Failed to create tournament');
-    
-    const tournamentId = await response.json();
-    navigate(`/tournament/${tournamentId}`);
-  } catch (err) {
-    console.error('Error creating tournament:', err);
-    alert('فشل في إنشاء البطولة. حاول مرة أخرى.');
-  }
+      if (!response.ok) throw new Error('Failed to create tournament');
 
+      const created = await response.json(); // يحتوي على الـ id والبيانات المحفوظة
+      const tournamentId = created.id;
+
+      // حفظ سريع في localStorage لصفحة My Tournaments
+      const now = new Date();
+      const stamp = `${now.toLocaleDateString('ar-EG')} ${now.toLocaleTimeString('ar-EG', {
+        hour: '2-digit',
+        minute: '2-digit'
+      })}`;
+      const list = JSON.parse(localStorage.getItem('tournaments')) || [];
+      list.push({
+        id: tournamentId,
+        name: formData.name,
+        creationDate: stamp,
+        lastModified: stamp
+      });
+      localStorage.setItem('tournaments', JSON.stringify(list));
+
+      navigate(`/tournament/${tournamentId}`);
+    } catch (err) {
+      console.error('Error creating tournament:', err);
+      alert('فشل في إنشاء البطولة. حاول مرة أخرى.');
+    }
   };
 
-  const handleSaveChanges = () => {
+  // ----------------------------------
+  // Update existing tournament
+  // ----------------------------------
+  const handleSaveChanges = async () => {
     if (!initialData?.id) return;
     const id = initialData.id;
-    const updated = { ...formData, id };
-    localStorage.setItem(`tournament-${id}`, JSON.stringify(updated));
+    try {
+      const response = await fetch(`http://localhost:8081/api/tournaments/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          city: formData.city,
+          country: formData.country,
+          startDate: formData.Date,
+          endDate: formData.Date,
+          rounds: formData.totalRounds,
+          numPlayers: formData.numOfPlayers,
+          type: 'Individual Swiss Dutch',
+          byeValue:
+            formData.byeValue === 'win'
+              ? 1
+              : formData.byeValue === 'draw'
+              ? 0.5
+              : 0,
+          tieBreakers: formData.tieBreaks,
+          arbiterName: formData.arbiterName,
+          arbiterFideId: formData.arbiterFideId
+        })
+      });
+      if (!response.ok) throw new Error('Failed to update');
 
-    const date = new Date();
-    const updatedList = (JSON.parse(localStorage.getItem('tournaments')) || []).map(t =>
-      t.id === id
-        ? { ...t, name: formData.name, lastModified: `${date.toLocaleDateString('ar-EG')}   ${date.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })}` }
-        : t
-    );
-    localStorage.setItem('tournaments', JSON.stringify(updatedList));
-    alert('تم حفظ التغييرات بنجاح!');
+      const updated = await response.json();
+      // تحديث localStorage
+      const now = new Date();
+      const stamp = `${now.toLocaleDateString('ar-EG')} ${now.toLocaleTimeString('ar-EG', {
+        hour: '2-digit',
+        minute: '2-digit'
+      })}`;
+      const list = JSON.parse(localStorage.getItem('tournaments')) || [];
+      const newList = list.map(t =>
+        t.id === id
+          ? { ...t, name: updated.name, lastModified: stamp }
+          : t
+      );
+      localStorage.setItem('tournaments', JSON.stringify(newList));
+
+      alert('تم حفظ التغييرات بنجاح!');
+    } catch (err) {
+      console.error(err);
+      alert('فشل في حفظ التغييرات.');
+    }
   };
 
+  // ----------------------------------
+  // حذف البطولة من localStorage فقط
+  // ----------------------------------
   const handleDeleteTournament = () => {
     if (!initialData?.id) return;
     if (!window.confirm('هل أنت متأكد أنك تريد حذف البطولة؟')) return;
 
     const id = initialData.id;
-    localStorage.removeItem(`tournament-${id}`);
-    const filtered = (JSON.parse(localStorage.getItem('tournaments')) || []).filter(t => t.id !== id);
+    const filtered = (JSON.parse(localStorage.getItem('tournaments')) || []).filter(
+      t => t.id !== id
+    );
     localStorage.setItem('tournaments', JSON.stringify(filtered));
 
     alert('تم حذف البطولة بنجاح!');
     navigate('/mytournaments');
   };
 
+  // ----------------------------------
+  // استنساخ البطولة في localStorage فقط
+  // ----------------------------------
   const handleCloneTournament = () => {
     if (!initialData) return;
 
     const newId = uuidv4();
     const cloned = { ...initialData, id: newId, name: `${initialData.name} (نسخة)` };
-    const date = new Date();
-    const timestamp = `${date.toLocaleDateString('ar-EG')}   ${date.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })}`;
+    const now = new Date();
+    const stamp = `${now.toLocaleDateString('ar-EG')} ${now.toLocaleTimeString('ar-EG', {
+      hour: '2-digit',
+      minute: '2-digit'
+    })}`;
 
-    localStorage.setItem(`tournament-${newId}`, JSON.stringify(cloned));
-    const updated = JSON.parse(localStorage.getItem('tournaments')) || [];
-    updated.push({ id: newId, name: cloned.name, creationDate: timestamp, lastModified: timestamp });
-    localStorage.setItem('tournaments', JSON.stringify(updated));
+    const list = JSON.parse(localStorage.getItem('tournaments')) || [];
+    list.push({ id: newId, name: cloned.name, creationDate: stamp, lastModified: stamp });
+    localStorage.setItem('tournaments', JSON.stringify(list));
 
     alert('تم إنشاء نسخة من البطولة!');
     navigate(`/tournament/${newId}`);
   };
 
+  // ----------------------------------
+  // JSX
+  // ----------------------------------
   const content = (
     <div dir="rtl" className="create-form-wrapper">
-      <h2 className="form-title">{mode === 'edit' ? 'تعديل البطولة' : 'إنشاء بطولة'}</h2>
-
-      <form className="tournament-form" onSubmit={handleSubmit}>
-        {[{ label: 'اسم البطولة', name: 'name', type: 'text' },
+      <h2 className="form-title">
+        {mode === 'edit' ? 'تعديل البطولة' : 'إنشاء بطولة'}
+      </h2>
+      <form className="tournament-form" onSubmit={mode === 'create' ? handleSubmit : e => e.preventDefault()}>
+        {[
+          { label: 'اسم البطولة', name: 'name', type: 'text' },
           { label: 'المدينة', name: 'city', type: 'text' },
           { label: 'الدولة', name: 'country', type: 'text' },
           { label: 'تاريخ البطولة', name: 'Date', type: 'date' },
-          
           { label: 'اسم المنظّم', name: 'arbiterName', type: 'text' },
-          { label: 'الرقم الدولي للمنظّم', name: 'arbiterFideId', type: 'bigint' },
+          { label: 'الرقم الدولي للمنظّم', name: 'arbiterFideId', type: 'text' },
           {
             label: 'نظام اللعب', name: 'playSystem', type: 'select', options: [
               { value: 'swiss', label: 'Swiss Dutch FIDE (JaVaFo)' },
-              { value: 'round-robin', label: 'Round Robin' },//////
-              { value: 'knockout', label: 'Knock-Out' },/////
+              { value: 'round-robin', label: 'Round Robin' },
+              { value: 'knockout', label: 'Knock-Out' }
             ]
           },
           {
             label: 'نقاط كل مباراة', name: 'points', type: 'select', options: [
               { value: 'standard', label: '1-0, 0-1, 0.5-0.5' },
               { value: 'winOnly', label: '1-0, 0-1' },
-              { value: 'Arbitrary', label: 'Arbitrary' },
+              { value: 'Arbitrary', label: 'Arbitrary' }
             ]
           },
           {
@@ -179,25 +293,29 @@ function CreateTournament({ mode = 'create', initialData = null, embedded = fals
               { value: '', label: 'اختر', disabled: true, hidden: true },
               { value: 'draw', label: 'تعادل' },
               { value: 'win', label: 'فوز' },
-              { value: 'zero', label: 'خسارة' },
+              { value: 'zero', label: 'خسارة' }
             ]
           },
           { label: 'عدد الجولات', name: 'totalRounds', type: 'number' },
-          { label: 'عدد اللاعبين', name: 'numOfPlayers', type: 'number' },
-
-        ].map((field, index) => (
-          <div key={index} className="floating-group">
+          { label: 'عدد اللاعبين', name: 'numOfPlayers', type: 'number' }
+        ].map((field, idx) => (
+          <div key={idx} className="floating-group">
             {field.type === 'select' ? (
               <>
                 <select
                   name={field.name}
-                  value={formData[field.name]}
+                  value={formData[field.name] ?? ''}
                   onChange={handleChange}
                   className="floating-input"
                   required
                 >
                   {field.options.map((opt, i) => (
-                    <option key={i} value={opt.value} disabled={opt.disabled} hidden={opt.hidden}>
+                    <option
+                      key={i}
+                      value={opt.value}
+                      disabled={opt.disabled}
+                      hidden={opt.hidden}
+                    >
                       {opt.label}
                     </option>
                   ))}
@@ -209,7 +327,7 @@ function CreateTournament({ mode = 'create', initialData = null, embedded = fals
                 <input
                   type={field.type}
                   name={field.name}
-                  value={formData[field.name]}
+                  value={formData[field.name] ?? ''}
                   onChange={handleChange}
                   className="floating-input"
                   placeholder=" "
@@ -228,8 +346,10 @@ function CreateTournament({ mode = 'create', initialData = null, embedded = fals
               <Select
                 isMulti
                 name="tieBreaks"
-                // options={getFilteredTieBreaks()}
-                // value={getFilteredTieBreaks().filter(opt => formData.tieBreaks.includes(opt.value))}
+                options={getFilteredTieBreaks()}
+                value={getFilteredTieBreaks().filter(opt =>
+                  formData.tieBreaks.includes(opt.value)
+                )}
                 onChange={handleMultiSelect}
                 placeholder="اختر طرق كسر التعادل"
                 classNamePrefix="select"
@@ -237,19 +357,6 @@ function CreateTournament({ mode = 'create', initialData = null, embedded = fals
             </div>
           </div>
         )}
-
-        <div className="form-section">
-          <h3>احتساب النقاط</h3>
-          <label className="form-checkbox">
-            <input
-              type="checkbox"
-              name="disableDoubleBye"
-              checked={formData.disableDoubleBye}
-              onChange={handleChange}
-            />
-            تعطيل Byes المكررة
-          </label>
-        </div>
 
         <div className="form-actions">
           <button
@@ -259,19 +366,23 @@ function CreateTournament({ mode = 'create', initialData = null, embedded = fals
           >
             {mode === 'edit' ? 'حفظ التغييرات' : 'إنشاء البطولة'}
           </button>
-
           {mode === 'edit' && (
-            <>
-              <button type="button" className="btn btn-outline" onClick={handleDeleteTournament}> حذف البطولة</button>
-              <button type="button" className="btn btn-outline" onClick={handleCloneTournament}> نسخ البطولة</button>
-            </>
+            <button
+              type="button"
+              className="btn btn-outline"
+              onClick={handleDeleteTournament}
+            >
+              حذف البطولة
+            </button>
           )}
         </div>
       </form>
     </div>
   );
 
-  return embedded ? content : (
+  return embedded ? (
+    content
+  ) : (
     <>
       <Header username={username} />
       <PageContainer>{content}</PageContainer>

@@ -396,23 +396,7 @@ useEffect(() => {
     كل الجولات
   </button>
 
-  <button className="rounds-action-btn" onClick={() => {
-    const csvRows = ["الجولة,الأبيض,الأسود,النتيجة"];
-    rounds.forEach(round => {
-      round.matches.forEach(match => {
-        csvRows.push(`${round.number},${match.white},${match.black},${match.result}`);
-      });
-    });
-    const blob = new Blob([csvRows.join("\n")], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "rounds.csv";
-    a.click();
-    URL.revokeObjectURL(url);
-  }}>
-    حفظ كـ CSV 💾
-  </button>
+ 
 
   <button
     className="rounds-action-btn"

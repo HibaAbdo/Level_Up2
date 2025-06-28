@@ -1,14 +1,11 @@
 import React from "react";
-import "./ModalStyle.css";
+import ModalWrapper from "../TheModals/ModalWrapper";
 
 function AllRoundsModal({ isOpen, onClose, rounds }) {
   if (!isOpen || !rounds) return null;
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <button className="modal-close-x" onClick={onClose}>×</button>
-        <h2>كل الجولات</h2>
+     <ModalWrapper isOpen={isOpen} onClose={onClose} title="كل الجولات">
         {rounds.map((round) => (
           <div key={round.number}>
             <h3>الجولة {round.number}</h3>
@@ -36,8 +33,10 @@ function AllRoundsModal({ isOpen, onClose, rounds }) {
             </div>
           </div>
         ))}
-      </div>
-    </div>
+      <div className="modal-actions" style={{ marginTop: '1rem' }}>
+          <button className="btn btn-outline" onClick={onClose}>إغلاق</button>
+        </div>
+    </ModalWrapper>
   );
 }
 

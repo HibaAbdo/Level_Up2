@@ -38,8 +38,7 @@ function CreatePlayersByListModal({ isOpen, onClose, onCreateMany }) {
           className="floating-textarea"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="ضحى، 1600"
-        />
+placeholder="ضحى، 1600  |  Duha, 1600"        />
         <div className="modal-actions">
           <button className="btn btn-gold" onClick={handleSave}>إنشاء</button>
           <button className="btn btn-outline" onClick={onClose}>إلغاء</button>
