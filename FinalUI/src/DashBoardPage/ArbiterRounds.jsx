@@ -7,8 +7,8 @@ import ZoomModal from "../Components/RoundsModals/ZoomModal";
 import AllRoundsModal from "../Components/RoundsModals/AllRoundsModal";
 
 function ArbiterRounds() {
-  const storedPlayers = JSON.parse(localStorage.getItem("tournamentPlayers")) || [];
-  const [players, setPlayers] = useState(storedPlayers);
+const storedPlayers = JSON.parse(localStorage.getItem("tournamentPlayers")) || [];
+const [players, setPlayers] = useState(storedPlayers);
 const storedRounds = JSON.parse(localStorage.getItem("submittedRounds")) || [];
 const [rounds, setRounds] = useState(storedRounds);
   const [currentRound, setCurrentRound] = useState(1);
@@ -305,11 +305,10 @@ const [rounds, setRounds] = useState(storedRounds);
     localStorage.setItem('submittedRounds', JSON.stringify(rounds));
   }, [rounds]);
 
-
-
   return (
     <PageContainer>
       <div className="rounds-page">
+       <h1 className="form-title">الجولات</h1>
         <button
           className={`generate-btn ${rounds.length === maxRounds ? 'final-button' : ''}`}
           onClick={() => {

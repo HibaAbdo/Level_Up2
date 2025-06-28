@@ -197,13 +197,17 @@ input[type="button"]:hover {
 .table-theme tr:last-child td {
   border-bottom: none;
 }
+.form-title {
+  margin-bottom: 0.5rem; /* او أي قيمة تناسبك */
+}
+
 
 /* 🔍 شريط البحث */
 .search-wrapper {
   position: relative;
   width: 100%;
   max-width: 460px;
-  margin: 0 auto 2rem;
+  margin: 0 auto 0.5rem;
 }
 
 .search-input {

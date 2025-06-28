@@ -1,4 +1,4 @@
-// src/main/java/com/example/chess-tournament/controller/TournamentController.java
+// src/main/java/com/example/chess_tournament/controller/TournamentController.java
 package com.example.chess_tournament.controller;
 
 import com.example.chess_tournament.dto.TournamentDTO;
@@ -6,6 +6,9 @@ import com.example.chess_tournament.model.Arbiter;
 import com.example.chess_tournament.model.Tournament;
 import com.example.chess_tournament.repository.ArbiterRepository;
 import com.example.chess_tournament.repository.TournamentRepository;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,8 +49,7 @@ public class TournamentController {
     @PutMapping("/{id}")
     public Tournament updateTournament(
             @PathVariable Long id,
-            @RequestBody TournamentDTO req
-    ) {
+            @RequestBody TournamentDTO req) {
         Tournament t = tournamentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Tournament not found"));
 
@@ -70,3 +72,24 @@ public class TournamentController {
         return tournamentRepository.save(t);
     }
 }
+ //   @GetMapping("/{id}")
+//     public TournamentDTO getTournament(@PathVariable Long id) {
+//         Tournament t = tournamentRepository.findById(id)
+//                 .orElseThrow(() -> new RuntimeException("Tournament not found"));
+
+//         TournamentDTO dto = new TournamentDTO();
+//         dto.name = t.getName();
+//         dto.city = t.getCity();
+//         dto.country = t.getCountry();
+//         dto.startDate = t.getStartDate();
+//         dto.endDate = t.getEndDate();
+//         dto.rounds = t.getRounds();
+//         dto.numPlayers = t.getNumPlayers();
+//         dto.type = t.getType();
+//         dto.byeValue = t.getByeValue();
+//         dto.tieBreakers = List.of(t.getTieBreakers());
+//         dto.arbiterName = t.getArbiter().getName();
+//         dto.arbiterFideId = t.getArbiter().getFideId();
+//         return dto;
+//     }
+// }

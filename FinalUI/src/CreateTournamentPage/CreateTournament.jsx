@@ -168,56 +168,36 @@ function CreateTournament({ mode = 'create', initialData = null, embedded = fals
   // ----------------------------------
   // Update existing tournament
   // ----------------------------------
-  const handleSaveChanges = async () => {
-    if (!initialData?.id) return;
-    const id = initialData.id;
-    try {
-      const response = await fetch(`http://localhost:8081/api/tournaments/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.name,
-          city: formData.city,
-          country: formData.country,
-          startDate: formData.Date,
-          endDate: formData.Date,
-          rounds: formData.totalRounds,
-          numPlayers: formData.numOfPlayers,
-          type: 'Individual Swiss Dutch',
-          byeValue:
-            formData.byeValue === 'win'
-              ? 1
-              : formData.byeValue === 'draw'
-              ? 0.5
-              : 0,
-          tieBreakers: formData.tieBreaks,
-          arbiterName: formData.arbiterName,
-          arbiterFideId: formData.arbiterFideId
-        })
-      });
-      if (!response.ok) throw new Error('Failed to update');
-
-      const updated = await response.json();
-      // تحديث localStorage
-      const now = new Date();
-      const stamp = `${now.toLocaleDateString('ar-EG')} ${now.toLocaleTimeString('ar-EG', {
-        hour: '2-digit',
-        minute: '2-digit'
-      })}`;
-      const list = JSON.parse(localStorage.getItem('tournaments')) || [];
-      const newList = list.map(t =>
-        t.id === id
-          ? { ...t, name: updated.name, lastModified: stamp }
-          : t
-      );
-      localStorage.setItem('tournaments', JSON.stringify(newList));
-
-      alert('تم حفظ التغييرات بنجاح!');
-    } catch (err) {
-      console.error(err);
-      alert('فشل في حفظ التغييرات.');
-    }
-  };
+const handleSaveChanges = async () => {
+  if (!initialData?.id) return;
+  try {
+    const res = await fetch(`http://localhost:8081/api/tournaments/${initialData.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: formData.name,
+        city: formData.city,
+        country: formData.country,
+        startDate: formData.Date,
+        endDate: formData.Date,
+        rounds: formData.totalRounds,
+        numPlayers: formData.numOfPlayers,
+        type: 'Individual Swiss Dutch',
+        byeValue:
+          formData.byeValue === 'win'   ? 1
+        : formData.byeValue === 'draw'  ? 0.5
+        : 0,
+        tieBreakers: formData.tieBreaks,
+        arbiterName: formData.arbiterName,
+        arbiterFideId: Number(formData.arbiterFideId)
+      })
+    });
+    if (!res.ok) throw new Error();
+    alert('تم حفظ التغييرات بنجاح!');
+  } catch {
+    alert('فشل في حفظ التغييرات.');
+  }
+};
 
   // ----------------------------------
   // حذف البطولة من localStorage فقط

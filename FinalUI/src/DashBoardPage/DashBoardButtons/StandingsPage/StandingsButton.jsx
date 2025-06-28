@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../../TournamentDashboard.css";
 import "./StandingsButton.css";
 import { FaSearch } from "react-icons/fa";
+import ZoomModal from '../../../Components/RoundsModals/ZoomModal';
 
 function StandingsButton({ players, rounds }) {
   const [rankingData, setRankingData] = useState([]);
@@ -57,19 +58,19 @@ function StandingsButton({ players, rounds }) {
 
   return (
     <div className="standings-page">
-      <div className="standings-title">الترتيب</div>
-      <div className="standings-search-wrapper">
+        <h1 className="form-title">ترتيب اللاعبين </h1>
+      <div className="search-wrapper">
         <input
           type="text"
-          className="standings-search-input"
+          className="search-input"
           placeholder="ابحث عن لاعب..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <FaSearch className="standings-search-icon" />
+        <FaSearch className="search-icon" />
       </div>
 
-      <div className="standings-table-wrapper">
+      <div className="table-wrapper">
         <table className="table-theme">
           <thead>
             <tr>
@@ -108,15 +109,14 @@ function StandingsButton({ players, rounds }) {
         </table>
       </div>
 
-      <div className="ranking-actions">
-        <button className="csv-btn" onClick={handleDownloadCSV}>💾 حفظ كـ CSV</button>
-        <button className="fullscreen-btn" onClick={() => setShowZoom(true)}>🔍</button>
+      <div className="rounds-actions">
+        <button className="btn btn-outline" onClick={() => setShowZoom(true)}>🔍</button>
       </div>
 
       {showZoom && (
         <div className="modal-overlay" onClick={() => setShowZoom(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h2 className="zoom-title">الترتيب الكامل</h2>
+            <h2 className="modal-title">الترتيب الكامل</h2>
             <table className="table-theme">
               <thead>
                 <tr>
@@ -145,8 +145,8 @@ function StandingsButton({ players, rounds }) {
                 ))}
               </tbody>
             </table>
-            <div className="centered-close-btn">
-              <button className="close-btn" onClick={() => setShowZoom(false)}>✖ إغلاق</button>
+            <div className="modal-actions">
+              <button className="modal-btn" onClick={() => setShowZoom(false)}>✖ إغلاق</button>
             </div>
           </div>
         </div>

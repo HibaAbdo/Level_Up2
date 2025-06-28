@@ -1,4 +1,5 @@
-// في بداية الملف:
+// ✅ النسخة المحدثة من RoundsButton.jsx مع دعم التخزين المتوافق مع TournamentDashboard
+
 import React, { useRef, useState, useEffect } from "react";
 import PageContainer from '../../../Components/ThePageContainers/PageContainer';
 import './RoundsButton.css';
@@ -16,9 +17,12 @@ function RoundsButton({ players }) {
   const [playerStandings, setPlayerStandings] = useState([]);
   const [isZoomModalOpen, setIsZoomModalOpen] = useState(false);
   const [isAllRoundsModalOpen, setIsAllRoundsModalOpen] = useState(false);
- 
+  
   const scrollRef = useRef(null);
   const maxRounds = parseInt(localStorage.getItem('currentTotalRounds'), 10) || 0;
+
+  const tournamentId = localStorage.getItem('tournamentId');
+  const tournamentKey = tournamentId ? `tournament-${tournamentId}` : null;
 
   const resultOptions = [
     { value: "", label: "تعيين النتيجة" },
@@ -30,6 +34,26 @@ function RoundsButton({ players }) {
     { value: "0-1F", label: "1F-0" },
     { value: "حذف", label: " حذف النتيجة" },
   ];
+  useEffect(() => {
+    if (!tournamentKey) return;
+
+    const raw = localStorage.getItem(tournamentKey);
+    const tournament = raw ? JSON.parse(raw) : {};
+    const storedRounds = Array.isArray(tournament.rounds) ? tournament.rounds : [];
+
+    if (storedRounds.length > 0) {
+      setRounds(storedRounds);
+      setCurrentRound(storedRounds.length);
+    }
+  }, [tournamentKey]);
+
+  useEffect(() => {
+    if (!tournamentKey) return;
+    const raw = localStorage.getItem(tournamentKey);
+    const tournament = raw ? JSON.parse(raw) : {};
+    const updatedTournament = { ...tournament, rounds };
+    localStorage.setItem(tournamentKey, JSON.stringify(updatedTournament));
+  }, [rounds, tournamentKey]);
 
   useEffect(() => {
     if (players && players.length > 1 && rounds.length === 0) {
@@ -323,7 +347,7 @@ useEffect(() => {
   return (
     <PageContainer>
       <div className="rounds-page">
-        <h1 className="round-title">الجولات</h1>
+        <h1 className="form-title">الجولات</h1>
 
         <button
           className={`generate-btn ${rounds.length === maxRounds ? 'final-button' : ''}`}
@@ -364,7 +388,7 @@ useEffect(() => {
           </button>
         </div>
 
-        <div className="rounds-table-wrapper">
+        <div className="table-wrapper">
           <RoundTable round={rounds[currentRound - 1]} roundIdx={currentRound - 1} />
         </div>
 

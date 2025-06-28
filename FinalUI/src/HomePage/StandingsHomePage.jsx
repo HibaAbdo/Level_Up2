@@ -23,27 +23,29 @@ const StandingsHomePage = () => {
 
  return (
     <>
+    
       {/* ✅ الهيدر يغطي كامل العرض */}
       <Header showHomeButton={true} />
 
       <PageContainer>
-
+<div className="standings-page">
+        <h1 className="form-title">ترتيب اللاعبين </h1>
       <div className="standings-content">
         {/* 🔍 حقل البحث */}
-        <div className="standings-search-wrapper">
+        <div className="search-wrapper">
           <input
             type="text"
-            className="standings-search-input"
+            className="search-input"
             placeholder="ابحث عن لاعب..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <FaSearch className="standings-search-icon" />
+          <FaSearch className="search-icon" />
         </div>
 
         {/* 📋 جدول النتائج أو رسالة فارغة */}
         {filteredPlayers.length > 0 ? (
-          <div className="standings-table-wrapper">
+          <div className="table-wrapper">
             <table className="table-theme">
               <thead>
                 <tr>
@@ -79,6 +81,8 @@ const StandingsHomePage = () => {
           <div className="no-results-message">لا يوجد لاعب بهذا الاسم</div>
         )}
       </div>
+            </div>
+
     </PageContainer>
         </>
   );
