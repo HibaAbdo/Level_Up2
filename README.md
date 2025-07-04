@@ -106,7 +106,7 @@ cd backend/tournament_system
 ```
 Runs on port `8080`.
 
-# Important packages:
+#### Important packages:
 
 - `controllers`/ – REST API endpoints
 
@@ -127,7 +127,7 @@ cd backend/chess-tournament
 ```
 Runs on port `8081`.
 
-# Important packages:
+#### Important packages:
 
 - `controller`/ – REST API endpoints
 
