@@ -1,6 +1,10 @@
 # Level_Up2 Chess Tournament Manager
 
-This repository provides a simple full‑stack example for organising chess tournaments. A React front end interacts with two Spring Boot services. All services store data in an in‑memory H2 database so the application can run locally with almost no setup.
+This repository provides a simple full‑stack example for organising chess tournaments.  
+A React front end interacts with two Spring Boot services.  
+All services store data in an in‑memory H2 database so the application can run locally with almost no setup.
+
+---
 
 ## Features
 
@@ -9,9 +13,10 @@ This repository provides a simple full‑stack example for organising chess tour
 - Dashboards for players and arbiters
 - Runs entirely on an H2 database for easy setup
 
+---
+
 ## Project Structure
 
-```
 Level_Up2/
 ├── backend/
 │ ├── Usermangment/ # Handles user authentication & roles (Spring Boot - port 8080)
@@ -43,107 +48,113 @@ Level_Up2/
 │ └── assets/ # Icons and images used in the UI
 │
 └── README.md # Project documentation
-```
 
-Generated folders such as `target`, `.mvn`, `node_modules` and Maven wrapper scripts have been omitted for brevity.
+ruby
+Copy
+Edit
+
+> Generated folders such as `target`, `.mvn`, `node_modules` and Maven wrapper scripts have been omitted for brevity.
+
+---
 
 ## Front‑End (FinalUI)
 
-The React front end lives inside `FinalUI` and is built with [Vite](https://vitejs.dev/).
+The React front end lives inside the `FinalUI` folder and is built with [Vite](https://vitejs.dev/).
 
-### FinalUI source layout
+### Key folders and files under `FinalUI/src`:
 
-Key folders and files under `FinalUI/src` are:
+- `HomePage/` – Landing pages for guests, rounds and standings views  
+- `CreateTournamentPage/` – Form for creating a new tournament  
+- `MyTournamentsPage/` – Shows tournaments owned by the logged-in user  
+- `ArchivedTournamentsPage/` – List of past tournaments  
+- `DashBoardPage/` – Tournament dashboard tabs  
+- `Arbiter/` – Tools for arbiters  
+- `LoginPage/` – Login form  
+- `Components/` – Shared React components (modals, drawers, etc.)  
+- `assets/` – Icons and images used by the UI  
+- `App.jsx` / `main.jsx` – Entry point for the React application  
 
-- `HomePage/` – landing pages for guests, rounds and standings views
-- `CreateTournamentPage/` – form for creating a new tournament
-- `MyTournamentsPage/` – shows tournaments owned by the logged in user
-- `ArchivedTournamentsPage/` – list of past tournaments
-- `DashBoardPage/` – tournament dashboards
-- `Arbiter/` – tools for arbiters
-- `LoginPage/` – login form
-- `Components/` – shared React components (modals, drawers, etc.)
-- `assets/` – icons and images used by the UI
-- `App.jsx` / `main.jsx` – entry point for the React application
-
-Run it in development mode:
+### Run in development mode:
 
 ```bash
 cd FinalUI
 npm install
 npm run dev
-```
+The server starts on http://localhost:5173 with hot-reloading.
+A separate README in that directory contains more Vite details.
 
-This starts a hot‑reloading server on port `5173` by default. A separate README in that directory contains more Vite details.
+Back‑End Services
+Usermangment Service
+Located in backend/Usermangment, this Spring Boot project provides user accounts and basic tournament setup APIs.
 
-## Back‑End Services
-
-### Usermangment Service
-
-Located in `backend/Usermangment`, this Spring Boot project provides user accounts
-and basic tournament setup APIs. Start it with:
-
-```bash
+bash
+Copy
+Edit
 cd backend/Usermangment
 ./mvnw spring-boot:run
-```
+Runs on port 8080.
 
-The service listens on port `8080`.
+Important packages:
 
-Important packages include:
+controllers/ – REST API endpoints
 
-- `controllers/` – REST API endpoints
-- `service/` – business logic
-- `security/` – configuration for Spring Security
+service/ – Business logic
 
-### Chess Tournament
+security/ – Spring Security configuration
 
-Handles pairings and standings. Start it with:
+Chess Tournament Service
+Handles pairings and standings.
 
-```bash
+bash
+Copy
+Edit
 cd backend/chess-tournament
 ./mvnw spring-boot:run
-```
+Runs on port 8081.
 
-This service uses port `8081`.
+Important packages:
 
-Important packages include:
+controller/ – REST API endpoints
 
-- `controller/` – REST API endpoints
-- `service/` – tournament logic
-- `repository/` – Spring Data repositories
-- `model/` – JPA entities
-- `dto/` – DTO classes for API payloads
-- `config/` – CORS and other configuration
-- `utils/` – helper classes
-- `results/` – tools for generating sample results
+service/ – Tournament logic
 
-Both services expose an H2 console at `/h2-console` when running.
+repository/ – Spring Data repositories
 
-## Building and Testing
+model/ – JPA entities
 
-Use Maven to build or test either service:
+dto/ – DTO classes for API payloads
 
-```bash
+config/ – CORS and other configuration
+
+utils/ – Helper classes
+
+results/ – Tools for generating sample results
+
+Both services expose an H2 console at /h2-console when running.
+
+Building and Testing
+Use Maven to build or test either Spring Boot service:
+
+bash
+Copy
+Edit
 ./mvnw clean package
 ./mvnw test
-```
+Production Build
+Generate an optimized front‑end build:
 
-## Production Build
-
-Generate an optimized front‑end build with:
-
-```bash
+bash
+Copy
+Edit
 cd FinalUI
 npm run build
-```
+The result appears in FinalUI/dist.
 
-The result appears in `FinalUI/dist`. To run the packaged back‑end services execute their jars from `target/`:
+To run the packaged back-end services:
 
-```bash
+bash
+Copy
+Edit
 java -jar target/*.jar
-```
-
-## License
-
+License
 This project is provided for learning purposes and has no specific license.
