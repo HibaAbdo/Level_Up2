@@ -13,26 +13,28 @@ All services store data in an in‑memory H2 database so the application can run
 - Dashboards for players and arbiters
 - Runs entirely on an H2 database for easy setup
 
----
 
 ## Project Structure
 
+---
+
 Level_Up2/
-├── backend/
-│ ├── Usermangment/ # Handles user authentication & roles (Spring Boot - port 8080)
-│ │ ├── controllers/ # REST API endpoints
-│ │ ├── service/ # Business logic
-│ │ └── security/ # Spring Security configuration
+├── backend
+│ ├── tournament_system # Handles user authentication & roles (Spring Boot - port 8080)
+│ │ ├── controllers # REST API endpoints
+│ │ ├── models # JPA entities
+│ | ├── repositories # Spring Data repositories
+│ │ ├── service # Business logic
+│ │ └── security # Spring Security configuration
 │ │
-│ └── chess-tournament/ # Tournament engine: pairings, results, standings (Spring Boot - port 8081)
-│ ├── controller/ # REST API endpoints
-│ ├── service/ # Tournament logic
-│ ├── repository/ # Spring Data repositories
-│ ├── model/ # JPA entities
-│ ├── dto/ # DTO classes for API payloads
-│ ├── config/ # CORS and other configuration
-│ ├── utils/ # Helper classes (e.g., TRF export)
-│ └── results/ # Tools for generating sample results
+│ └── chess-tournament # Tournament engine pairings, results, standings (Spring Boot - port 8081)
+│  ├── controller # REST API endpoints
+│  ├── service # Tournament logic
+│  ├── repository # Spring Data repositories
+│  ├── model # JPA entities
+│  ├── dto # DTO classes for API payloads
+│  ├── config # CORS and other configuration
+│  └── utils # Helper classes 
 │
 ├── FinalUI/ # React frontend (Vite)
 │ ├── App.jsx / main.jsx # React entry point
@@ -48,12 +50,9 @@ Level_Up2/
 │ └── assets/ # Icons and images used in the UI
 │
 └── README.md # Project documentation
+```
 
-ruby
-Copy
-Edit
-
-> Generated folders such as `target`, `.mvn`, `node_modules` and Maven wrapper scripts have been omitted for brevity.
+> Generated folders such as `target`, `.mvn`, `node_modules` have been omitted for brevity.
 
 ---
 
@@ -80,75 +79,75 @@ The React front end lives inside the `FinalUI` folder and is built with [Vite](h
 cd FinalUI
 npm install
 npm run dev
-The server starts on http://localhost:5173 with hot-reloading.
+```
+The server starts on `http://localhost:5173` with hot-reloading.
 A separate README in that directory contains more Vite details.
 
-Back‑End Services
-Usermangment Service
-Located in backend/Usermangment, this Spring Boot project provides user accounts and basic tournament setup APIs.
+## Back‑End Services
+### tournament_system Service
+Located in backend/tournament_system, this Spring Boot project provides user accounts and basic tournament setup APIs.
 
-bash
-Copy
-Edit
-cd backend/Usermangment
-./mvnw spring-boot:run
-Runs on port 8080.
+```bash
+cd backend/tournament_system
+./mvn spring-boot:run
+```
+Runs on port `8080`.
 
 Important packages:
 
-controllers/ – REST API endpoints
+- `controllers`/ – REST API endpoints
 
-service/ – Business logic
+- `service`/ – Business logic
 
-security/ – Spring Security configuration
+- `security`/ – Spring Security configuration
 
-Chess Tournament Service
-Handles pairings and standings.
+- `models` / – JPA entities
 
-bash
-Copy
-Edit
+- `repositories` / –  Spring Data repositories
+ 
+### Chess Tournament Service
+Handles creating tournaments, pairings, results and standings.
+
+```bash
 cd backend/chess-tournament
-./mvnw spring-boot:run
-Runs on port 8081.
+./mvn spring-boot:run
+```
+Runs on port `8081`.
 
 Important packages:
 
-controller/ – REST API endpoints
+- `controller`/ – REST API endpoints
 
-service/ – Tournament logic
+- `service` / – Tournament logic
 
-repository/ – Spring Data repositories
+- `repository`/ – Spring Data repositories
 
-model/ – JPA entities
+-  `model`/ – JPA entities
 
-dto/ – DTO classes for API payloads
+- `dto` / – DTO classes for API payloads
 
-config/ – CORS and other configuration
+- `config` / – CORS and other configuration
 
-utils/ – Helper classes
+- `utils` / – Helper classes
 
-results/ – Tools for generating sample results
+Both services expose an H2 console at `/h2-console` when running.
 
-Both services expose an H2 console at /h2-console when running.
-
-Building and Testing
+## Building and Testing
 Use Maven to build or test either Spring Boot service:
 
-bash
-Copy
-Edit
-./mvnw clean package
-./mvnw test
-Production Build
+```bash
+./mvn clean package
+./mvn test
+```
+
+## Production Build
 Generate an optimized front‑end build:
 
-bash
-Copy
-Edit
+```bash
 cd FinalUI
 npm run build
-The result appears in FinalUI/dist.
+```
+The result appears in `FinalUI/dist`.
 
 To run the packaged back-end services:
 
