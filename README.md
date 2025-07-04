@@ -16,7 +16,7 @@ All services store data in an in‑memory H2 database so the application can run
 
 ## Project Structure
 
----
+```
 
 Level_Up2/
 ├── backend
