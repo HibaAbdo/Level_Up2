@@ -1,0 +1,538 @@
+/* src/DashBoardButtons/RoundsPage/RoundsPage.css */
+
+/* Base container for the Rounds Page */
+.rounds-page {
+    padding: 0rem; /* سيتم توفير البادينج من PageContainer */
+    min-height: 100vh; /* للحفاظ على ارتفاع كامل */
+    color: var(--clr-deep-purple); /* لون النص الأساسي يتناسب مع الخلفية الفاتحة */
+    font-family: var(--font-main); /* استخدام المتغير العام للخط */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* الخلفية ستأتي من PageContainer الذي يحيط بهذا المكون */
+    /* background: none; أو background-color: transparent; */
+}
+
+
+/* Round title styling */
+.round-title {
+  font-size: 32px;
+  font-weight: bold;
+  color: #4a1d99;
+  text-align: center;
+  margin-bottom: 16px; /* قلل القيمة إذا كانت 40 أو أكثر */
+}
+
+
+/* Top section controls (Generate button, scroll arrows) */
+.top-controls {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+/* Generate Round Button - uses general button styles but with specific overrides */
+.generate-btn {
+    background: linear-gradient(92deg, var(--clr-purple) 70%, var(--clr-deep-purple) 100%);
+    color: var(--clr-light-bg);
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    gap: 9px;
+    box-shadow: 0 2px 9px 0 var(--clr-shadow);
+    transition: background 0.15s, box-shadow 0.17s, color 0.15s;
+    font-family: var(--font-main);
+    margin-top: 1.25rem; /* ✅ أضف هذا لترك مسافة من زر الجولة التالية */
+
+}
+
+.generate-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Wrapper for scroll arrows and round buttons */
+.round-buttons-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    margin-bottom: 0;
+    gap: 0.15rem;
+    flex-direction: row;
+    margin-top: 1.25rem; /* ✅ أضف هذا لترك مسافة من زر الجولة التالية */
+
+}
+
+/* Scroll arrows for round navigation */
+.scroll-arrow {
+  background: transparent !important; /* 🔥 إزالة أي تأثير hover */
+  border: none;
+  box-shadow: none;
+  padding: 0.3rem;
+  border-radius: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+/* منع تغير الخلفية عند hover */
+.scroll-arrow:hover {
+  background: transparent !important;  /* ⛔ لا خلفية أبداً */
+  box-shadow: none;
+  transform: scale(1.25); /* فقط تكبير خفيف (اختياري) */
+}
+
+/* Scrollable container for individual round buttons */
+.round-buttons-scroll {
+    display: flex;
+    gap: 0.4rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    max-width: 600px;
+    flex-grow: 1;
+    justify-content: flex-start;
+    padding-bottom: 5px;
+}
+
+.round-buttons-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+/* Individual round buttons */
+.round-btn {
+    background: linear-gradient(92deg, var(--clr-purple) 70%, var(--clr-deep-purple) 100%);
+    color: white;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    padding: 0.6rem 1.1rem;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.95rem;
+    transition: 0.3s ease;
+    white-space: nowrap;
+    font-family: var(--font-main);
+}
+
+.round-btn:hover {
+    background: linear-gradient(92deg, var(--clr-deep-purple) 70%, var(--clr-purple) 100%);
+    color: var(--clr-gold);
+}
+
+.round-btn.active {
+    background: var(--clr-gold);
+    color: var(--clr-deep-purple);
+    border-color: var(--clr-deep-purple);
+}
+
+/* Wrapper for the rounds table */
+.rounds-table-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+/* Round specific table styling - NOW ALIGNED WITH .table-theme FROM index.css */
+.round-table {
+    width: 90%;
+    max-width: 850px;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    color: var(--clr-deep-purple);
+    border: 2.5px solid var(--clr-purple);
+    border-radius: 16px;
+    overflow: hidden;
+    margin: 1rem auto;
+    box-shadow: 0 4px 24px 0 var(--clr-shadow);
+    direction: rtl;
+}
+
+.round-table thead tr {
+    background: var(--clr-purple);
+}
+
+.round-table th {
+    color: white;
+    font-weight: bold;
+    padding: 1rem 0.6rem;
+    font-size: 1.12rem;
+    border-bottom: 2px solid #b9adef;
+    letter-spacing: 0.5px;
+    text-align: center;
+    font-family: var(--font-main);
+}
+
+.round-table td {
+    padding: 0.9rem 0.6rem;
+    font-weight: 500;
+    border-bottom: 1px solid #e6f7e6;
+    font-size: 1.01rem;
+    text-align: center;
+    font-family: var(--font-main);
+}
+
+.round-table tbody tr:nth-child(odd) {
+    background-color: #f0f5f7;
+}
+.round-table tbody tr:nth-child(even) {
+    background-color: #ffffff;
+}
+.round-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Style for the select dropdown in the table cells */
+.round-table td select {
+    background-color: var(--clr-light-bg);
+    color: var(--clr-deep-purple);
+    border: 1px solid var(--clr-purple);
+    border-radius: 8px;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-family: var(--font-main);
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23663d99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3e%3cpolyline points="6 9 12 15 18 9"%3e%3c/polyline%3e%3c/svg%3e');
+    background-repeat: no-repeat;
+    background-position: left 0rem center;
+    padding-left: 2rem;
+    text-align: right;
+    direction: rtl;
+}
+
+.round-table td select:hover {
+    border-color: var(--clr-gold);
+}
+
+.round-table td select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(63, 1, 145, 0.2);
+}
+
+/* Style for the span displaying result when select is not active */
+.round-table td span {
+    color: var(--clr-deep-purple);
+    font-weight: bold;
+}
+
+/* No data row in table */
+.no-data-row td {
+    text-align: center;
+    padding: 2rem;
+    font-style: italic;
+    color: var(--clr-deep-purple);
+}
+
+/* Action bar at the bottom */
+.action-bar {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+    position: relative;
+}
+
+/* Grouped styles for various action buttons (reusing general button styles where possible) */
+.csv-btn,
+.close-btn.round-btn,
+.all-rounds-btn,
+.fullscreen-btn,
+.delete-btn {
+    padding: 0.5rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(92deg, var(--clr-purple) 70%, var(--clr-deep-purple) 100%);
+    color: white;
+    font-size: 0.95rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    font-family: var(--font-main);
+}
+
+.csv-btn:hover,
+.all-rounds-btn:hover,
+.close-btn.round-btn:hover,
+.fullscreen-btn:hover,
+.delete-btn:hover {
+    background: linear-gradient(92deg, var(--clr-deep-purple) 70%, var(--clr-purple) 100%);
+    color: var(--clr-gold);
+}
+
+/* Modal specific to fullscreen round table view (light theme) */
+.rounds-page .modal-overlay { /* Specificity for fullscreen modal within rounds-page */
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.rounds-page .modal-content { /* Specificity for fullscreen modal content */
+    background: linear-gradient(135deg, var(--clr-light-bg) 60%, #fff 100%);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 0 15px var(--clr-gold);
+    max-width: 90%;
+    max-height: 90%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    text-align: center;
+    scrollbar-color: var(--clr-purple) transparent;
+    scrollbar-width: thin;
+    color: var(--clr-deep-purple);
+    font-family: var(--font-main);
+    box-sizing: border-box;
+}
+
+/* Webkit scrollbar for the fullscreen modal */
+.rounds-page .modal-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.rounds-page .modal-content::-webkit-scrollbar-thumb {
+    background-color: var(--clr-purple);
+    border-radius: 6px;
+}
+
+.rounds-page .modal-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Heading style within the fullscreen modal */
+.rounds-page .modal-content h2 {
+    color: var(--clr-purple);
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+}
+
+/* Modal for "All Rounds" (general modal style, not .rounds-page specific) */
+/* Assuming TournamentDashboard.css defines .modal-overlay and .modal-content */
+/* If TournamentDashboard.css is not imported in a parent component, you might need to define
+   these general modal styles here or in index.css for them to work correctly.
+   For now, I'm assuming a global `.modal-overlay` and `.modal-content` exist for general modals.
+*/
+/* These styles are a fallback/demonstration if general modal styles aren't loaded */
+.general-modal-overlay { /* Using a different class to avoid conflict with .rounds-page specific modal */
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.85); /* Darker, more common modal overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999; /* Lower z-index than fullscreen modal */
+}
+
+.general-modal-content {
+    background: linear-gradient(135deg, var(--clr-deep-purple) 60%, var(--clr-purple) 100%); /* Darker theme for general modals */
+    color: white; /* White text for dark background */
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4);
+    max-width: 90%;
+    max-height: 90%;
+    overflow-y: auto;
+    text-align: center;
+    font-family: var(--font-main);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.general-modal-content h2 {
+    color: var(--clr-gold); /* Gold heading for general modal */
+    margin-bottom: 1rem;
+}
+
+.general-modal-content h3 {
+    color: white; /* White text for subheadings in general modal */
+    margin-bottom: 0.5rem;
+}
+
+
+/* Responsive Table for Rounds Page */
+@media (max-width: 950px) {
+    .round-table {
+        font-size: 0.9rem;
+        border-radius: 12px;
+        width: 98%;
+    }
+
+    .round-table th,
+    .round-table td {
+        font-size: 0.95rem;
+        padding: 0.65rem 0.3rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .round-table {
+        font-size: 0.85rem;
+        border-radius: 8px;
+    }
+
+    .round-table th,
+    .round-table td {
+        padding: 0.5rem 0.2rem;
+    }
+
+    .generate-btn {
+        font-size: 1rem;
+        padding: 0.6rem 1rem;
+    }
+
+    .scroll-arrow {
+        font-size: 1.4rem;
+        padding: 0.2rem 0.5rem;
+    }
+
+    .round-btn {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.8rem;
+    }
+
+    .round-title {
+        font-size: 2rem;
+    }
+
+    .action-bar button {
+        font-size: 0.85rem;
+        padding: 0.4rem 1rem;
+    }
+
+    .rounds-page .modal-content {
+        padding: 1.5rem;
+    }
+
+    .rounds-page .modal-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .general-modal-content {
+        padding: 1.5rem;
+        border-radius: 12px;
+    }
+
+    .general-modal-content h2 {
+        font-size: 1.8rem;
+    }
+}
+
+/* ==== Custom Dropdown Styling ==== */
+.custom-dropdown {
+  position: relative;
+  width: 140px;
+  font-family: var(--font-main);
+  direction: rtl;
+  user-select: none;
+}
+
+.dropdown-selected {
+  background-color: var(--clr-light-bg);
+  border: 1px solid var(--clr-purple);
+  border-radius: 8px;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--clr-deep-purple);
+  transition: border 0.3s;
+}
+
+.dropdown-selected:hover {
+  border-color: var(--clr-gold);
+}
+
+.dropdown-arrow {
+  font-size: 0.9rem;
+  margin-right: 5px;
+  color: var(--clr-purple);
+}
+
+.dropdown-options {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  background: white;
+  border: 1px solid var(--clr-purple);
+  border-top: none;
+  z-index: 1000;
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
+}
+
+.dropdown-option {
+  padding: 0.5rem;
+  cursor: pointer;
+  text-align: right;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.dropdown-option:hover {
+  background-color: var(--clr-gold);
+  color: white;
+}
+
+.custom-dropdown.disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.rounds-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px; /* مسافة بين الأزرار */
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.rounds-button {
+  background-color: #5e2ca5;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 18px;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.rounds-button:hover {
+  background-color: #4a1d99;
+  transform: scale(1.05);
+}

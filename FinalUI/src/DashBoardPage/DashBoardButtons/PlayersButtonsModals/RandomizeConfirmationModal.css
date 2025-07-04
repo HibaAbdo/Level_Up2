@@ -1,0 +1,13 @@
+.randomize-modal-body {
+  text-align: center;
+  font-family: var(--font-main);
+  color: #422969;
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.modal-message {
+  margin: 0 auto;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}

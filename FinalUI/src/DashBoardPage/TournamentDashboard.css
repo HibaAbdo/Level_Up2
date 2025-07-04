@@ -1,0 +1,81 @@
+.controls {
+  margin-bottom: 1 rem;
+}
+
+.row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  justify-content: center; /* ✅ هذا هو التعديل */
+}
+
+.btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #26266a;
+  color: white;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn:hover {
+  background-color: #facc159f;
+}
+
+.btn-gold {
+  background-color: #facc15;
+  color: #3b2a70;
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 1.5px solid #facc15;
+  color: #facc15;
+}
+
+.btn-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+.table-theme {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #3b2a70;
+  color: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.table-theme th,
+.table-theme td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.table-theme thead {
+  background-color: #26266a;
+}
+
+.table-theme tbody tr:hover {
+  background-color: #f9f9ff;
+  color: black;
+}
+
+.save-section {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}

@@ -1,0 +1,62 @@
+.archived-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 1rem 3rem;
+  box-sizing: border-box;
+}
+
+.archived-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.no-archived {
+  font-size: 1.1rem;
+  color: #999;
+  margin-top: 2rem;
+}
+
+/* 📛 اسم البطولة مع تأثير hover */
+.tournament-name-link {
+  color: var(--clr-purple);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+  font-weight: 600;
+}
+
+.tournament-name-link:hover {
+  color: var(--clr-gold);
+  text-shadow: 0 0 8px rgba(240, 194, 48, 0.7),
+               0 0 15px rgba(240, 194, 48, 0.3);
+}
+
+/* ⏰ التاريخ والوقت داخل الخلية */
+.table-date {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  font-size: 0.95rem;
+  direction: rtl;
+}
+
+/* 🔄 زر الاسترجاع كأيقونة فقط */
+/* ✅ زر أيقونة الأرشفة */
+.non-archive-icon-btn {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: var(--clr-purple);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.non-archive-icon-btn:hover {
+  color: var(--clr-gold);
+  transform: scale(1.2);
+}

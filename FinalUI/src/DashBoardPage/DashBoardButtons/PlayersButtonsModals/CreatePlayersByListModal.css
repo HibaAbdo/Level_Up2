@@ -1,0 +1,31 @@
+
+
+.floating-textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid #d6c9f7;
+  border-radius: 15px;
+  font-size: 1.05rem;
+  background: #f5f2fa;
+  color: #422969;
+  resize: vertical;
+  outline: none;
+  font-family: var(--font-main);
+  transition: border-color 0.2s ease;
+}
+
+.floating-textarea:focus {
+  background: white;
+  border-color: #f0c230;
+}
+
+.input-hint {
+  font-size: 0.85rem;
+  color: #422969;
+  margin-top: -0.5rem;
+  text-align: right;
+}
+.floating-textarea::placeholder {
+  color: #8c74b4; /* لون بنفسجي متوسط وواضح */
+  opacity: 1;      /* تأكد إنه واضح مش شفاف */
+}

@@ -1,0 +1,30 @@
+import axios from 'axios';
+
+const API_BASE = 'http://localhost:8081/api/players'; // 🔁 غيّره لو تستخدم سيرفر خارجي
+
+// 🟢 إرسال لاعب واحد
+export const createPlayer = async (playerData) => {
+  const response = await axios.post(API_BASE, playerData);
+  return response.data;
+};
+
+// 🟢 إرسال مجموعة لاعبين دفعة واحدة
+export const createPlayersBulk = (bulkData) => {
+  return axios.post(`${API_BASE}/bulk`, bulkData);
+};
+
+// 🔄 جلب جميع اللاعبين المرتبطين ببطولة معيّنة
+export const getPlayersByTournament = (tournamentId) => {
+  return axios.get(`${API_BASE}?tournamentId=${tournamentId}`);
+};
+
+// ❌ حذف لاعب حسب الـ ID (اختياري)
+export const deletePlayer = (playerId) => {
+  return axios.delete(`${API_BASE}/${playerId}`);
+};
+
+// ✅ دالة لجلب اللاعبين لواجهة المستخدم
+export const fetchPlayersByTournament = async (tournamentId) => {
+  const response = await axios.get(`${API_BASE}?tournamentId=${tournamentId}`);
+  return response.data;
+};

@@ -1,0 +1,90 @@
+/* 📄 تنسيق عام للصفحة */
+.arbiter-page {
+  padding: 2rem;
+  text-align: center;
+}
+
+.arbiter-title {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: var(--clr-deep-purple);
+  font-family: var(--font-main);
+  font-weight: 600;
+}
+
+/* 🔘 الزرين العلويين */
+.arbiter-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+/* 🔘 أزرار لوحة التحكّم */
+.dashboard-action-button {
+  background: var(--clr-purple);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: var(--font-main);
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  box-shadow: 0 3px 10px var(--clr-shadow);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.dashboard-action-button:hover {
+  background: var(--clr-deep-purple);
+  color: var(--clr-gold);
+  cursor: pointer;
+}
+
+.dashboard-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+/* 📊 الجدول (يرث باقي التنسيقات من index.css) */
+.table-wrapper {
+  width: 100%;
+  justify-content: center;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  overflow-x: auto;
+  max-width: 100%;
+  border-radius: 16px;
+}
+
+/* 🔘 أزرار أسفل المودال */
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* ❌ زر الإلغاء بتنسيق مختلف عن .btn */
+.cancel-btn {
+  background: #bbb;
+  color: #333;
+}
+
+.cancel-btn:hover {
+  background: #999;
+  color: white;
+}
+
+.no-arbiters-message {
+  text-align: center;
+  color: #422969;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 1rem;
+}

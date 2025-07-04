@@ -1,0 +1,34 @@
+/* 📦 المحتوى العام */
+.standings-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 1rem 3rem;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .search-wrapper {
+    max-width: 460px;
+  }
+}
+
+/* 📱 استجابة الهواتف */
+@media (max-width: 768px) {
+  .standings-content {
+    padding: 1.5rem 0.5rem;
+  }
+
+  .standings-search-input {
+    font-size: 0.95rem;
+    padding: 10px 42px 10px 14px;
+  }
+
+  .no-results-message {
+    font-size: 1rem;
+  }
+
+  .table-theme {
+    font-size: 0.85rem;
+  }
+}

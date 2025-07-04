@@ -1,0 +1,129 @@
+/* 🌈 متغيرات ألوان وخطوط */
+:root {
+  --clr-bg-modal: #f6efff;
+  --clr-bg-input: #f5f2fa;
+  --clr-border-input: #d6c9f7;
+  --clr-label-bg: #e9d7fb;
+  --clr-purple-text: #3b2a70;
+  --clr-purple-dark: #422969;
+  --clr-gold: #f0c230;
+  --font-main: 'IBM Plex Sans Arabic', 'Cairo', 'Tajawal', sans-serif;
+}
+
+/* 🟪 خلفية المودال */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+/* 📦 حاوية المودال */
+.modal-wrapper {
+  background: var(--clr-bg-modal);
+  padding: 2.5rem 2rem;
+  border-radius: 1.5rem;
+  max-width: 480px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  font-family: var(--font-main);
+}
+
+/* 📝 عنوان المودال */
+.modal-title {
+  text-align: center;
+  font-size: 1.5rem;
+  color: var(--clr-purple-text);
+  border-bottom: 3px solid var(--clr-gold);
+  width: fit-content;
+  margin: 0 auto 1.5rem;
+  padding-bottom: 0.25em;
+}
+
+/* 📄 جسم المودال */
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* 🔘 أزرار أسفل المودال */
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* ✍️ حقل عائم (input أو textarea) */
+.floating-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ✅ ستايل موحد لـ input و textarea */
+.floating-input,
+.floating-textarea {
+  width: 100%;
+  padding: 1rem 1.1rem 0.8rem;
+  font-size: 1.05rem;
+  background: var(--clr-bg-input);
+  border: 2px solid var(--clr-border-input);
+  border-radius: 15px;
+  color: var(--clr-purple-dark);
+  transition: border-color 0.19s, background 0.16s;
+  outline: none;
+  font-family: var(--font-main);
+  resize: vertical; /* مفيد للـ textarea */
+  margin-bottom: 0.2rem;
+}
+
+.floating-input:focus,
+.floating-textarea:focus {
+  background: white;
+  border-color: var(--clr-gold);
+}
+
+.floating-input::placeholder,
+.floating-textarea::placeholder {
+  color: transparent;
+}
+
+/* 🏷️ الليبل العائم */
+.floating-label {
+  position: absolute;
+  top: -0.65rem;
+  right: 1rem;
+  font-size: 0.93rem;
+  font-weight: 600;
+  background: var(--clr-label-bg);
+  color: var(--clr-purple-dark);
+  border-radius: 7px;
+  padding: 1px 10px 2px;
+  pointer-events: none;
+  z-index: 2;
+  transition: 0.22s;
+  box-shadow: 0 1px 6px #663d9916;
+}
+
+/* ✅ checkbox بتنسيق موحد */
+.form-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 1rem;
+  color: var(--clr-purple-dark);
+  font-weight: 600;
+}
+
+.form-checkbox input[type="checkbox"] {
+  accent-color: var(--clr-gold);
+  width: 1.13rem;
+  height: 1.13rem;
+  cursor: pointer;
+}

@@ -1,0 +1,23 @@
+# Ignore build directories
+target/
+**/target/
+
+# Ignore IDE files
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# OS generated files
+Thumbs.db
+Desktop.ini
+
+# Logs and temp files
+*.log
+*.tmp
+*.bak
+
+# vim swap files
+*.swp

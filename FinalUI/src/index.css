@@ -1,0 +1,271 @@
+/* src/index.css - النسخة النظيفة والفعالة جداً */
+
+/*
+   ====================================================================
+   1. استيراد الخطوط من Google Fonts
+   ====================================================================
+   تنبيه: يفضل وضع هذه الروابط في <head> ملف public/index.html لتحسين الأداء.
+   إذا وضعتها في index.html، فاحذف سطر @import هذا.
+*/
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&family=Cairo:wght@400;700&family=Tajawal:wght@400;700&display=swap');
+
+
+/*
+   ====================================================================
+   2. تعريف المتغيرات الجذرية (Root Variables) - الألوان، الخطوط الأساسية
+   ====================================================================
+*/
+:root {
+  --font-main: 'IBM Plex Sans Arabic', 'Cairo', 'Tajawal', sans-serif;
+
+  --clr-purple: #663d99;
+  --clr-deep-purple: #422969;
+  --clr-light-bg: #f0f5f7;
+  --clr-gold: #f0c230;
+  --clr-shadow: rgba(66, 41, 105, 0.1);
+}
+
+
+/*
+   ====================================================================
+   3. فئات CSS لأوزان خط IBM Plex Sans Arabic - عامة ومفيدة
+   ====================================================================
+*/
+.ibm-plex-sans-arabic-thin { font-weight: 100; }
+.ibm-plex-sans-arabic-extralight { font-weight: 200; }
+.ibm-plex-sans-arabic-light { font-weight: 300; }
+.ibm-plex-sans-arabic-regular { font-weight: 400; }
+.ibm-plex-sans-arabic-medium { font-weight: 500; }
+.ibm-plex-sans-arabic-semibold { font-weight: 600; }
+.ibm-plex-sans-arabic-bold { font-weight: 700; }
+
+
+/*
+   ====================================================================
+   4. تنسيقات Body والعناصر العامة (التي سترث الخط والألوان الأساسية)
+   ====================================================================
+*/
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--clr-light-bg); /* لون خلفية عام */
+  direction: rtl; /* اتجاه نص عام للتطبيق بالكامل */
+  color: var(--clr-deep-purple); /* لون نص أساسي عام */
+  font-family: var(--font-main); /* الخط الأساسي للتطبيق بالكامل */
+}
+
+/*
+   ====================================================================
+   5. تنسيقات الأزرار العامة - النمط الأساسي والخط لجميع الأزرار
+   ====================================================================
+   هنا نحدد شكل الزر "الافتراضي" الذي تستخدمه في معظم الأماكن.
+   إذا كان لديك أزرار بأنماط مختلفة تمامًا (مثل زر شفاف)،
+   فقد تحتاج لفئة .btn-primary و .btn-secondary وما إلى ذلك.
+*/
+.btn, /* الفئة الأساسية لأزرارك */
+button, /* جميع عناصر button */
+input[type="submit"], /* جميع أزرار الإرسال */
+input[type="button"] /* جميع أزرار النوع button */
+ {
+  background: linear-gradient(92deg, var(--clr-purple) 70%, var(--clr-deep-purple) 100%);
+  color: white; /* لون النص الأساسي للأزرار */
+  border: none;
+  border-radius: 16px;
+  padding: 10px 24px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  box-shadow: 0 2px 9px 0 #42296915;
+  font-family: var(--font-main); /* الأهم: تطبيق الخط الرئيسي هنا لجميع الأزرار */
+}
+
+.btn:hover,
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover {
+  background: linear-gradient(92deg, var(--clr-deep-purple) 70%, var(--clr-purple) 100%);
+  color: var(--clr-gold); /* لون النص عند التحويم */
+}
+
+/* ⚠ ملاحظة: إذا كانت .header-button و .signout-btn تستخدم نفس خصائص .btn،
+            يمكنك إزالتها من هنا والاعتماد على .btn.
+            إذا كانت لديها خصائص فريدة (بخلاف الـ hover)، فضعها في Header.css.
+*/
+.header-button,
+.signout-btn {
+    /* هذه الفئات إذا كانت لا تستخدم .btn، يمكنك وضع الأنماط الأساسية لها هنا
+       أو الأفضل: جعلها تستخدم .btn ثم إضافة فئة إضافية للخصائص الفريدة (مثل .btn-header)
+       ووضع .btn-header في Header.css. */
+    font-family: var(--font-main); /* التأكيد على الخط إذا لم تكن تستخدم .btn */
+}
+.header-button:hover,
+.signout-btn:hover {
+    /* أضف هنا تأثيرات التحويم الخاصة بها إذا كانت مختلفة عن .btn */
+}
+
+
+/*
+   ====================================================================
+   6. تنسيقات الخطوط للعناصر الشائعة التي قد لا ترث بشكل كامل
+   ====================================================================
+   هنا نضمن أن عناصر النصوص الشائعة تأخذ الخط الرئيسي بشكل صريح،
+   حتى لو كان هناك احتمال أن تتجاوزها أنماط المتصفح الافتراضية أو غيرها.
+*/
+.form-title, /* عناوين النماذج */
+.floating-input, /* حقول الإدخال */
+.floating-label, /* تسميات حقول الإدخال */
+.tie-breaks-select .select__control, /* مكونات Select (خاصة React-select) */
+.tie-breaks-select .select__multi-value,
+.tie-breaks-select .select__menu,
+.form-section h3, /* عناوين أقسام النماذج */
+.form-checkbox, /* مربعات الاختيار */
+.tournament-form, /* حاوية النموذج ليرث منها الأطفال */
+.table-wrapper, /* حاوية الجدول */
+.table-theme, /* الجدول نفسه */
+.table-theme th, /* رؤوس الجدول */
+.table-theme td, /* خلايا الجدول */
+.no-results-message, /* رسائل لا توجد نتائج */
+.tournament-name-link, /* روابط أسماء البطولات */
+.table-date, /* تواريخ الجدول */
+.logo-with-text, /* حاوية الشعار والنص في الهيدر */
+.logo-text-link, /* رابط نص الشعار */
+.dashboard-title, /* عنوان لوحة التحكم */
+.logo-text, /* نص الشعار */
+.username, /* اسم المستخدم في الهيدر */
+.sidebar-toggle-btn, /* زر تبديل الشريط الجانبي */
+.drawer-tabs li /* عناصر ألسنة الدرج الجانبي (إذا لم تكن أزرار) */
+{
+  font-family: var(--font-main);
+}
+
+/* تنسيق الجدول الموحد */
+.table-wrapper {
+  width: 100%;
+  justify-content: center;
+  padding: 0 1rem;
+  box-sizing: border-box;
+  overflow-x: auto;
+  max-width: 100%;
+  border-radius: 16px;
+
+}
+
+.table-theme {
+  width: 90%;
+  max-width: 850px;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
+  color: var(--clr-deep-purple);
+  border: 2.5px solid var(--clr-purple);
+  border-radius: 16px;
+  overflow: hidden;
+  margin: 0 auto;
+  box-shadow: 0 4px 24px 0 #42296918;
+  transition: width 0.3s ease;
+}
+
+.table-theme thead tr {
+  background: var(--clr-purple);
+}
+
+.table-theme th {
+  color: white;
+  font-weight: bold;
+  padding: 1rem 0.6rem;
+  font-size: 1.12rem;
+  border-bottom: 2px solid #b9adef;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+.table-theme td {
+  padding: 0.9rem 0.6rem;
+  font-weight: 500;
+  border-bottom: 1px solid #e6e6f7;
+  font-size: 1.01rem;
+  text-align: center;
+}
+
+.table-theme tbody tr:nth-child(odd) {
+  background-color: #f0f5f7;
+}
+.table-theme tbody tr:nth-child(even) {
+  background-color: #ffffff;
+}
+.table-theme tr:last-child td {
+  border-bottom: none;
+}
+.form-title {
+  margin-bottom: 0.5rem; /* او أي قيمة تناسبك */
+}
+
+
+/* 🔍 شريط البحث */
+.search-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  margin: 0 auto 0.5rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 44px 12px 16px;
+  border-radius: 14px;
+  border: 2px solid #ccc;
+  font-size: 1rem;
+  box-shadow: 0 2px 5px rgba(102, 61, 153, 0.15);
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--clr-purple);
+}
+
+.search-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--clr-deep-purple);
+  font-size: 1.2rem;
+}
+/* Responsive Table */
+@media (max-width: 950px) {
+  .table-theme {
+    font-size: 0.9rem;
+    border-radius: 12px;
+    width: 98%;
+  }
+
+  .table-theme th,
+  .table-theme td {
+    font-size: 0.95rem;
+    padding: 0.65rem 0.3rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .table-theme {
+    font-size: 0.85rem;
+    border-radius: 8px;
+  }
+
+  .table-theme th,
+  .table-theme td {
+    padding: 0.5rem 0.2rem;
+  }
+}
+
+/* كونتينر موحد للصفحات */
+.page-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0f5f7 60%, #fff 100%);
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 3rem;
+}

@@ -1,0 +1,65 @@
+
+.violation-label {
+  display: block;
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 0.3rem;
+}
+
+.violation-select {
+  width: 100%;
+  padding: 0.7rem;
+  border-radius: 8px;
+  border: 1.5px solid #ccc;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  background-color: white;
+}
+
+.violation-note-input {
+  width: 100%;
+  padding: 0.7rem;
+  border-radius: 8px;
+  border: 1.5px solid #ccc;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.violation-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+/* ✅ حاوية أزرار المخالفات */
+.violation-squares-container {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+/* ✅ زر المخالفة بحجم مرن */
+.violation-square {
+  width: clamp(22px, 2.8vw, 26px);
+  height: clamp(22px, 2.8vw, 26px);
+  border: 1.5px solid var(--clr-purple);
+  background-color: transparent;
+  color: var(--clr-purple);
+  font-size: clamp(0.55rem, 1vw, 0.7rem);
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.violation-square.filled {
+  background-color: var(--clr-purple);
+  color: white;
+}

@@ -1,0 +1,180 @@
+/* ✅ تنسيق عام للفورم */
+.tournament-form {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px #663d9910;
+  border: 2px solid #d6c9f7;
+  padding: 2.2rem 2rem;
+  max-width: 780px;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ✅ عنوان الصفحة */
+.form-title {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #663d99;
+  letter-spacing: 0.2px;
+  margin-bottom: 1.8rem;
+  border-bottom: 2.5px solid #f0c230;
+  width: fit-content;
+  margin-inline: auto;
+  padding-bottom: 0.3em;
+}
+
+/* ✅ حقول الإدخال العائمة */
+.floating-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.floating-input {
+  width: 100%;
+  padding: 1rem 1.1rem 0.8rem;
+  font-size: 1.05rem;
+  background: #f5f2fa;
+  border: 2px solid #d6c9f7;
+  border-radius: 15px;
+  color: #422969;
+  transition: border-color 0.19s, background 0.16s;
+  outline: none;
+  margin-bottom: 0.2rem;
+}
+
+.floating-input:focus {
+  background: white;
+  border-color: #f0c230;
+}
+
+.floating-input::placeholder {
+  color: transparent;
+}
+
+/* ✅ الليبل */
+.floating-label {
+  position: absolute;
+  top: -0.65rem;
+  right: 1rem;
+  font-size: 0.93rem;
+  font-weight: 600;
+  background: #e9d7fb;
+  color: #422969;
+  border-radius: 7px;
+  padding: 1px 10px 2px;
+  pointer-events: none;
+  z-index: 2;
+  transition: 0.22s;
+  box-shadow: 0 1px 6px #663d9916;
+}
+
+/* ✅ select */
+select.floating-input {
+  padding-top: 1.06rem;
+  padding-bottom: 1.06rem;
+}
+
+/* ✅ مكون الـ Select متعدد */
+.tie-breaks-select .select__control {
+  background: #f5f1fb;
+  border: 2px solid #d6c9f7;
+  border-radius: 13px;
+  min-height: 3.4rem;
+  font-size: 1.04rem;
+  direction: rtl;
+  box-shadow: none;
+  transition: border-color 0.18s;
+}
+
+.tie-breaks-select .select__control--is-focused {
+  border-color: #f0c230;
+  background: #fffef4;
+}
+
+.tie-breaks-select .select__multi-value {
+  background: #e0d2f5;
+  color: #422969;
+  font-weight: 700;
+  border-radius: 6px;
+}
+
+.tie-breaks-select .select__menu {
+  background: #fff;
+  color: #422969;
+  border-radius: 8px;
+}
+
+.tie-breaks-select .select__option--is-selected {
+  background: #f0c230;
+  color: #422969;
+}
+
+/* ✅ العناوين الثانوية */
+.form-section h3 {
+  color: #422969;
+  font-size: 1.15rem;
+  margin-bottom: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+/* ✅ Checkboxes */
+.form-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 1.04rem;
+  color: #422969;
+  font-weight: 600;
+}
+.form-checkbox input[type="checkbox"] {
+  accent-color: #f0c230;
+  width: 1.13rem;
+  height: 1.13rem;
+  cursor: pointer;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem; /* ✅ أهم سطر لتباعد الأزرار */
+  margin-top: 1.5rem;
+}
+
+/* ✅ إزالة الأسهم من input number */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* ✅ Responsive */
+@media (max-width: 600px) {
+  .tournament-form {
+    padding: 1rem;
+    max-width: 95vw;
+  }
+
+  .form-title {
+    font-size: 1.4rem;
+  }
+
+
+/* ✅ زر عام (موجود بالفعل غالبًا في index.css) */
+.btn {
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.25s ease-in-out;
+}
+}

@@ -1,0 +1,287 @@
+* {
+  box-sizing: border-box;
+  direction: rtl;
+  text-align: right;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+body::-webkit-scrollbar, html::-webkit-scrollbar, *::-webkit-scrollbar {
+  display: none;
+}
+
+/* ✅ Wrapper for centering the login box */
+.login-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: linear-gradient(135deg, #f0f5f7 60%, #f8f8fa 100%);
+}
+
+/* ✅ Login Box - مدور وتوهج واضح */
+.login-container {
+  background: #e2e6e7;
+  border-radius: 32px;
+  padding: 36px 28px 28px 28px;
+  width: 350px;
+  min-width: 290px;
+  max-width: 95vw;
+  box-shadow:
+    0 0 38px 12px #663d99bb,
+    0 4px 28px #f0f5f79f;
+  color: #663d99;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: popin 0.85s cubic-bezier(.4,0,.2,1); /* هذا السطر هو السحر */
+}
+
+
+/* ✅ Header مع اللوجو */
+.login-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.login-header h2 {
+  color: #663d99;
+  font-weight: 700;
+  font-size: 1.6rem;
+  margin: 0;
+  border-bottom: 2px solid #f0c230;
+  padding-bottom: 0.22em;
+  letter-spacing: 1px;
+  display: inline-block;
+}
+.login-logo {
+  height: 40px;
+  width: auto;
+  margin-bottom: 3px;
+}
+
+/* ✅ Floating Input Groups */
+.input-group {
+  margin-bottom: 24px;
+  position: relative;
+}
+.input-group label {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #f0f5f7;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s;
+  pointer-events: none;
+  background: #663d99;
+  padding: 0 5px;
+  border-radius: 5px;
+}
+.input-group .label-active,
+.input-group input:focus + label {
+  top: -12px;
+  right: 10px;
+  font-size: 12px;
+  color: #f0f5f7;
+  background: #663d99;
+  padding: 2px 5px;
+}
+.input-group input {
+  width: 100%;
+  padding: 12px 12px;
+  border: 2px solid #663d99;
+  border-radius: 7px;
+  background: #f0f5f7;
+  color: #663d99;
+  font-size: 16px;
+  outline: none;
+  transition: border 0.3s, background 0.3s;
+}
+.input-group input::placeholder {
+  color: transparent;
+}
+.input-group input:focus {
+  border: 2.5px solid #f0c230;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ✅ Password visibility toggle */
+.password-container {
+  position: relative;
+  width: 100%;
+}
+.eye-icon {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  width: 22px;
+  height: 22px;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+.eye-icon:hover {
+  opacity: 1;
+}
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear,
+input[type="password"]::-webkit-contacts-auto-fill-button,
+input[type="password"]::-webkit-credentials-auto-fill-button {
+  display: none;
+}
+
+/* ✅ Login Button */
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(92deg, #663d99 70%, #422969 100%);
+  color: #f0f5f7;
+  font-size: 1.13rem;
+  cursor: pointer;
+  font-weight: 700;
+  margin-top: 0.3rem;
+  transition: background 0.18s, color 0.17s, box-shadow 0.18s;
+  box-shadow: 0 2px 10px 0 #42296915;
+  text-align: center;
+}
+.login-btn:hover {
+  background: linear-gradient(92deg, #422969 70%, #663d99 100%);
+  color: #f0c230;
+}
+.login-btn:focus {
+  border: 2px dashed #f0c230;
+  outline: none;
+}
+
+/* ✅ Error or success message */
+.login-container p {
+  background: #f0c230;
+  color: #663d99;
+  text-align: center;
+  padding: 11px;
+  border-radius: 5px;
+  font-weight: bold;
+  margin-top: 14px;
+  animation: fadeIn 0.5s;
+  font-size: 1rem;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    width: 95vw;
+    padding: 18px 3vw;
+    min-width: unset;
+  }
+  .login-header h2 { font-size: 1.08rem; }
+  .login-logo { height: 25px; }
+  .login-btn { font-size: 0.97rem; }
+}
+@keyframes popin {
+  0%   { transform: scale(0.98) translateY(60px); opacity: 0; }
+  80%  { transform: scale(1.03) translateY(-4px); }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+.chess-icons-bar {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  align-items: center;
+  margin: 24px auto 8px auto;
+  flex-wrap: wrap;
+}
+
+.chess-icon-circle {
+  background: rgba(243,240,252,0.93);
+  border-radius: 50%;
+  box-shadow: 0 2px 10px #663d9933;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.2s;
+}
+
+.chess-icon-circle img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 3px #663d99aa);
+  opacity: 0.93;
+  transition: transform 0.18s;
+}
+
+.chess-icon-circle:hover img {
+  transform: scale(1.13) rotate(-7deg);
+  filter: drop-shadow(0 0 10px #663d99cc);
+}
+.chess-icon-circle {
+  animation: icon-pop 0.68s cubic-bezier(.62,0,.42,1.2);
+}
+@keyframes icon-pop {
+  0%   { transform: scale(0.7) translateY(28px); opacity: 0; }
+  80%  { transform: scale(1.08) translateY(-5px);}
+  100% { transform: scale(1) translateY(0); opacity: 1;}
+}
+.chess-icon-circle {
+  background: transparent;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* التوهج البنفسجي */
+  box-shadow: 0 6px 22px #663d9930;
+  transition: box-shadow 0.2s, transform 0.17s;
+  margin-bottom: 2px;
+}
+.chess-icon-circle img {
+  width: 24px;
+  height: 24px;
+  filter: drop-shadow(0 0 7px #663d99bb);
+  opacity: 0.97;
+  transition: transform 0.18s, filter 0.2s;
+}
+.chess-icon-circle:hover {
+  transform: translateY(-4px) scale(1.11);
+  box-shadow: 0 10px 30px #663d99aa;
+}
+.chess-icon-circle:hover img {
+  filter: drop-shadow(0 0 17px #f0c230cc) drop-shadow(0 0 10px #663d99cc);
+}
+
+.mini-link-button {
+  all: unset;
+  color: #4b0082;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  margin: 12px auto 0 auto;
+  display: block;
+  cursor: pointer;
+  font-weight: normal;
+  text-align: center;
+}
+
+.mini-link-button:hover {
+  font-weight: bold;
+  color: #4b0082; /* لا يتغير اللون */
+  background: transparent; /* لا خلفية */
+}
+
+

@@ -1,0 +1,105 @@
+.my-tournaments-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 1rem 3rem;
+  box-sizing: border-box;
+}
+
+.header-actions-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+  flex-wrap: wrap;
+  direction: rtl;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.my-tournaments-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  max-width: 100%;
+  border-radius: 16px;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+.tournament-name-link {
+  color: var(--clr-purple);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+  font-weight: 600;
+}
+
+.tournament-name-link:hover {
+  color: var(--clr-gold);
+  text-shadow: 0 0 8px rgba(240, 194, 48, 0.7), 0 0 15px rgba(240, 194, 48, 0.3);
+}
+
+.table-date {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  font-size: 0.95rem;
+  direction: rtl;
+}
+
+/* ❌ حذف small-btn إذا لم تعد تحتاجه */
+
+/* ✅ زر أيقونة الأرشفة */
+.archive-icon-btn {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: var(--clr-purple);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.archive-icon-btn:hover {
+  color: var(--clr-gold);
+  transform: scale(1.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header-actions-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: right;
+  }
+
+  .actions {
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .table-date {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+  }
+
+  .table-date .date,
+  .table-date .time {
+    font-size: 0.9rem;
+  }
+
+  .tournament-name-link {
+    font-size: 0.95rem;
+  }
+
+  .archive-icon-btn {
+    font-size: 1.1rem; /* أصغر على الموبايل */
+  }
+}
