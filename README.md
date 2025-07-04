@@ -4,6 +4,8 @@ This repository provides a simple full‑stack example for organising chess tour
 A React front end interacts with two Spring Boot services.  
 All services store data in an in‑memory H2 database so the application can run locally with almost no setup.
 
+> **Note:**  
+> This project is currently under development. No production deployment or hosting configuration has been completed yet. All instructions in this README are intended for local development and testing only.
 ---
 
 ## Features
@@ -13,6 +15,7 @@ All services store data in an in‑memory H2 database so the application can run
 - Dashboards for players and arbiters
 - Runs entirely on an H2 database for easy setup
 
+---
 
 ## Project Structure
 
@@ -56,6 +59,14 @@ Level_Up2/
 
 ---
 
+## Prerequisites
+
+- Java 17+ (for Spring Boot services)
+- Maven 3.x
+- Node.js 18+ and npm (for the React frontend)
+
+---
+
 ## Front‑End (FinalUI)
 
 The React front end lives inside the `FinalUI` folder and is built with [Vite](https://vitejs.dev/).
@@ -83,9 +94,11 @@ npm run dev
 The server starts on `http://localhost:5173` with hot-reloading.
 A separate README in that directory contains more Vite details.
 
+---
+
 ## Back‑End Services
 ### tournament_system Service
-Located in backend/tournament_system, this Spring Boot project provides user accounts and basic tournament setup APIs.
+Located in `backend/tournament_system`, this Spring Boot project provides user accounts and basic tournament setup APIs.
 
 ```bash
 cd backend/tournament_system
@@ -93,7 +106,7 @@ cd backend/tournament_system
 ```
 Runs on port `8080`.
 
-Important packages:
+# Important packages:
 
 - `controllers`/ – REST API endpoints
 
@@ -114,7 +127,7 @@ cd backend/chess-tournament
 ```
 Runs on port `8081`.
 
-Important packages:
+# Important packages:
 
 - `controller`/ – REST API endpoints
 
@@ -149,11 +162,22 @@ npm run build
 ```
 The result appears in `FinalUI/dist`.
 
-To run the packaged back-end services:
+To build the back-end services as executable JARs:
 
-bash
-Copy
-Edit
-java -jar target/*.jar
-License
-This project is provided for learning purposes and has no specific license.
+```bash
+cd backend/tournament_system
+./mvn clean package
+
+cd ../chess-tournament
+./mvn clean package
+```
+
+The generated JAR files will be in `/target`. You can run them manually:
+
+```bash
+java -jar target/tournament_system-0.0.1-SNAPSHOT.jar
+java -jar target/chess-tournament-0.0.1-SNAPSHOT.jar
+```
+
+## License
+This project is provided for educational purposes and does not have a specific open-source license.
