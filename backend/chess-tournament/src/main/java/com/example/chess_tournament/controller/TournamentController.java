@@ -1,9 +1,9 @@
 package com.example.chess_tournament.controller;
 
 import com.example.chess_tournament.dto.TournamentDTO;
-import com.example.chess_tournament.model.Arbiter;
+import com.example.chess_tournament.model.Organizer;
 import com.example.chess_tournament.model.Tournament;
-import com.example.chess_tournament.repository.ArbiterRepository;
+import com.example.chess_tournament.repository.OrganizerRepository;
 import com.example.chess_tournament.repository.TournamentRepository;
 
 import jakarta.validation.Valid;
@@ -22,7 +22,7 @@ public class TournamentController {
         private TournamentRepository tournamentRepository;
 
         @Autowired
-        private ArbiterRepository arbiterRepository;
+        private OrganizerRepository organizerRepository;
 
         @GetMapping
         public ResponseEntity<List<Tournament>> getAllTournaments() {
@@ -31,11 +31,11 @@ public class TournamentController {
 
         @PostMapping
         public ResponseEntity<Tournament> createTournament(@Valid @RequestBody TournamentDTO req) {
-                Arbiter arb = Arbiter.builder()
-                                .name(req.arbiterName)
-                                .fideId(req.arbiterFideId)
+                Organizer org = Organizer.builder()
+                                .name(req.organizerName)
+                                .fideId(req.organizerFideId)
                                 .build();
-                Arbiter savedArb = arbiterRepository.save(arb);
+                Organizer savedOrg = organizerRepository.save(org);
 
                 Tournament t = Tournament.builder()
                                 .name(req.name)
@@ -48,7 +48,7 @@ public class TournamentController {
                                 .type(req.type)
                                 .ByeValue(req.byeValue)
                                 .tieBreakers(req.tieBreakers)
-                                .arbiter(savedArb)
+                                .organizer(savedOrg)
                                 .build();
                 return ResponseEntity.ok(tournamentRepository.save(t));
         }
@@ -60,10 +60,10 @@ public class TournamentController {
                 Tournament t = tournamentRepository.findById(id)
                                 .orElseThrow(() -> new RuntimeException("Tournament not found"));
 
-                Arbiter arb = t.getArbiter();
-                arb.setName(req.arbiterName);
-                arb.setFideId(req.arbiterFideId);
-                arbiterRepository.save(arb);
+                Organizer org = t.getOrganizer();
+                org.setName(req.organizerName);
+                org.setFideId(req.organizerFideId);
+                organizerRepository.save(org);
 
                 t.setName(req.name);
                 t.setCity(req.city);
@@ -95,8 +95,8 @@ public class TournamentController {
                 dto.type = t.getType();
                 dto.byeValue = t.getByeValue();
                 dto.tieBreakers = t.getTieBreakers();
-                dto.arbiterName = t.getArbiter().getName();
-                dto.arbiterFideId = t.getArbiter().getFideId();
+                dto.organizerName = t.getOrganizer().getName();
+                dto.organizerFideId = t.getOrganizer().getFideId();
                 return dto;
         }
 

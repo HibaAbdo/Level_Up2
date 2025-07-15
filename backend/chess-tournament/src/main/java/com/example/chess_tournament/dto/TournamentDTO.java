@@ -34,8 +34,8 @@ public class TournamentDTO {
     public float byeValue;
     public List<String> tieBreakers;
 
-    @NotBlank(message = "arbiterName is required")
-    public String arbiterName;
-    public Long arbiterFideId;
+    @NotBlank(message = "organizerName is required")
+    public String organizerName;
+    public Long organizerFideId;
 
 }

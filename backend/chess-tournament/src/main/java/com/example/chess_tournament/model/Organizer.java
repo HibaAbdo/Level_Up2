@@ -8,8 +8,8 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "arbiters")
-public class Arbiter {
+@Table(name = "organizers")
+public class Organizer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

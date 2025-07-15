@@ -46,8 +46,8 @@ public class Tournament {
     private List<String> tieBreakers;
 
     @ManyToOne
-    @JoinColumn(name = "arbiter_id")
-    private Arbiter arbiter;
+    @JoinColumn(name = "organizer_id")
+    private Organizer organizer;
 
     @OneToMany(mappedBy = "tournament", cascade = CascadeType.ALL)
     private List<Player> players;
