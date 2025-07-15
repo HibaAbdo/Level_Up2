@@ -56,14 +56,6 @@ public class UserService {
     // temp users (temp function for testing)
     @PostConstruct
     public void initTempUsers() {
-        if (userRepository.findByUsername("admin").isEmpty()) {
-            User admin = new User();
-            admin.setUsername("admin");
-            admin.setPassword(passwordEncoder.encode("adm123"));
-            admin.setRole(Role.ADMIN);
-            userRepository.save(admin);
-            System.out.println("Temp Admin Created: admin/adm123");
-        }
 
         if (userRepository.findByUsername("organizer").isEmpty()) {
             User organizer = new User();

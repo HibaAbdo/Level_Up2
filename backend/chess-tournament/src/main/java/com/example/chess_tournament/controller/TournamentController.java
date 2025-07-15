@@ -1,8 +1,5 @@
 package com.example.chess_tournament.controller;
 
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import com.example.chess_tournament.dto.AddArbiterRequest;
 import com.example.chess_tournament.dto.TournamentDTO;
 import com.example.chess_tournament.model.Organizer;
@@ -19,6 +16,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -149,14 +148,17 @@ public class TournamentController {
         public ResponseEntity<List<Tournament>> getMyTournaments(@AuthenticationPrincipal UserDetails userDetails) {
                 String username = userDetails.getUsername();
 
-                // bring arbiter's id from DB using username
-                Object userIdObj = entityManager.createQuery("SELECT u.id FROM UserRef u WHERE u.username = :username")
-                                .setParameter("username", username)
-                                .getSingleResult();
+                Object userIdObj;
+                try {
+                        userIdObj = entityManager.createQuery("SELECT u.id FROM UserRef u WHERE u.username = :username")
+                                        .setParameter("username", username)
+                                        .getSingleResult();
+                } catch (NoResultException e) {
+                        return ResponseEntity.ok(List.of()); // return empty list instead of error
+                }
 
                 Long userId = (Long) userIdObj;
 
-                // brings tournaments that have this arbiter
                 List<Tournament> tournaments = entityManager.createQuery("""
                                 SELECT t FROM Tournament t
                                 JOIN t.arbiters a
