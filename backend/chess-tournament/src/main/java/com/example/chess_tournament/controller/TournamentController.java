@@ -1,11 +1,18 @@
 package com.example.chess_tournament.controller;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.example.chess_tournament.dto.AddArbiterRequest;
 import com.example.chess_tournament.dto.TournamentDTO;
 import com.example.chess_tournament.model.Organizer;
 import com.example.chess_tournament.model.Tournament;
+import com.example.chess_tournament.model.UserRef;
 import com.example.chess_tournament.repository.OrganizerRepository;
 import com.example.chess_tournament.repository.TournamentRepository;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.validation.Valid;
 
 import java.util.List;
@@ -23,6 +30,9 @@ public class TournamentController {
 
         @Autowired
         private OrganizerRepository organizerRepository;
+
+        @Autowired
+        private EntityManager entityManager;
 
         @GetMapping
         public ResponseEntity<List<Tournament>> getAllTournaments() {
@@ -98,6 +108,87 @@ public class TournamentController {
                 dto.organizerName = t.getOrganizer().getName();
                 dto.organizerFideId = t.getOrganizer().getFideId();
                 return dto;
+        }
+
+        @PostMapping("/add-arbiter")
+        public ResponseEntity<String> addOrCreateArbiter(@RequestBody AddArbiterRequest req) {
+                Tournament tournament = tournamentRepository.findById(req.tournamentId).orElseThrow();
+
+                UserRef userRef;
+
+                try {
+                        Object result = entityManager
+                                        .createQuery("SELECT u.id FROM UserRef u WHERE u.username = :username")
+                                        .setParameter("username", req.username)
+                                        .getSingleResult();
+                        Long userId = (Long) result;
+                        userRef = new UserRef(userId, req.username);
+                } catch (NoResultException e) {
+                        // create new user
+                        entityManager.createNativeQuery("INSERT INTO users (username, password, role) VALUES (?, ?, ?)")
+                                        .setParameter(1, req.username)
+                                        .setParameter(2, req.password)
+                                        .setParameter(3, "ARBITER")
+                                        .executeUpdate();
+
+                        Object result = entityManager
+                                        .createQuery("SELECT u.id FROM UserRef u WHERE u.username = :username")
+                                        .setParameter("username", req.username)
+                                        .getSingleResult();
+                        Long newId = (Long) result;
+                        userRef = new UserRef(newId, req.username);
+                }
+
+                tournament.getArbiters().add(userRef);
+                tournamentRepository.save(tournament);
+
+                return ResponseEntity.ok("Arbiter added");
+        }
+
+        @GetMapping("/my-tournaments")
+        public ResponseEntity<List<Tournament>> getMyTournaments(@AuthenticationPrincipal UserDetails userDetails) {
+                String username = userDetails.getUsername();
+
+                // bring arbiter's id from DB using username
+                Object userIdObj = entityManager.createQuery("SELECT u.id FROM UserRef u WHERE u.username = :username")
+                                .setParameter("username", username)
+                                .getSingleResult();
+
+                Long userId = (Long) userIdObj;
+
+                // brings tournaments that have this arbiter
+                List<Tournament> tournaments = entityManager.createQuery("""
+                                SELECT t FROM Tournament t
+                                JOIN t.arbiters a
+                                WHERE a.id = :userId
+                                """, Tournament.class)
+                                .setParameter("userId", userId)
+                                .getResultList();
+
+                return ResponseEntity.ok(tournaments);
+        }
+
+        @DeleteMapping("/{tournamentId}/remove-arbiter/{username}")
+        public ResponseEntity<String> removeArbiterFromTournament(
+                        @PathVariable Long tournamentId,
+                        @PathVariable String username) {
+
+                Tournament tournament = tournamentRepository.findById(tournamentId).orElseThrow();
+
+                // get the arbiter
+                List<UserRef> matched = tournament.getArbiters().stream()
+                                .filter(a -> a.getUsername().equals(username))
+                                .toList();
+
+                if (matched.isEmpty()) {
+                        return ResponseEntity.badRequest().body("Arbiter not assigned to tournament");
+                }
+
+                // delete the relation only
+                tournament.getArbiters().removeAll(matched);
+                tournamentRepository.save(tournament);
+
+                return ResponseEntity.ok("Arbiter removed from tournament");
         }
 
 }

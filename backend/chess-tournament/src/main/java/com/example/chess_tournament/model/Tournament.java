@@ -3,7 +3,9 @@ package com.example.chess_tournament.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.*;
 
 @Data
@@ -54,5 +56,9 @@ public class Tournament {
 
     @OneToMany(mappedBy = "tournament", cascade = CascadeType.ALL)
     private List<Round> roundsList;
+
+    @ManyToMany
+    @JoinTable(name = "tournament_arbiters", joinColumns = @JoinColumn(name = "tournament_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<UserRef> arbiters = new HashSet<>();
 
 }
