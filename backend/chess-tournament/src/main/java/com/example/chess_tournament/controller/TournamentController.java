@@ -2,6 +2,7 @@ package com.example.chess_tournament.controller;
 
 import com.example.chess_tournament.dto.AddArbiterRequest;
 import com.example.chess_tournament.dto.TournamentDTO;
+import com.example.chess_tournament.dto.UserSummaryDTO;
 import com.example.chess_tournament.model.Organizer;
 import com.example.chess_tournament.model.Tournament;
 import com.example.chess_tournament.model.UserRef;
@@ -191,6 +192,18 @@ public class TournamentController {
                 tournamentRepository.save(tournament);
 
                 return ResponseEntity.ok("Arbiter removed from tournament");
+        }
+
+        @GetMapping("/{id}/arbiters")
+        public ResponseEntity<List<UserSummaryDTO>> getArbitersForTournament(@PathVariable Long id) {
+                Tournament tournament = tournamentRepository.findById(id)
+                                .orElseThrow(() -> new RuntimeException("Tournament not found"));
+
+                List<UserSummaryDTO> arbiters = tournament.getArbiters().stream()
+                                .map(user -> new UserSummaryDTO(user.getId(), user.getUsername()))
+                                .toList();
+
+                return ResponseEntity.ok(arbiters);
         }
 
 }
