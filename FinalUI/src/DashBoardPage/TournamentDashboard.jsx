@@ -21,6 +21,8 @@ import PredefinedPairsModal from './DashBoardButtons/PlayersButtonsModals/Predef
 import CheckinConfirmationModal from './DashBoardButtons/PlayersButtonsModals/CheckinConfirmationModal';
 import { FaSearch } from "react-icons/fa";
 
+import { createPlayer, createPlayersBulk } from './DashBoardButtons/PlayersButtonsModals/playerApi';
+
 import addIcon from '../assets/Icons/add-player.png';
 import listIcon from '../assets/Icons/add-players.png';
 import shuffleIcon from '../assets/Icons/shuffle.png';
@@ -85,20 +87,48 @@ const saveRoundsToStorage = (updatedRounds) => {
   setRounds(updatedRounds);
 };
 
-  const handleCreatePlayer = (player) => {
+  const handleCreatePlayer = async (player) => {
+    const payload = {
+      tournamentId: Number(id),
+      name: player.name,
+      rating: Number(player.rating) || 0,
+      kFactor: Number(player.kFactor) || 20,
+      extraPoints: Number(player.extraPoints) || 0,
+      email: player.email,
+    };
+
     if (editingPlayer) {
-      const updated = players.map(p => (p.id === editingPlayer.id ? { ...player, id: editingPlayer.id } : p));
-      savePlayersToStorage(updated);
-    } else {
-      const newPlayer = { ...player, id: getNextPlayerId() };
-      savePlayersToStorage([...players, newPlayer]);
+      payload.id = editingPlayer.id;
     }
-    setEditingPlayer(null);
+
+    try {
+      const saved = await createPlayer(payload);
+
+      if (editingPlayer) {
+        const updated = players.map((p) =>
+          p.id === editingPlayer.id ? { ...p, ...saved } : p
+        );
+        savePlayersToStorage(updated);
+      } else {
+        savePlayersToStorage([...players, saved]);
+      }
+      setEditingPlayer(null);
+    } catch (err) {
+      console.error('Failed to save player', err);
+    }
   };
 
-  const handleCreateManyPlayers = (newPlayers) => {
-    const playersWithIds = newPlayers.map(p => ({ ...p, id: getNextPlayerId() }));
-    savePlayersToStorage([...players, ...playersWithIds]);
+  const handleCreateManyPlayers = async (newPlayers) => {
+    const names = newPlayers.map(p => p.name);
+    try {
+      const { data: savedList } = await createPlayersBulk({
+        tournamentId: Number(id),
+        names,
+      });
+      savePlayersToStorage([...players, ...savedList]);
+    } catch (err) {
+      console.error('Failed to save players list', err);
+    }
   };
 
   const handleDeletePlayer = (playerId) => {
