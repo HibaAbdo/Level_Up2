@@ -9,10 +9,15 @@ function ArchivedTournaments() {
   const username = localStorage.getItem('username') || 'المستخدم';
   const [archivedTournaments, setArchivedTournaments] = useState([]);
 
-  useEffect(() => {
-    const archived = JSON.parse(localStorage.getItem('archivedTournaments')) || [];
-    setArchivedTournaments(archived);
-  }, []);
+useEffect(() => {
+  const fetchArchived = async () => {
+    const res = await fetch("http://localhost:8081/api/tournaments/archived");
+    const data = await res.json();
+    setArchivedTournaments(data);
+  };
+  fetchArchived();
+}, []);
+
 
   const splitDateTime = (str) => {
     const parts = str?.split(' ') || [];

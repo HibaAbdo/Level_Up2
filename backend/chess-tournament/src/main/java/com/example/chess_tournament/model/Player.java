@@ -1,5 +1,7 @@
 package com.example.chess_tournament.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,6 +29,7 @@ public class Player {
 
     // 0 = not confirmed, 1 = confirmed
     private int confirmAttendance;
+    @JsonIgnore
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tournament_id", nullable = false)

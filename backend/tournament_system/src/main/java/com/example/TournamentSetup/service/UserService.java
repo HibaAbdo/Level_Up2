@@ -39,13 +39,6 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    // add organizer
-    public void addOrganizer(User organizer) {
-        organizer.setPassword(passwordEncoder.encode(organizer.getPassword()));
-        organizer.setRole(Role.ORGANIZER);
-        userRepository.save(organizer);
-    }
-
     // add arbiter
     public void addArbiter(User arbiter) {
         arbiter.setPassword(passwordEncoder.encode(arbiter.getPassword()));

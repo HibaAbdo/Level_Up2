@@ -35,7 +35,7 @@ public class PlayerController {
     }
 
     @PostMapping
-    public Player addOrUpdatePlayer(@Valid @RequestBody PlayerRequest req) {
+    public ResponseEntity<Player> addOrUpdatePlayer(@Valid @RequestBody PlayerRequest req) {
         Tournament t = tournamentRepository.findById(req.tournamentId)
                 .orElseThrow(() -> new RuntimeException("Tournament not found"));
 
@@ -58,7 +58,7 @@ public class PlayerController {
         if (req.id == null)
             p.setConfirmAttendance(0);
 
-        return playerRepository.save(p);
+        return ResponseEntity.ok(playerRepository.save(p));
     }
 
     @PostMapping("/bulk")

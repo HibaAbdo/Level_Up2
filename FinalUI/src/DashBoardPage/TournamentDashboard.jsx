@@ -21,7 +21,7 @@ import PredefinedPairsModal from './DashBoardButtons/PlayersButtonsModals/Predef
 import CheckinConfirmationModal from './DashBoardButtons/PlayersButtonsModals/CheckinConfirmationModal';
 import { FaSearch } from "react-icons/fa";
 
-import { createPlayer, createPlayersBulk } from './DashBoardButtons/PlayersButtonsModals/playerApi';
+import { createPlayer, createPlayersBulk, confirmAttendance } from './DashBoardButtons/PlayersButtonsModals/playerApi';
 
 import addIcon from '../assets/Icons/add-player.png';
 import listIcon from '../assets/Icons/add-players.png';
@@ -30,6 +30,7 @@ import ratingIcon from '../assets/Icons/sortByrating.png';
 import blockIcon from '../assets/Icons/forbidden.png';
 import pairIcon from '../assets/Icons/pairs.png';
 import confirmIcon from '../assets/Icons/confirm.png';
+import { fetchPlayersByTournament } from './DashBoardButtons/PlayersButtonsModals/playerApi'; // تأكد من الاستيراد
 
 
 function TournamentDashboard() {
@@ -54,6 +55,19 @@ function TournamentDashboard() {
   const [players, setPlayers] = useState([]);
   const [rounds, setRounds] = useState([]);
   const [currentRoundIndex, setCurrentRoundIndex] = useState(0);
+  useEffect(() => {
+  const loadPlayers = async () => {
+    try {
+      const data = await fetchPlayersByTournament(Number(id));
+      setPlayers(data);
+    } catch (error) {
+      console.error("Failed to load players from DB:", error);
+    }
+  };
+
+  loadPlayers();
+}, [id]); 
+
   
 
   const tournamentKey = `tournament-${id}`;
@@ -87,49 +101,82 @@ const saveRoundsToStorage = (updatedRounds) => {
   setRounds(updatedRounds);
 };
 
-  const handleCreatePlayer = async (player) => {
-    const payload = {
-      tournamentId: Number(id),
-      name: player.name,
-      rating: Number(player.rating) || 0,
-      kFactor: Number(player.kFactor) || 20,
-      extraPoints: Number(player.extraPoints) || 0,
-      email: player.email,
-    };
+const handleCreatePlayer = async (player) => {
+  const payload = {
+    tournamentId: Number(id),
+    name: player.name,
+    rating: Number(player.rating) || 1200,
+    kFactor: Number(player.kFactor)|| null,
+    extraPoints: Number(player.extraPoints) || 0,
+    email: player.email,
+  };
+
+  if (editingPlayer) {
+    payload.id = editingPlayer.id;
+  }
+
+  try {
+    const saved = await createPlayer(payload);
+
+    // الدمج بين البيانات المرسلة والبيانات القادمة من الـ backend
+    const savedPlayer = { ...payload, ...saved };
 
     if (editingPlayer) {
-      payload.id = editingPlayer.id;
+      const updated = players.map((p) =>
+        p.id === editingPlayer.id ? savedPlayer : p
+      );
+      savePlayersToStorage(updated);
+    } else {
+      savePlayersToStorage([...players, savedPlayer]);
     }
 
-    try {
-      const saved = await createPlayer(payload);
+    setEditingPlayer(null);
+  } catch (err) {
+    console.error('Failed to save player', err);
+  }
+};
 
-      if (editingPlayer) {
-        const updated = players.map((p) =>
-          p.id === editingPlayer.id ? { ...p, ...saved } : p
-        );
-        savePlayersToStorage(updated);
+
+
+const handleCreateManyPlayers = async (newPlayers) => {
+  try {
+    // نأخذ أسماء اللاعبين فقط لإرسالها إلى الـ backend
+    const names = newPlayers.map((p) => p.name);
+
+    const savedList = await createPlayersBulk({
+      tournamentId: Number(id),
+      names,
+    });
+
+    let finalList = [];
+
+    if (Array.isArray(savedList) && savedList.length > 0) {
+      // لو backend أرجع بيانات كاملة (name, rating, etc.)
+      if (typeof savedList[0] === "object" && savedList[0].name) {
+        finalList = savedList;
       } else {
-        savePlayersToStorage([...players, saved]);
+        // لو backend أرجع IDs فقط، ندمجها مع البيانات الأصلية
+        finalList = newPlayers.map((p, i) => ({
+          ...p,
+          id: savedList[i] || Date.now() + i,
+        }));
       }
-      setEditingPlayer(null);
-    } catch (err) {
-      console.error('Failed to save player', err);
+    } else {
+      // fallback لو لم يرجع backend أي بيانات
+      finalList = newPlayers.map((p, i) => ({
+        ...p,
+        id: Date.now() + i,
+      }));
     }
-  };
 
-  const handleCreateManyPlayers = async (newPlayers) => {
-    const names = newPlayers.map(p => p.name);
-    try {
-      const { data: savedList } = await createPlayersBulk({
-        tournamentId: Number(id),
-        names,
-      });
-      savePlayersToStorage([...players, ...savedList]);
-    } catch (err) {
-      console.error('Failed to save players list', err);
-    }
-  };
+    savePlayersToStorage([...players, ...finalList]);
+  } catch (err) {
+    console.error("Failed to save players list", err);
+    // fallback: لو backend فشل، نضيفهم محليًا
+    savePlayersToStorage([...players, ...newPlayers]);
+  }
+};
+
 
   const handleDeletePlayer = (playerId) => {
     const updated = players.filter(p => p.id !== playerId);
@@ -153,11 +200,16 @@ const saveRoundsToStorage = (updatedRounds) => {
     setIsCheckinModalOpen(false);
   };
 
- const finalizeCheckin = () => {
+ const finalizeCheckin = async () => {
+  const confirmed = players.filter(p => p.checkedIn !== false);
+
+  try {
+    await confirmAttendance(confirmed.map(p => p.id));
+  } catch (err) {
+    console.error('Failed to confirm attendance', err);
+  }
   setIsCheckinMode(false);
   setIsCheckinModalOpen(false);
-
-  const confirmed = players.filter(p => p.checkedIn !== false);
 
   // توليد أول جولة
   const firstRound = {
@@ -210,10 +262,10 @@ const generateMatches = (activePlayers) => {
 };
 
 
-
-  const filteredPlayers = players.filter((player) =>
-  player.name.toLowerCase().includes(searchTerm.toLowerCase())
+const filteredPlayers = players.filter((player) =>
+  (player.name || '').toLowerCase().includes(searchTerm.toLowerCase())
 );
+
 
   const handleRandomizePlayers = () => {
     const shuffled = [...players]

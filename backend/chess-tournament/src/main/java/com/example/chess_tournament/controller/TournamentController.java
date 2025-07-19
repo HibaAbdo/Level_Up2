@@ -13,6 +13,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.validation.Valid;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +60,10 @@ public class TournamentController {
                                 .ByeValue(req.byeValue)
                                 .tieBreakers(req.tieBreakers)
                                 .organizer(savedOrg)
+                                .creationDate(LocalDateTime.now())
+                                .lastModified(LocalDateTime.now())
                                 .build();
+
                 return ResponseEntity.ok(tournamentRepository.save(t));
         }
 
@@ -85,6 +89,7 @@ public class TournamentController {
                 t.setType(req.type);
                 t.setByeValue(req.byeValue);
                 t.setTieBreakers(req.tieBreakers);
+                t.setLastModified(LocalDateTime.now());
 
                 return tournamentRepository.save(t);
         }
@@ -107,6 +112,8 @@ public class TournamentController {
                 dto.tieBreakers = t.getTieBreakers();
                 dto.organizerName = t.getOrganizer().getName();
                 dto.organizerFideId = t.getOrganizer().getFideId();
+                dto.creationDate = t.getCreationDate();
+                dto.lastModified = t.getLastModified();
                 return dto;
         }
 
@@ -146,29 +153,8 @@ public class TournamentController {
         }
 
         @GetMapping("/my-tournaments")
-        public ResponseEntity<List<Tournament>> getMyTournaments(@AuthenticationPrincipal UserDetails userDetails) {
-                String username = userDetails.getUsername();
-
-                Object userIdObj;
-                try {
-                        userIdObj = entityManager.createQuery("SELECT u.id FROM UserRef u WHERE u.username = :username")
-                                        .setParameter("username", username)
-                                        .getSingleResult();
-                } catch (NoResultException e) {
-                        return ResponseEntity.ok(List.of()); // return empty list instead of error
-                }
-
-                Long userId = (Long) userIdObj;
-
-                List<Tournament> tournaments = entityManager.createQuery("""
-                                SELECT t FROM Tournament t
-                                JOIN t.arbiters a
-                                WHERE a.id = :userId
-                                """, Tournament.class)
-                                .setParameter("userId", userId)
-                                .getResultList();
-
-                return ResponseEntity.ok(tournaments);
+        public ResponseEntity<List<Tournament>> getMyTournaments() {
+                return ResponseEntity.ok(tournamentRepository.findAll());
         }
 
         @DeleteMapping("/{tournamentId}/remove-arbiter/{username}")
@@ -204,6 +190,22 @@ public class TournamentController {
                                 .toList();
 
                 return ResponseEntity.ok(arbiters);
+        }
+
+        @PutMapping("/{id}/archive")
+        public ResponseEntity<String> archiveTournament(@PathVariable Long id) {
+                Tournament t = tournamentRepository.findById(id)
+                                .orElseThrow(() -> new RuntimeException("Tournament not found"));
+                t.setArchived(true);
+                tournamentRepository.save(t);
+                return ResponseEntity.ok("Tournament archived");
+        }
+
+        @GetMapping("/archived")
+        public ResponseEntity<List<Tournament>> getArchivedTournaments(
+                        @AuthenticationPrincipal UserDetails userDetails) {
+                List<Tournament> archived = tournamentRepository.findByArchivedTrue();
+                return ResponseEntity.ok(archived);
         }
 
 }

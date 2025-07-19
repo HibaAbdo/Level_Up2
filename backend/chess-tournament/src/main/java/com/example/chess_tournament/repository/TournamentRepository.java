@@ -8,4 +8,7 @@ import java.util.UUID;
 
 public interface TournamentRepository extends JpaRepository<Tournament, Long> {
     Tournament findByName(String name);
+
+    List<Tournament> findByArchivedTrue();
+
 }

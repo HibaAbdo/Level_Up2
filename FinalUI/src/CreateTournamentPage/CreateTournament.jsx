@@ -19,8 +19,8 @@ function CreateTournament({ mode = 'create', initialData = null, embedded = fals
     city: 'Jerusalem',
     country: 'Israel',
     Date: '',
-    arbiterName: '',
-    arbiterFideId: '',
+    organizerName: '',
+    organizerFideId: '',
     playSystem: 'swiss',
     points: 'standard',
     byeValue: 'win',
@@ -80,7 +80,7 @@ function CreateTournament({ mode = 'create', initialData = null, embedded = fals
     }
 
     // Validation: نصوص (عربي أو إنجليزي)
-    if (['city', 'country', 'arbiterName'].includes(name)) {
+    if (['city', 'country', 'organizerName'].includes(name)) {
       if (!/^[\u0600-\u06FFa-zA-Z ]+$/.test(value)) {
         alert('هذا الحقل يجب أن يحتوي على أحرف عربية أو إنجليزية فقط.');
         return;
@@ -88,7 +88,7 @@ function CreateTournament({ mode = 'create', initialData = null, embedded = fals
     }
 
     // Validation: FIDE ID من 8 أرقام
-    if (name === 'arbiterFideId') {
+    if (name === 'organizerFideId') {
       if (!/^[0-9]{8}$/.test(value)) {
         alert('الرقم الدولي للمنظم يجب أن يكون 8 أرقام.');
         return;
@@ -133,8 +133,8 @@ function CreateTournament({ mode = 'create', initialData = null, embedded = fals
               ? 0.5
               : 0,
           tieBreakers: formData.tieBreaks,
-          arbiterName: formData.arbiterName,
-          arbiterFideId: formData.arbiterFideId
+          organizerName: formData.organizerName,
+          organizerFideId: formData.organizerFideId
         })
       });
 
@@ -188,8 +188,8 @@ const handleSaveChanges = async () => {
         : formData.byeValue === 'draw'  ? 0.5
         : 0,
         tieBreakers: formData.tieBreaks,
-        arbiterName: formData.arbiterName,
-        arbiterFideId: Number(formData.arbiterFideId)
+        organizerName: formData.organizerName,
+        organizerFideId: Number(formData.organizerFideId)
       })
     });
     if (!res.ok) throw new Error();
@@ -252,8 +252,8 @@ const handleSaveChanges = async () => {
           { label: 'المدينة', name: 'city', type: 'text' },
           { label: 'الدولة', name: 'country', type: 'text' },
           { label: 'تاريخ البطولة', name: 'Date', type: 'date' },
-          { label: 'اسم المنظّم', name: 'arbiterName', type: 'text' },
-          { label: 'الرقم الدولي للمنظّم', name: 'arbiterFideId', type: 'text' },
+          { label: 'اسم المنظّم', name: 'organizerName', type: 'text' },
+          { label: 'الرقم الدولي للمنظّم', name: 'organizerFideId', type: 'text' },
           {
             label: 'نظام اللعب', name: 'playSystem', type: 'select', options: [
               { value: 'swiss', label: 'Swiss Dutch FIDE (JaVaFo)' },

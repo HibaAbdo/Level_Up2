@@ -5,25 +5,24 @@ function CreatePlayerModal({ isOpen, onClose, onCreate, playerData }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [rating, setRating] = useState(0);
-  const [kFactor, setKFactor] = useState(20);
+  const [kFactor, setKFactor] = useState(null);
   const [extraPoints, setExtraPoints] = useState(0);
 
-  // يضبط الحقول عند فتح المودال
   useEffect(() => {
     if (isOpen) {
       if (playerData) {
         // تعديل لاعب
         setName(playerData.name || '');
         setEmail(playerData.email || '');
-        setRating(playerData.rating || 0);
-        setKFactor(playerData.kFactor || 20);
+        setRating(playerData.rating || 1200);
+        setKFactor(playerData.kFactor );
         setExtraPoints(playerData.extraPoints || 0);
       } else {
         // إنشاء لاعب جديد
         setName('');
         setEmail('');
         setRating(0);
-        setKFactor(20);
+        setKFactor(null);
         setExtraPoints(0);
       }
     }
@@ -38,7 +37,6 @@ function CreatePlayerModal({ isOpen, onClose, onCreate, playerData }) {
     }
 
     const player = {
-      id: playerData?.id || Date.now(), // إذا تعديل يحافظ على id
       name,
       email,
       rating: Number(rating),
@@ -46,14 +44,13 @@ function CreatePlayerModal({ isOpen, onClose, onCreate, playerData }) {
       extraPoints: Number(extraPoints),
     };
 
-    onCreate(player);
+    onCreate(player); // إرسال اللاعب للـ parent لحفظه في DB
     onClose();
   };
 
   return (
     <ModalWrapper isOpen={isOpen} onClose={onClose} title={playerData ? "تعديل لاعب" : "إنشاء لاعب جديد"}>
       <form onSubmit={handleSubmit} className="player-form">
-
         <div className="floating-group">
           <input
             type="text"

@@ -10,10 +10,23 @@ function MyTournaments() {
 
   const username = localStorage.getItem('username') || 'المستخدم';
 
-  useEffect(() => {
-    const storedTournaments = JSON.parse(localStorage.getItem('tournaments')) || [];
-    setTournaments(storedTournaments);
-  }, []);
+useEffect(() => {
+  const fetchTournaments = async () => {
+    try {
+      const response = await fetch('http://localhost:8081/api/tournaments/my-tournaments', {
+        credentials: 'include', // مهم إذا تستخدم Spring Security مع Session
+      });
+      if (!response.ok) throw new Error("فشل في جلب البطولات");
+      const data = await response.json();
+      setTournaments(data);
+    } catch (err) {
+      console.error("Error fetching tournaments:", err);
+    }
+  };
+  fetchTournaments();
+}, []);
+
+
 
   const splitDateTime = (str) => {
     const parts = str?.split(' ') || [];
@@ -23,18 +36,17 @@ function MyTournaments() {
     };
   };
 
-  const archiveTournament = (id) => {
-    const updated = tournaments.filter(t => t.id !== id);
-    const archived = JSON.parse(localStorage.getItem('archivedTournaments')) || [];
-    const toArchive = tournaments.find(t => t.id === id);
+ const archiveTournament = async (id) => {
+  try {
+    await fetch(`http://localhost:8081/api/tournaments/${id}/archive`, {
+      method: "PUT",
+    });
+    setTournaments((prev) => prev.filter((t) => t.id !== id));
+  } catch (err) {
+    console.error("Error archiving tournament:", err);
+  }
+};
 
-    if (toArchive) {
-      archived.push(toArchive);
-      localStorage.setItem('archivedTournaments', JSON.stringify(archived));
-      localStorage.setItem('tournaments', JSON.stringify(updated));
-      setTournaments(updated);
-    }
-  };
 
   return (
     <>

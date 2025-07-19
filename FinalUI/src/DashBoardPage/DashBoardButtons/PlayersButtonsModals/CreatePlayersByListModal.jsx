@@ -12,10 +12,12 @@ function CreatePlayersByListModal({ isOpen, onClose, onCreateMany }) {
       .filter(line => line.length > 0);
 
     const newPlayers = lines.map(line => {
-      const [name, rating] = line.split('،').map(part => part.trim());
-      return {
+      let [name, rating] = line.includes(',') 
+        ? line.split(',').map(part => part.trim()) // إذا استخدم فاصلة انجليزية
+        : line.split('،').map(part => part.trim()); // إذا استخدم فاصلة عربية    
+          return {
         id: Date.now() + Math.random(),
-        name,
+        name: name || 'بدون اسم',
         rating: Number(rating) || 0,
         email: '',
         kFactor: 20,

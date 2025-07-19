@@ -1,8 +1,10 @@
 package com.example.chess_tournament.dto;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -37,5 +39,11 @@ public class TournamentDTO {
     @NotBlank(message = "organizerName is required")
     public String organizerName;
     public Long organizerFideId;
+
+    public LocalDateTime creationDate;
+
+    public LocalDateTime lastModified;
+
+    public Boolean archived;
 
 }

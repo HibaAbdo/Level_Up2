@@ -3,9 +3,13 @@ package com.example.chess_tournament.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.*;
 
 @Data
@@ -60,5 +64,17 @@ public class Tournament {
     @ManyToMany
     @JoinTable(name = "tournament_arbiters", joinColumns = @JoinColumn(name = "tournament_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<UserRef> arbiters = new HashSet<>();
+
+    @Column(name = "archived")
+    private Boolean archived = false;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+
+    @Column(name = "creation_date")
+    private LocalDateTime creationDate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+
+    @Column(name = "last_modified")
+    private LocalDateTime lastModified;
 
 }
